@@ -6,4 +6,10 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="loginUserEmail">Email Adresiniz</string>
+    <string name="loginUserPassword">Parola</string>
+    <string name="loginLoginBtn">Giriş Yap</string>
+    <string name="loginGoRegister">Kayıt Ol</string>
+    <string name="registerConfirmPassword">Parola Onay</string>
+    <string name="registerBtn">Kayıt Ol</string>
 </resources>

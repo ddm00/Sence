@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.LoginActivity">
+    <EditText
+        android:id="@+id/loginUserEmail_Et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/loginUserEmail"
+        android:inputType="textPersonName"
+        android:padding="12dp"/>
+
+    <EditText
+        android:id="@+id/loginUserPassword_Et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loginUserEmail_Et"
+        android:layout_marginTop="10dp"
+        android:hint="@string/loginUserPassword"
+        android:inputType="textPassword"
+        android:padding="12dp"/>
+
+    <Button
+        android:id="@+id/loginLogin_Btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loginUserPassword_Et"
+        android:layout_marginTop="10dp"
+        android:text="@string/loginLoginBtn"
+        android:padding="16dp"/>
+
+    <Button
+        android:id="@+id/loginGoRegister_Btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loginLogin_Btn"
+        android:layout_marginTop="10dp"
+        android:text="@string/loginGoRegister"
+        android:padding="16dp"/>
+
+</RelativeLayout>
