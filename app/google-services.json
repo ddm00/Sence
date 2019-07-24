@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "548934218431",
+    "firebase_url": "https://sence-af3aa.firebaseio.com",
+    "project_id": "sence-af3aa",
+    "storage_bucket": "sence-af3aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548934218431:android:6dca7d11584c0cbe",
+        "android_client_info": {
+          "package_name": "com.turkcell.sence"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "548934218431-ml6tfdmaaua1kt716atg747vug0cmva3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABtP0quI68Z70stTvQHG3mwut7Rx7MkHY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "548934218431-ml6tfdmaaua1kt716atg747vug0cmva3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
