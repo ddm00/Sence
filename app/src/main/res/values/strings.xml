@@ -18,6 +18,7 @@
     <string name="title_following">Takip</string>
     <string name="title_search">Ara</string>
     <string name="title_like">Beğeni</string>
+    <string name="survey_question">Sorunuz....?</string>
 
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_register">RegisterActivity</string>
@@ -26,4 +27,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_user_profile">UserProfileActivity</string>
+    <string name="title_activity_add_survey">AddSurveyActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
 </resources>

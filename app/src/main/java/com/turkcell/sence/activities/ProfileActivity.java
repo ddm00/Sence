@@ -23,11 +23,7 @@ public class ProfileActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_add:
                     return true;
-                case R.id.navigation_following:
-                    return true;
                 case R.id.navigation_search:
-                    return true;
-                case R.id.navigation_like:
                     return true;
             }
             return false;
