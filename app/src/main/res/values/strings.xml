@@ -14,6 +14,10 @@
     <string name="title_like">Beğeni</string>
     <string name="survey_question">Sorunuz....?</string>
 
+    <!-- Kullanıcı Profili -->
+    <string name="userProfile_profilDuzenle">Profil Düzenle</string>
+    <string name="userProfile_anketlerim_tv">ANKETLERİM</string>
+
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_register">RegisterActivity</string>
 
