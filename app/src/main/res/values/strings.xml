@@ -19,9 +19,13 @@
     <string name="title_profile">Profil</string>
     <string name="title_add">Ekle</string>
     <string name="title_search">Ara</string>
-    <string name="title_home"></string>
 
     <string name="survey_question">Sorunuz....?</string>
+    <string name="ongoingPoll_Btn">Devam Eden Anketler</string>
+    <string name="completedPoll_Btn">Biten Anketler</string>
+    <string name="votedPoll_Btn">Oylanan Anketler</string>
+    <string name="followers_Btn">Takipçiler</string>
+    <string name="followed_Btn">Takip Edilenler</string>
 
     <!-- Kullanıcı Profili -->
     <string name="userProfile_profilDuzenle">Profil Düzenle</string>
