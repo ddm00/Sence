@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.turkcell.sence.R;
 import com.turkcell.sence.fragments.AddSurveyFragment;
 //import com.turkcell.sence.fragments.HomeFragment;
+import com.turkcell.sence.fragments.HomeFragment;
 import com.turkcell.sence.fragments.SearchFragment;
 import com.turkcell.sence.fragments.UserProfileFragment;
 
@@ -35,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_search:
                     selectedFragment = new SearchFragment();
                     break;
-                /*case R.id.navigation_home:
+                case R.id.navigation_home:
                     selectedFragment = new HomeFragment();
-                    break;*/
+                    break;
 
             }
             FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        Fragment selectedFragment = new UserProfileFragment();
+        Fragment selectedFragment = new HomeFragment();
         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
         fragTrans.replace(R.id.fragmentContainer, selectedFragment).commit();
     }

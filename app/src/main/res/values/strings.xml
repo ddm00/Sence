@@ -19,6 +19,7 @@
     <string name="title_profile">Profil</string>
     <string name="title_add">Ekle</string>
     <string name="title_search">Ara</string>
+    <string name="title_home">Anasayfa</string>
 
     <string name="survey_question">Sorunuz....?</string>
     <string name="ongoingPoll_Btn">Devam Eden Anketler</string>
@@ -30,6 +31,8 @@
     <!-- Kullanıcı Profili -->
     <string name="userProfile_profilDuzenle">Profil Düzenle</string>
     <string name="userProfile_anketlerim_tv">ANKETLERİM</string>
+    <string name="userProfile_takipci">Takipçilerim</string>
+    <string name="userProfile_takipEttiklerim">Takip Ettiklerim</string>
 
     <string name="title_notifications">Notifications</string>
 
@@ -38,5 +41,15 @@
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_user_profile">UserProfileActivity</string>
     <string name="title_activity_add_survey">AddSurveyActivity</string>
+
+
+    <!-- Profil Düzenleme -->
+    <string name="editUsername">Kullanıcı Adı</string>
+    <string name="editName">İsim</string>
+    <string name="editSurname">Soyisim</string>
+    <string name="editEmail">Eposta</string>
+    <string name="editPhone">Telefon</string>
+    <string name="editButton">GÜNCELLE</string>
+
 
 </resources>

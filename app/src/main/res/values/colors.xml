@@ -7,4 +7,5 @@
     <color name="colorPrimaryDark">#393739</color>
     <color name="colorAccent">#C3BEC0</color>
     <color name="colorBlack">#000000</color>
-</resources>
+      <color name="editProfileColor">#DADADA</color>
+  </resources>

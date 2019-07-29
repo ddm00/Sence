@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.EditProfileFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/editProfile_back_btn"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_keyboard_backspace" />
+
+        <ImageView
+            android:id="@+id/editProfile_profilePhoto_iv"
+            android:layout_width="match_parent"
+            android:layout_height="186dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:src="@drawable/ic_account_circle_black_24dp" />
+
+        <EditText
+            android:id="@+id/editProfile_username_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/editUsername"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editProfile_name_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/editName"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editProfile_surname_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/editSurname"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editProfile_eposta_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/editEmail"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/editProfile_phone_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/editPhone"
+            android:inputType="phone" />
+
+        <Button
+            android:id="@+id/editProfile_edit_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/profile_Btn"
+            android:text="@string/editButton" />
+    </LinearLayout>
+</FrameLayout>
