@@ -1,17 +1,26 @@
 <resources>
     <string name="app_name">Sence</string>
-    <string name="loginUserEmail">Email Adresiniz</string>
-    <string name="loginUserPassword">Parola</string>
-    <string name="loginLoginBtn">Giriş Yap</string>
-    <string name="loginGoRegister">Kayıt Ol</string>
-    <string name="registerConfirmPassword">Parola Onay</string>
+
+    <!-- Kayıt Ol -->
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="registerUsername">Kullanıcı adı</string>
+    <string name="registerFullname">Adı Soyadı</string>
+    <string name="registerEmail">E-posta</string>
+    <string name="registerPassword">Şifre</string>
     <string name="registerBtn">Kayıt Ol</string>
+    <string name="registerLogin">Hesabın var mı? Giriş yap</string>
+    <!-- Giriş Yap -->
     <string name="title_activity_login">LoginActivity</string>
+    <string name="loginEmail">E-posta</string>
+    <string name="loginPassword">Şifre</string>
+    <string name="loginBtn">Giriş Yap</string>
+    <string name="loginRegister">Hesabın yok mu? Kayıt ol</string>
+    <!-- BottomNavigationView Başlıkları -->
     <string name="title_profile">Profil</string>
     <string name="title_add">Ekle</string>
-    <string name="title_following">Takip</string>
     <string name="title_search">Ara</string>
-    <string name="title_like">Beğeni</string>
+    <string name="title_home">Anasayfa</string>
+
     <string name="survey_question">Sorunuz....?</string>
 
     <!-- Kullanıcı Profili -->
@@ -19,7 +28,6 @@
     <string name="userProfile_anketlerim_tv">ANKETLERİM</string>
 
     <string name="title_notifications">Notifications</string>
-    <string name="title_activity_register">RegisterActivity</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
