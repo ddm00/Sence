@@ -1,65 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp"
     tools:context=".activities.RegisterActivity">
 
-    <RelativeLayout
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:src="@drawable/logo" />
+
+    <EditText
+        android:id="@+id/registerUsername_Et"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <EditText
-            android:id="@+id/registerUserEmail_Et"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/loginUserEmail"
-            android:inputType="textPersonName"
-            android:padding="12dp" />
-
-        <EditText
-            android:id="@+id/registerPassword_Et"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/registerUserEmail_Et"
-            android:layout_marginTop="10dp"
-            android:hint="@string/loginUserPassword"
-            android:inputType="textPassword"
-            android:padding="12dp" />
-
-        <EditText
-            android:id="@+id/registerConfirmPassword_Et"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/registerPassword_Et"
-            android:layout_marginTop="10dp"
-            android:hint="@string/registerConfirmPassword"
-            android:inputType="textPassword"
-            android:padding="12dp" />
-
-        <Button
-            android:id="@+id/register_Btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/registerConfirmPassword_Et"
-            android:layout_marginTop="10dp"
-            android:padding="16dp"
-            android:text="@string/registerBtn" />
-
-    </RelativeLayout>
-
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        android:background="?android:attr/windowBackground"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/navigation" />
+        android:layout_marginTop="15dp"
+        android:background="@drawable/edittext_background"
+        android:hint="@string/registerUsername"
+        android:padding="10dp" />
 
-</android.support.constraint.ConstraintLayout>
+    <EditText
+        android:id="@+id/registerFullname_Et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/edittext_background"
+        android:hint="@string/registerFullname"
+        android:padding="10dp" />
+
+    <EditText
+        android:id="@+id/registerEmail_Et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/edittext_background"
+        android:hint="@string/registerEmail"
+        android:inputType="textEmailAddress"
+        android:padding="10dp" />
+
+    <EditText
+        android:id="@+id/registerPassword_Et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/edittext_background"
+        android:hint="@string/registerPassword"
+        android:inputType="textPassword"
+        android:padding="10dp" />
+
+    <Button
+        android:id="@+id/registerBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/button_background"
+        android:text="@string/registerBtn"
+        android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/registerLogin_Tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/registerLogin" />
+
+</LinearLayout>

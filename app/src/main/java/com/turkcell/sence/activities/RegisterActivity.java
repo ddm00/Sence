@@ -1,10 +1,12 @@
 package com.turkcell.sence.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -19,75 +21,88 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.turkcell.sence.R;
+
+import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText userEmailEt, userPasswordEt, userConfirmPasswordEt;
+    EditText userNameEt, fullNameEt, eMailEt, passwordEt;
     Button registerBtn;
+    TextView loginTv;
     FirebaseAuth mAuth;
-    String userEmail, userPassword;
+    DatabaseReference reference;
+    ProgressDialog dialog;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_profile:
-                    return true;
-                case R.id.navigation_add:
-                    return true;
-                case R.id.navigation_search:
-                    return true;
-            }
-            return false;
-        }
-    };
+    String userName, userFullname, userEmail, userPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         init();
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     private void init() {
-        userEmailEt = findViewById(R.id.registerUserEmail_Et);
-        userPasswordEt = findViewById(R.id.registerPassword_Et);
-        userConfirmPasswordEt = findViewById(R.id.registerConfirmPassword_Et);
-        registerBtn = findViewById(R.id.register_Btn);
+        userNameEt = findViewById(R.id.registerUsername_Et);
+        fullNameEt = findViewById(R.id.registerFullname_Et);
+        eMailEt = findViewById(R.id.registerEmail_Et);
+        passwordEt = findViewById(R.id.registerPassword_Et);
+        registerBtn = findViewById(R.id.registerBtn);
+        loginTv = findViewById(R.id.registerLogin_Tv);
         mAuth = FirebaseAuth.getInstance();
+        loginTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+            }
+        });
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userEmail = userEmailEt.getText().toString().trim();
-                userPassword = userPasswordEt.getText().toString().trim();
-                String userConfirmPassword = userConfirmPasswordEt.getText().toString();
-                if (!userEmail.isEmpty() && !userPassword.isEmpty() && !userConfirmPassword.isEmpty()) {
-                    if (userPassword.equals(userConfirmPassword)) {
-                        register();
-                    }
-                } else {
+                dialog = new ProgressDialog(RegisterActivity.this);
+                dialog.setMessage("Lütfen bekleyiniz..");
+                dialog.show();
+                userName = userNameEt.getText().toString().trim();
+                userFullname = fullNameEt.getText().toString().trim();
+                userEmail = eMailEt.getText().toString().trim();
+                userPassword = passwordEt.getText().toString().trim();
+                if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(userFullname) || TextUtils.isEmpty(userEmail) || TextUtils.isEmpty(userPassword)) {
                     Toast.makeText(getApplicationContext(), "Kayıt için tüm alanları doldurunuz.Lütfen!", Toast.LENGTH_LONG).show();
+                } else if (userPassword.length() < 6) {
+                    Toast.makeText(getApplicationContext(), "Belirlediğiniz şifre en az 6 karakter olmalıdır!", Toast.LENGTH_LONG).show();
+                } else{
+                    register(userName,userFullname,userEmail,userPassword);
                 }
             }
         });
     }
 
-    private void register() {
-        mAuth.createUserWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+    private void register(final String username, final String fullname, String email, String password) {
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                    Toast.makeText(getApplicationContext(), "Kayıt işlemi başarılı", Toast.LENGTH_SHORT).show();
-                    Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
-                    startActivity(loginIntent);
+                    String userId=firebaseUser.getUid();
+                    reference= FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
+                    HashMap<String,Object> hashMap=new HashMap<>();
+                    hashMap.put("Id",userId);
+                    hashMap.put("Username",username.toLowerCase());
+                    hashMap.put("Fullname",fullname);
+                    hashMap.put("ImageUrl","https://firebasestorage.googleapis.com/v0/b/sence-af3aa.appspot.com/o/person.png?alt=media&token=d9664199-66e3-4324-8a84-22f134a7ba50");
+                    reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            dialog.dismiss();
+                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
 
-
+                        }
+                    });
                 }
             }
         }).addOnFailureListener(this, new OnFailureListener() {

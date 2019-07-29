@@ -1,10 +1,12 @@
 package com.turkcell.sence.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,63 +19,57 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.turkcell.sence.R;
 
 public class LoginActivity extends AppCompatActivity {
 
     EditText userEmailEt, userPasswordEt;
-    Button loginBtn, registerBtn;
+    Button loginBtn;
+    TextView registerTv;
+    ProgressDialog dialog;
     FirebaseAuth mAuth;
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_profile:
-                    return true;
-                case R.id.navigation_add:
-                    return true;
-                case R.id.navigation_search:
-                    return true;
-            }
-            return false;
-        }
-    };
+    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         init();
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
+
     private void init() {
-        userEmailEt = findViewById(R.id.loginUserEmail_Et);
-        userPasswordEt = findViewById(R.id.loginUserPassword_Et);
-        loginBtn = findViewById(R.id.loginLogin_Btn);
-        registerBtn = findViewById(R.id.loginGoRegister_Btn);
+        userEmailEt = findViewById(R.id.loginEmail_Et);
+        userPasswordEt = findViewById(R.id.loginPassword_Et);
+        loginBtn = findViewById(R.id.loginBtn);
+        registerTv = findViewById(R.id.loginRegister_Tv);
         mAuth = FirebaseAuth.getInstance();
 
-        registerBtn.setOnClickListener(new View.OnClickListener() {
+        registerTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog = new ProgressDialog(LoginActivity.this);
+                dialog.setMessage("Lütfen bekleyiniz..");
+                dialog.show();
                 String userEmail = userEmailEt.getText().toString().trim();
                 String userPassword = userPasswordEt.getText().toString().trim();
-                if (!userEmail.isEmpty() && !userPassword.isEmpty()) {
-                    login(userEmail, userPassword);
+                if (TextUtils.isEmpty(userEmail) || TextUtils.isEmpty(userPassword)) {
+                    Toast.makeText(getApplicationContext(), "Kayıt için tüm alanları doldurunuz.Lütfen!", Toast.LENGTH_LONG).show();
+                } else if (userPassword.length() < 6) {
+                    Toast.makeText(getApplicationContext(), "Belirlediğiniz şifre en az 6 karakter olmalıdır!", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Email ya da parola boş bırakılamaz!", Toast.LENGTH_LONG).show();
+                    login(userEmail, userPassword);
                 }
-
             }
         });
 
@@ -84,12 +80,27 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
+                    reference= FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
+                    reference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            dialog.dismiss();
+                            Intent intent=new Intent(LoginActivity.this,RegisterActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            dialog.dismiss();
+                        }
+                    });
                     Log.d("EMail", "signInWithEmail:success");
                 } else {
+                    dialog.dismiss();
+                    Toast.makeText(LoginActivity.this,"Giriş hatalı. Lütfen kontrol ediniz!",Toast.LENGTH_SHORT).show();
                     Log.w("Fail", "signInWithEmail:failure", task.getException());
-
                 }
             }
         });
