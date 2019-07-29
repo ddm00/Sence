@@ -19,7 +19,7 @@
     <string name="title_profile">Profil</string>
     <string name="title_add">Ekle</string>
     <string name="title_search">Ara</string>
-    <string name="title_home">Anasayfa</string>
+    <string name="title_home"></string>
 
     <string name="survey_question">Sorunuz....?</string>
 
@@ -34,6 +34,5 @@
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_user_profile">UserProfileActivity</string>
     <string name="title_activity_add_survey">AddSurveyActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+
 </resources>
