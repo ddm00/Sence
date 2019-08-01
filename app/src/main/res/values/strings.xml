@@ -33,6 +33,8 @@
     <string name="userProfile_anketlerim_tv">ANKETLERİM</string>
     <string name="userProfile_takipci">Takipçilerim</string>
     <string name="userProfile_takipEttiklerim">Takip Ettiklerim</string>
+    <string name="userProfile_sence">SENCE</string>
+    <string name="userProfile_bence">BENCE</string>
 
     <string name="title_notifications">Notifications</string>
 

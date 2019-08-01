@@ -1,6 +1,7 @@
 package com.turkcell.sence.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.turkcell.sence.R;
+import com.turkcell.sence.activities.LoginActivity;
 import com.turkcell.sence.adapters.UserProfileSurveyCustomAdapter;
 import com.turkcell.sence.models.UserProfileSurvey;
 
@@ -38,11 +42,11 @@ public class UserProfileFragment extends Fragment {
     ListView surveyListView;
     ArrayList<UserProfileSurvey> surveyList = new ArrayList<>();
     UserProfileSurveyCustomAdapter adapter;
-    Button editProfile, sence, bence;
+    Button editProfile, sence, bence, logout, takipEttiklerim, takipcilerim;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
+        final View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
 
 
         surveyListView = view.findViewById(R.id.userProfie_anketlerim_lv);
@@ -76,6 +80,38 @@ public class UserProfileFragment extends Fragment {
             public void onClick(View v) {
                 FragmentTransaction fragTrans = getActivity().getSupportFragmentManager().beginTransaction();
                 fragTrans.replace(R.id.fragmentContainer, new UserProfileBenceFragment()).commit();
+            }
+        });
+
+
+        logout = view.findViewById(R.id.userProfile_logout_btn);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                mAuth.signOut();
+                Intent intent = new Intent(view.getContext(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+
+        takipcilerim = view.findViewById(R.id.userProfile_follower_btn);
+
+        takipcilerim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragTrans = getActivity().getSupportFragmentManager().beginTransaction();
+                fragTrans.replace(R.id.fragmentContainer, new UserProfileFollowersFragment()).commit();
+            }
+        });
+        takipEttiklerim = view.findViewById(R.id.userProfile_following_btn);
+
+        takipEttiklerim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragTrans = getActivity().getSupportFragmentManager().beginTransaction();
+                fragTrans.replace(R.id.fragmentContainer, new UserProfileFollowingFragment()).commit();
             }
         });
         return view;
