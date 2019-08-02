@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.turkcell.sence.R;
+import com.turkcell.sence.activities.MainActivity;
 import com.turkcell.sence.models.Ongoing;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class OngoingPollAdapter extends BaseAdapter{
         this.context=context;
         this.ongoingList=ongoingList;
     }
+
 
     @Override
     public int getCount() {
@@ -57,6 +59,14 @@ public class OngoingPollAdapter extends BaseAdapter{
         question_Tv.setText(ongoingList.get(position).question_Tv());
         time_Tv.setText(ongoingList.get(position).time_Tv());
         number_of_participants.setText(ongoingList.get(position).participants());
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //activity üzerinden verilere gidilecek...
+            }
+        });
 
 
         return view;
