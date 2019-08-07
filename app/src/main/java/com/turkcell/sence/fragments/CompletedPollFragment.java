@@ -2,7 +2,7 @@ package com.turkcell.sence.fragments;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +10,6 @@ import android.widget.ListView;
 
 import com.turkcell.sence.R;
 import com.turkcell.sence.models.Complated;
-import com.turkcell.sence.models.Ongoing;
 
 import java.util.ArrayList;
 import java.util.List;

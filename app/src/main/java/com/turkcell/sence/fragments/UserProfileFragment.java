@@ -1,11 +1,9 @@
 package com.turkcell.sence.fragments;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +11,6 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 import com.turkcell.sence.R;
 import com.turkcell.sence.activities.LoginActivity;
 import com.turkcell.sence.adapters.UserProfileSurveyCustomAdapter;
@@ -21,7 +18,6 @@ import com.turkcell.sence.models.UserProfileSurvey;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 
 public class UserProfileFragment extends Fragment {

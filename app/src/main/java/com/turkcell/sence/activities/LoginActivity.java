@@ -3,9 +3,9 @@ package com.turkcell.sence.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -63,9 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                 String userEmail = userEmailEt.getText().toString().trim();
                 String userPassword = userPasswordEt.getText().toString().trim();
                 if (TextUtils.isEmpty(userEmail) || TextUtils.isEmpty(userPassword)) {
-                    Toast.makeText(getApplicationContext(), "Kayıt için tüm alanları doldurunuz.Lütfen!", Toast.LENGTH_LONG).show();
-                } else if (userPassword.length() < 6) {
-                    Toast.makeText(getApplicationContext(), "Belirlediğiniz şifre en az 6 karakter olmalıdır!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Lütfen tüm alanları doldurunuz!", Toast.LENGTH_SHORT).show();
                 } else {
                     login(userEmail, userPassword);
                 }

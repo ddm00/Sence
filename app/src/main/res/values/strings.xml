@@ -53,5 +53,35 @@
     <string name="editPhone">Telefon</string>
     <string name="editButton">GÜNCELLE</string>
 
+    <!-- Ara -->
+    <string name="searchHint">Ara</string>
+    <string name="searchUsername">Kullanıcı adı</string>
+    <string name="searchFullname">Adı Soyadı</string>
+
+    <!-- Anket Yap -->
+    <string name="surveyTitle">ANKET</string>
+    <string name="surveyQuestion">Sorunuz..?</string>
+    <string name="surveyCategory">Anket Kategorisi: </string>
+    <string-array name="surveyCategories">
+        <item>Alışveriş</item>
+        <item>Elektronik</item>
+        <item>Ev-Yaşam</item>
+        <item>Anne-Bebek</item>
+        <item>Spor</item>
+        <item>Kitap,Müzik,Film,Oyun</item>
+        <item>Tatil,Eğlence</item>
+        <item>Otomobil-Motorsiklet</item>
+        <item>Diğer</item>
+    </string-array>
+    <string name="surveyTime">Anket Süresi: </string>
+    <string-array name="surveyTimes">
+        <item>30 dk</item>
+        <item>1 saat</item>
+        <item>1 gün</item>
+        <item>3 gün</item>
+        <item>5 gün</item>
+        <item>7 gün</item>
+    </string-array>
+
 
 </resources>
