@@ -5,13 +5,15 @@ public class User {
     private String username;
     private String fullname;
     private String imageurl;
+    private int profilePhoto;
     private String bio;
 
-    public User(String id, String username, String fullname, String imageurl, String bio) {
+    public User(String id, String username, String fullname, String imageurl, String bio, int profilePhoto) {
         this.id = id;
         this.username = username;
         this.fullname = fullname;
         this.imageurl = imageurl;
+        this.profilePhoto = profilePhoto;
         this.bio = bio;
     }
 
@@ -49,6 +51,14 @@ public class User {
     public void setImageurl(String imageurl) {
         this.imageurl = imageurl;
     }
+
+     public int getProfilePhoto() {
+            return profilePhoto;
+        }
+
+        public void setImageurl(int profilePhoto) {
+            this.profilePhoto = profilePhoto;
+        }
 
     public String getBio() {
         return bio;

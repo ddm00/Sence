@@ -13,6 +13,7 @@ import com.turkcell.sence.R;
 import com.turkcell.sence.fragments.AddSurveyFragment;
 //import com.turkcell.sence.fragments.HomeFragment;
 import com.turkcell.sence.fragments.HomeFragment;
+import com.turkcell.sence.fragments.ProfileFragment;
 import com.turkcell.sence.fragments.SearchFragment;
 import com.turkcell.sence.fragments.UserProfileFragment;
 
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = new UserProfileFragment();
                     break;
                 case R.id.navigation_add:
-                    selectedFragment = new AddSurveyFragment();
+                    selectedFragment = new ProfileFragment();
                     break;
                 case R.id.navigation_search:
                     selectedFragment = new SearchFragment();
