@@ -5,8 +5,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.turkcell.sence.R;
+import com.turkcell.sence.adapters.FollowingListCustomAdapter;
+import com.turkcell.sence.models.User;
+
+import java.util.ArrayList;
 
 public class UserProfileFollowersFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -17,6 +22,11 @@ public class UserProfileFollowersFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+
+    ListView userListView;
+    ArrayList<User> userList = new ArrayList<>();
+    FollowingListCustomAdapter adapter;
 
 
     public UserProfileFollowersFragment() {
@@ -53,8 +63,17 @@ public class UserProfileFollowersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_user_profile_followers, container, false);
+
+        userListView = view.findViewById(R.id.followersList_lv);
+        userList.add(new User("ds","dido","didem öz","fds","fsdf",R.drawable.ic_home_black_24dp));
+        userList.add(new User("ds","dido"," followe didem öz d","fds","fsdf",R.drawable.ic_home_black_24dp));
+        userList.add(new User("ds","dido","followers didem öz t","fds","fsdf",R.drawable.ic_home_black_24dp));
+        userList.add(new User("ds","dido","didem öz rf","fds","fsdf",R.drawable.ic_home_black_24dp));
+        adapter = new FollowingListCustomAdapter(getContext(),userList);
+        userListView.setAdapter(adapter);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_profile_followers, container, false);
+        return view;
     }
 
 }
