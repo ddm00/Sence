@@ -1,11 +1,11 @@
 package com.turkcell.sence.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.turkcell.sence.R;
-import com.turkcell.sence.fragments.AddSurveyFragment;
 import com.turkcell.sence.fragments.HomeFragment;
 import com.turkcell.sence.fragments.SearchFragment;
 import com.turkcell.sence.fragments.UserProfileFragment;
@@ -31,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = new UserProfileFragment();
                     break;
                 case R.id.navigation_add:
-                    selectedFragment = new AddSurveyFragment();
+                    selectedFragment =null;
+                    startActivity(new Intent(MainActivity.this,SurveyActivity.class));
                     break;
                 case R.id.navigation_search:
                     selectedFragment = new SearchFragment();
