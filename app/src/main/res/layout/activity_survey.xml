@@ -7,13 +7,13 @@
     android:orientation="vertical"
     tools:context=".activities.SurveyActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <android.support.design.widget.AppBarLayout
         android:id="@+id/bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/windowBackground">
 
-        <androidx.appcompat.widget.Toolbar
+        <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,8 +43,8 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp" />
             </RelativeLayout>
-        </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -95,13 +95,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/surveyCategory" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
+            <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/category_Sp"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:entries="@array/surveyCategories"
                 android:prompt="@string/surveyCategory"
-                android:spinnerMode="dialog"></androidx.appcompat.widget.AppCompatSpinner>
+                android:spinnerMode="dialog"></android.support.v7.widget.AppCompatSpinner>
 
         </LinearLayout>
 
@@ -117,13 +117,13 @@
                 android:text="@string/surveyTime" />
 
 
-            <androidx.appcompat.widget.AppCompatSpinner
+            <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/time_Sp"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:entries="@array/surveyTimes"
                 android:prompt="@string/surveyTime"
-                android:spinnerMode="dialog"></androidx.appcompat.widget.AppCompatSpinner>
+                android:spinnerMode="dialog"></android.support.v7.widget.AppCompatSpinner>
 
         </LinearLayout>
 

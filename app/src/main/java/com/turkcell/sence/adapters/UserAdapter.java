@@ -2,6 +2,9 @@ package com.turkcell.sence.adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +25,6 @@ import com.turkcell.sence.models.User;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
@@ -53,7 +53,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
         viewHolder.username.setText(user.getUsername());
         viewHolder.fullname.setText(user.getFullname());
-        Glide.with(mContext).load(user.getImageurl()).into(viewHolder.image_profile);
+        Glide.with(mContext).load(user.getImageUrl()).into(viewHolder.image_profile);
         if (user.getId().equals(firebaseUser.getUid())) {
             viewHolder.btn_follow.setVisibility(View.GONE);
         }
@@ -69,16 +69,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         viewHolder.btn_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (viewHolder.btn_follow.getText().toString().equals("follow")) {
+                if (viewHolder.btn_follow.getText().toString().equals("Follow")) {
                     FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid())
-                            .child("following").child(user.getId()).setValue(true);
+                            .child("Following").child(user.getId()).setValue(true);
                     FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId())
-                            .child("followers").child(firebaseUser.getUid()).setValue(true);
+                            .child("Followers").child(firebaseUser.getUid()).setValue(true);
                 } else {
                     FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid())
-                            .child("following").child(user.getId()).removeValue();
+                            .child("Following").child(user.getId()).removeValue();
                     FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId())
-                            .child("followers").child(firebaseUser.getUid()).removeValue();
+                            .child("Followers").child(firebaseUser.getUid()).removeValue();
                 }
             }
         });
@@ -89,6 +89,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public int getItemCount() {
         return mUsers.size();
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView username;
@@ -109,7 +110,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private void isFollowing(final String userid, final Button button) {
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
-                .child("Follow").child(firebaseUser.getUid()).child("following");
+                .child("Follow").child(firebaseUser.getUid()).child("Following");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

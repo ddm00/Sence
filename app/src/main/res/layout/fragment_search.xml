@@ -6,13 +6,13 @@
     tools:context=".fragments.SearchFragment">
 
 
-    <com.google.android.material.appbar.AppBarLayout
+    <android.support.design.widget.AppBarLayout
         android:id="@+id/bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?android:attr/windowBackground">
 
-        <androidx.appcompat.widget.Toolbar
+        <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,10 +32,10 @@
                 android:layout_marginLeft="10dp"
                 android:background="@android:color/transparent"
                 android:hint="@string/searchHint" />
-        </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

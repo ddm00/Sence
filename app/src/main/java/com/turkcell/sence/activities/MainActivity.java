@@ -2,13 +2,17 @@ package com.turkcell.sence.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.turkcell.sence.R;
 import com.turkcell.sence.fragments.HomeFragment;
+import com.turkcell.sence.fragments.ProfileFragment;
 import com.turkcell.sence.fragments.SearchFragment;
-import com.turkcell.sence.fragments.UserProfileFragment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

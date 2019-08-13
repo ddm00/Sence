@@ -4,12 +4,10 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
@@ -37,10 +35,11 @@ import java.util.HashMap;
 
 public class SurveyActivity extends AppCompatActivity {
 
-    Uri imageUri;
+    Uri firstImageUri, secondImageUri;
     String mUrl = "";
     StorageTask uploadTask;
     StorageReference storageReference;
+
 
     ImageView closeIv, firstImageIv, secondImageIv;
     TextView shareTv, categoryTv, timeTv;
@@ -67,7 +66,7 @@ public class SurveyActivity extends AppCompatActivity {
         categoryTv = findViewById(R.id.surveyCategory_Tv);
         timeTv = findViewById(R.id.surveyTime_Tv);
 
-        storageReference = FirebaseStorage.getInstance().getReference("surveys");
+        storageReference = FirebaseStorage.getInstance().getReference("Surveys");
 
         closeIv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,8 +81,21 @@ public class SurveyActivity extends AppCompatActivity {
                 uploadImage();
             }
         });
-        CropImage.activity().setAspectRatio(1, 1)
-                .start(SurveyActivity.this);
+        firstImageIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CropImage.activity().setAspectRatio(1, 1)
+                        .start(SurveyActivity.this);
+            }
+        });
+        secondImageIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CropImage.activity().setAspectRatio(1, 1)
+                        .start(SurveyActivity.this);
+            }
+        });
+
 
         categoriesSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -119,16 +131,59 @@ public class SurveyActivity extends AppCompatActivity {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Paylaşılıyor");
         progressDialog.show();
-        if (imageUri != null) {
-            final StorageReference fileReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
-            uploadTask = fileReference.putFile(imageUri);
+        if (firstImageUri != null) {
+            final StorageReference firstImageReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(firstImageUri));
+            uploadTask = firstImageReference.putFile(firstImageUri);
             uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                     if (!task.isSuccessful()) {
                         throw task.getException();
                     }
-                    return fileReference.getDownloadUrl();
+                    return firstImageReference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        mUrl = downloadUri.toString();
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Surveys");
+                        String surveyId = reference.push().getKey();
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("SurveyId", surveyId);
+                        hashMap.put("FirstImage", mUrl);
+                        hashMap.put("SecondImage", mUrl);
+                        hashMap.put("Question", questionEt.getText().toString());
+                        hashMap.put("Publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        hashMap.put("Category", selectedCategory);
+                        hashMap.put("Time", selectedTime);
+                        reference.child(surveyId).setValue(hashMap);
+
+                    } else {
+                        Toast.makeText(SurveyActivity.this, "Başarısız!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(SurveyActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } else {
+            Toast.makeText(SurveyActivity.this, "Resim seçimi yapmadınız!", Toast.LENGTH_SHORT).show();
+        }
+        if (secondImageUri != null) {
+            final StorageReference secondImageReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(secondImageUri));
+            uploadTask = secondImageReference.putFile(secondImageUri);
+            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return secondImageReference.getDownloadUrl();
                 }
             }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
@@ -171,6 +226,8 @@ public class SurveyActivity extends AppCompatActivity {
         } else {
             Toast.makeText(SurveyActivity.this, "Resim seçimi yapmadınız!", Toast.LENGTH_SHORT).show();
         }
+
+
     }
 
 
@@ -179,10 +236,11 @@ public class SurveyActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            imageUri = result.getUri();
+            firstImageUri = result.getUri();
+            secondImageUri = result.getUri();
 
-            firstImageIv.setImageURI(imageUri);
-            secondImageIv.setImageURI(imageUri);
+            firstImageIv.setImageURI(firstImageUri);
+            secondImageIv.setImageURI(secondImageUri);
         } else {
             Toast.makeText(this, "Bir şeyler yanlış gitti!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(SurveyActivity.this, MainActivity.class));
