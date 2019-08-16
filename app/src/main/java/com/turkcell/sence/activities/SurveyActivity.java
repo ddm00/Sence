@@ -153,7 +153,7 @@ public class SurveyActivity extends AppCompatActivity {
                         HashMap<String, Object> hashMap = new HashMap<>();
                         hashMap.put("SurveyId", surveyId);
                         hashMap.put("FirstImage", mUrl);
-                        hashMap.put("SecondImage", mUrl);
+                        hashMap.put("SecondImage", "");
                         hashMap.put("Question", questionEt.getText().toString());
                         hashMap.put("Publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
                         hashMap.put("Category", selectedCategory);
