@@ -1,52 +1,51 @@
 package com.turkcell.sence.models;
 
 public class User {
-    private String Id;
-    private String Username;
-    private String Fullname;
-    private String ImageUrl;
+    private String id;
+    private String username;
+    private String fullname;
+    private String imageurl;
+
+
+    public User(String id, String username, String fullname, String imageurl) {
+        this.id = id;
+        this.username = username;
+        this.fullname = fullname;
+        this.imageurl = imageurl;
+    }
 
     public User() {
-
     }
-
-    public User(String id, String username, String fullname, String imageUrl) {
-        this.Id = id;
-        this.Username = username;
-        this.Fullname = fullname;
-        this.ImageUrl = imageUrl;
-    }
-
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        this.Id = id;
+        this.id = id;
     }
 
     public String getUsername() {
-        return Username;
+        return username;
     }
 
     public void setUsername(String username) {
-        this.Username = username;
+        this.username = username;
     }
 
     public String getFullname() {
-        return Fullname;
+        return fullname;
     }
 
     public void setFullname(String fullname) {
-        this.Fullname = fullname;
+        this.fullname = fullname;
     }
 
-    public String getImageUrl() {
-        return ImageUrl;
+    public String getImageurl() {
+        return imageurl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.ImageUrl = imageUrl;
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
     }
 }

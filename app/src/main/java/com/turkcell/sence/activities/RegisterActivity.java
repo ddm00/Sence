@@ -84,13 +84,13 @@ public class RegisterActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                    String userId = firebaseUser.getUid();
-                    reference = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
+                    String userID = firebaseUser.getUid();
+                    reference = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
                     HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("Id", userId);
-                    hashMap.put("Username", username.toLowerCase());
-                    hashMap.put("Fullname", fullname);
-                    hashMap.put("ImageUrl", "https://firebasestorage.googleapis.com/v0/b/sence-af3aa.appspot.com/o/person.png?alt=media&token=d9664199-66e3-4324-8a84-22f134a7ba50");
+                    hashMap.put("id", userID);
+                    hashMap.put("username", username.toLowerCase());
+                    hashMap.put("fullname", fullname);
+                    hashMap.put("imageurl", "https://firebasestorage.googleapis.com/v0/b/sence-af3aa.appspot.com/o/person.png?alt=media&token=d9664199-66e3-4324-8a84-22f134a7ba50");
                     reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

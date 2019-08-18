@@ -59,7 +59,7 @@
     <string name="searchFullname">Adı Soyadı</string>
 
     <!-- Anket Yap -->
-    <string name="surveyTitle">ANKET</string>
+    <string name="surveyTitle">PAYLAŞ</string>
     <string name="surveyQuestion">Sorunuz..?</string>
     <string name="surveyCategory">Anket Kategorisi: </string>
     <string-array name="surveyCategories">
@@ -82,7 +82,6 @@
         <item>5 gün</item>
         <item>7 gün</item>
     </string-array>
-    <string name="title_activity_main2">Main2Activity</string>
     <string name="title_dashboard">Dashboard</string>
 
 

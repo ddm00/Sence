@@ -36,8 +36,9 @@ import java.util.HashMap;
 public class SurveyActivity extends AppCompatActivity {
 
     Uri firstImageUri, secondImageUri;
-    String mUrl = "";
-    StorageTask uploadTask;
+    String mfirstUrl = "";
+    String msecondUrl = "";
+    StorageTask uploadFirst, uploadSecond;
     StorageReference storageReference;
 
 
@@ -133,8 +134,8 @@ public class SurveyActivity extends AppCompatActivity {
         progressDialog.show();
         if (firstImageUri != null) {
             final StorageReference firstImageReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(firstImageUri));
-            uploadTask = firstImageReference.putFile(firstImageUri);
-            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            uploadFirst = firstImageReference.putFile(firstImageUri);
+            uploadFirst.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                     if (!task.isSuccessful()) {
@@ -147,19 +148,7 @@ public class SurveyActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
                         Uri downloadUri = task.getResult();
-                        mUrl = downloadUri.toString();
-                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Surveys");
-                        String surveyId = reference.push().getKey();
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("SurveyId", surveyId);
-                        hashMap.put("FirstImage", mUrl);
-                        hashMap.put("SecondImage", "");
-                        hashMap.put("Question", questionEt.getText().toString());
-                        hashMap.put("Publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                        hashMap.put("Category", selectedCategory);
-                        hashMap.put("Time", selectedTime);
-                        reference.child(surveyId).setValue(hashMap);
-
+                        mfirstUrl = downloadUri.toString();
                     } else {
                         Toast.makeText(SurveyActivity.this, "Başarısız!", Toast.LENGTH_SHORT).show();
                     }
@@ -171,13 +160,12 @@ public class SurveyActivity extends AppCompatActivity {
                 }
             });
 
-        } else {
-            Toast.makeText(SurveyActivity.this, "Resim seçimi yapmadınız!", Toast.LENGTH_SHORT).show();
         }
+
         if (secondImageUri != null) {
             final StorageReference secondImageReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(secondImageUri));
-            uploadTask = secondImageReference.putFile(secondImageUri);
-            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            uploadSecond = secondImageReference.putFile(secondImageUri);
+            uploadSecond.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                     if (!task.isSuccessful()) {
@@ -190,27 +178,7 @@ public class SurveyActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
                         Uri downloadUri = task.getResult();
-                        mUrl = downloadUri.toString();
-
-                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Surveys");
-
-                        String surveyId = reference.push().getKey();
-
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("SurveyId", surveyId);
-                        hashMap.put("FirstImage", mUrl);
-                        hashMap.put("SecondImage", mUrl);
-                        hashMap.put("Question", questionEt.getText().toString());
-                        hashMap.put("Publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                        hashMap.put("Category", selectedCategory);
-                        hashMap.put("Time", selectedTime);
-
-                        reference.child(surveyId).setValue(hashMap);
-
-                        progressDialog.dismiss();
-
-                        startActivity(new Intent(SurveyActivity.this, MainActivity.class));
-                        finish();
+                        msecondUrl = downloadUri.toString();
 
                     } else {
                         Toast.makeText(SurveyActivity.this, "Başarısız!", Toast.LENGTH_SHORT).show();
@@ -223,8 +191,25 @@ public class SurveyActivity extends AppCompatActivity {
                 }
             });
 
+        }
+
+        if (firstImageUri != null && secondImageUri != null) {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Surveys");
+            String surveyId = reference.push().getKey();
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("SurveyId", surveyId);
+            hashMap.put("FirstImage", mfirstUrl);
+            hashMap.put("SecondImage", msecondUrl);
+            hashMap.put("Question", questionEt.getText().toString());
+            hashMap.put("Publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
+            hashMap.put("Category", selectedCategory);
+            hashMap.put("Time", selectedTime);
+            reference.child(surveyId).setValue(hashMap);
+            progressDialog.dismiss();
+            startActivity(new Intent(SurveyActivity.this, MainActivity.class));
+            finish();
         } else {
-            Toast.makeText(SurveyActivity.this, "Resim seçimi yapmadınız!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SurveyActivity.this, "Resim seçimini hatalı yaptınız.", Toast.LENGTH_SHORT).show();
         }
 
 

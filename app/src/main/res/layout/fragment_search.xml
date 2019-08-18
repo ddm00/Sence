@@ -5,40 +5,39 @@
     android:layout_height="match_parent"
     tools:context=".fragments.SearchFragment">
 
-
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bar"
         android:background="?android:attr/windowBackground">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/bar"
-            android:background="?android:attr/windowBackground">
+            android:background="?android:attr/windowBackground"
+            android:id="@+id/toolbar">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_search_light" />
+                android:src="@drawable/ic_search_light"/>
 
             <EditText
-                android:id="@+id/search_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
                 android:background="@android:color/transparent"
-                android:hint="@string/searchHint" />
+                android:layout_marginLeft="10dp"
+                android:id="@+id/search_bar"
+                android:hint="Search..."
+                android:layout_marginStart="10dp" />
+
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bar" />
+        android:layout_below="@id/bar"
+        android:id="@+id/recycler_view"/>
 
 </RelativeLayout>
