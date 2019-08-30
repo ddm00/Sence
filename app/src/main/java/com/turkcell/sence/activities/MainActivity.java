@@ -13,11 +13,7 @@ import com.turkcell.sence.R;
 import com.turkcell.sence.fragments.HomeFragment;
 import com.turkcell.sence.fragments.ProfileFragment;
 import com.turkcell.sence.fragments.SearchFragment;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import com.turkcell.sence.fragments.UserProfileFragment;
 
 
 public class MainActivity extends AppCompatActivity {

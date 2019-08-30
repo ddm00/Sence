@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.turkcell.sence.R;
+import com.turkcell.sence.adapters.CompletedPollAdapter;
 import com.turkcell.sence.models.Complated;
 
 import java.util.ArrayList;
@@ -18,10 +19,10 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class CompletedPollFragment extends Fragment {
-    ListView completed_Lv;
-    List<Complated> ongoingList=new ArrayList<>();
     View view;
-    CompletedPollFragment completedAdapter;
+    ListView listView;
+    CompletedPollAdapter completedPollAdapter;
+    List<Complated> complatedList= new ArrayList<>();
 
     public CompletedPollFragment() {
         // Required empty public constructor
@@ -32,7 +33,23 @@ public class CompletedPollFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_completed_poll, container, false);
+        view= inflater.inflate(R.layout.fragment_completed_poll, container, false);
+        listView= view.findViewById(R.id.completed_Lv);
+        fillList();
+
+
+
+        completedPollAdapter = new CompletedPollAdapter(getContext(),complatedList);
+        listView.setAdapter(completedPollAdapter);
+
+        return  view;
+    }
+
+    void fillList ()
+    {
+        complatedList.add(new Complated(R.drawable.kitap1,R.drawable.kitap2,"Sizce ilk Hangisini okumalıyım? İkisi de mükemmel, karar veremiyorum.","01:00","50"));
+        complatedList.add(new Complated(R.drawable.ruj1,R.drawable.ruj2,"Hangi renk akşam yemeği için daha uygun?","01:00","25"));
+
     }
 
 }
