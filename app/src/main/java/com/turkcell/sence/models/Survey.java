@@ -8,18 +8,76 @@ public class Survey {
     private String SurveyTime;
     private String SurveyCategory;
     private String SurveyPublisher;
+    private Long t;
+    private User user;
+    private Boolean isWhichOne;
+    private boolean isSecret;
+    private int reySize;
 
-    public Survey() {
+    public Survey(String surveyId, String surveyQuestion, String surveyFirstImage, String surveySecondImage, String surveyTime, String surveyCategory, String surveyPublisher, Long t) {
+        SurveyId = surveyId;
+        SurveyQuestion = surveyQuestion;
+        SurveyFirstImage = surveyFirstImage;
+        SurveySecondImage = surveySecondImage;
+        SurveyTime = surveyTime;
+        SurveyCategory = surveyCategory;
+        SurveyPublisher = surveyPublisher;
+        this.t = t;
     }
 
-    public Survey(String surveyId, String surveyQuestion, String surveyFirstImage, String surveySecondImage, String surveyTime, String surveyCategory, String surveyPublisher) {
-        this.SurveyId = surveyId;
-        this.SurveyQuestion = surveyQuestion;
-        this.SurveyFirstImage = surveyFirstImage;
-        this.SurveySecondImage = surveySecondImage;
-        this.SurveyTime = surveyTime;
-        this.SurveyCategory = surveyCategory;
-        this.SurveyPublisher = surveyPublisher;
+    public Survey(String surveyId, String surveyQuestion, String surveyFirstImage, String surveySecondImage, String surveyTime, String surveyCategory, String surveyPublisher, Long t, Boolean isWhichOne, int reySize, boolean isSecret) {
+        SurveyId = surveyId;
+        SurveyQuestion = surveyQuestion;
+        SurveyFirstImage = surveyFirstImage;
+        SurveySecondImage = surveySecondImage;
+        SurveyTime = surveyTime;
+        SurveyCategory = surveyCategory;
+        SurveyPublisher = surveyPublisher;
+        this.t = t;
+        this.isWhichOne = isWhichOne;
+        this.reySize = reySize;
+        this.isSecret = isSecret;
+
+    }
+
+    public boolean getSecret() {
+        return isSecret;
+    }
+
+    public void setSecret(boolean secret) {
+        isSecret = secret;
+    }
+
+    public int getReySize() {
+        return reySize;
+    }
+
+    public void setReySize(int reySize) {
+        this.reySize = reySize;
+    }
+
+    public Boolean getWhichOne() {
+        return isWhichOne;
+    }
+
+    public void setWhichOne(Boolean whichOne) {
+        isWhichOne = whichOne;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Long getT() {
+        return t;
+    }
+
+    public void setT(Long t) {
+        this.t = t;
     }
 
     public String getSurveyId() {
@@ -77,4 +135,5 @@ public class Survey {
     public void setSurveyPublisher(String surveyPublisher) {
         SurveyPublisher = surveyPublisher;
     }
+
 }

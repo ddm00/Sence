@@ -1,49 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragments.UserProfileFragment">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/userProfile_logout_btn"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="40dp"
-            android:layout_height="34dp"
-            android:layout_gravity="right"
-            android:background="@drawable/ic_exit_to_app_black_24dp"
-            android:textSize="8sp"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="160dp" />
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:layout_margin="5dp"
+            android:background="@drawable/ic_exit_to_app_black_24dp" />
 
         <ImageView
-            android:id="@+id/userProfile_userImage"
-            android:layout_width="89dp"
-            android:layout_height="80dp"
-            android:layout_marginBottom="10dp"
-            android:src="@drawable/ic_account_circle_black_24dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/userProfile_kullaniciAdi_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userProfile_logout_btn"
-            app:layout_constraintVertical_bias="0.295" />
+            android:id="@+id/iw_user"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_account_circle_black_24dp" />
 
         <TextView
-            android:id="@+id/userProfile_kullaniciAdi_tv"
+            android:id="@+id/userprofileUsername_Tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -55,104 +41,131 @@
 
         <Button
             android:id="@+id/userProfile_profilDuzenlbtn"
-            android:layout_width="155dp"
+            android:layout_width="150dp"
             android:layout_height="30dp"
             android:background="@color/editProfileColor"
             android:drawableStart="@drawable/ic_action_edit"
             android:text="@string/userProfile_profilDuzenle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userProfile_kullaniciAdi_tv" />
+            android:textAllCaps="false" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="15dp"
             android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/userProfile_anketlerim_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userProfile_profilDuzenlbtn">
+            android:orientation="horizontal">
 
             <Button
-                android:id="@+id/userProfile_following_btn"
+                android:id="@+id/btn_following"
                 android:layout_width="150dp"
                 android:layout_height="30dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginEnd="10dp"
                 android:background="@color/editProfileColor"
                 android:text="@string/userProfile_takipEttiklerim"
-                tools:layout_editor_absoluteX="207dp"
-                tools:layout_editor_absoluteY="281dp" />
+                android:textAllCaps="false" />
 
             <Button
-                android:id="@+id/userProfile_follower_btn"
+                android:id="@+id/btn_follower"
                 android:layout_width="150dp"
                 android:layout_height="30dp"
+                android:layout_marginStart="10dp"
                 android:background="@color/editProfileColor"
-                android:paddingLeft="15dp"
                 android:text="@string/userProfile_takipci"
-                tools:layout_editor_absoluteX="106dp"
-                tools:layout_editor_absoluteY="281dp" />
+                android:textAllCaps="false" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/userProfile_anketlerim_tv"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="34dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="@string/userProfile_anketlerim_tv"
-            app:layout_constraintBottom_toTopOf="@+id/userProfie_anketlerim_lv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+            android:layout_height="wrap_content">
 
-        <ListView
-            android:id="@+id/userProfie_anketlerim_lv"
-            android:layout_width="match_parent"
-            android:layout_height="166dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:scrollbars="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userProfile_anketlerim_tv" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userProfie_anketlerim_lv"
-            tools:layout_editor_absoluteX="0dp">
-
-            <Button
-                android:id="@+id/userProfile_sence_btn"
-                android:layout_width="150dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="15dp"
-                android:text="@string/userProfile_sence" />
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/userProfile_bence_btn"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:text="@string/userProfile_bence" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tw_surveys"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="@string/userProfile_anketlerim_tv" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_margin="10dp">
+
+                    <FrameLayout
+                        android:id="@+id/progressHomeFrame"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <ProgressBar
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|center_horizontal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_marginTop="50dp"
+                            android:text="Verileriniz yükleniyor,\nlütfen bekleyiniz."
+                            android:textAlignment="center"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:textStyle="italic" />
+
+                    </FrameLayout>
+
+                    <ListView
+                        android:id="@+id/surveysList_Lv"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:divider="@android:color/transparent"
+                        android:dividerHeight="8dp"
+                        android:scrollbars="vertical" />
+
+                </FrameLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_sence"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/userProfile_sence"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/btn_bence"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/userProfile_bence"
+                        android:textAllCaps="false" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </ScrollView>
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

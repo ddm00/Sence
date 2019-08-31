@@ -1,97 +1,75 @@
 package com.turkcell.sence.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
+import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
 import com.turkcell.sence.R;
+import com.turkcell.sence.activities.MainActivity;
+import com.turkcell.sence.database.Dao;
+import com.turkcell.sence.models.User;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class EditProfileFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-
-    public EditProfileFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EditProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EditProfileFragment newInstance(String param1, String param2) {
-        EditProfileFragment fragment = new EditProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    EditText username, name, surname, email, phone;
-    Button editButton, backButton;
+    EditText userName, fullName;
+    Button editButton;
     ImageView profilePhoto;
+    Switch isOpen;
+    View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
+        view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
+        userName = view.findViewById(R.id.editUserName_Et);
+        fullName = view.findViewById(R.id.editFullName_Et);
+        editButton = view.findViewById(R.id.editProfile_Btn);
+        isOpen = view.findViewById(R.id.editIsOpen_Sw);
 
-        username = view.findViewById(R.id.editProfile_username_et);
-        surname = view.findViewById(R.id.editProfile_surname_et);
-        name = view.findViewById(R.id.editProfile_name_et);
-        email = view.findViewById(R.id.editProfile_eposta_et);
-        phone = view.findViewById(R.id.editProfile_phone_et);
-        editButton = view.findViewById(R.id.editProfile_edit_btn);
-        backButton = view.findViewById(R.id.editProfile_back_btn);
+        User user = MainActivity.CurrentUser;
 
-
+        userName.setText(user.getUsername());
+        fullName.setText(user.getFullname());
+        isOpen.setChecked(user.isOpen());
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("username", userName.getText().toString());
+                map.put("fullname", fullName.getText().toString());
+                map.put("isOpen", isOpen.isChecked());
 
-                //TODO : GÜNCELLEME İŞLEMİ YAPILACAK.
+                DatabaseReference reference = Dao.getInstance().getFirebaseDatabase().getReference("Users").child(MainActivity.CurrentUser.getId());
+                reference.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(view.getContext(), "İşlem başarılı.", Toast.LENGTH_SHORT).show();
+                        MainActivity.CurrentUser.setUsername(userName.getText().toString());
+                        MainActivity.CurrentUser.setFullname(fullName.getText().toString());
+                        MainActivity.CurrentUser.setOpen(isOpen.isChecked());
+                        getActivity().onBackPressed();
+                    }
+                });
             }
         });
 
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction fragTrans = getActivity().getSupportFragmentManager().beginTransaction();
-                fragTrans.replace(R.id.fragmentContainer, new UserProfileFragment()).commit();
-            }
-        });
-        profilePhoto = view.findViewById(R.id.editProfile_profilePhoto_iv);
-        // Inflate the layout for this fragment
+        profilePhoto = view.findViewById(R.id.editUserImage_Iv);
         return view;
     }
 

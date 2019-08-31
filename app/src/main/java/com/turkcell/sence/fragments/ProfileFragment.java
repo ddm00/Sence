@@ -1,9 +1,8 @@
 package com.turkcell.sence.fragments;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +10,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.turkcell.sence.R;
+import com.turkcell.sence.models.User;
 
 /**
  * A simple {@link Fragment} subclass.
  */
+@SuppressLint("ValidFragment")
 public class ProfileFragment extends Fragment {
 
     View view;
@@ -24,10 +29,13 @@ public class ProfileFragment extends Fragment {
     Button followers_Btn, followed_Btn, ongoingPoll_Btn, numberOngoingPoll_Btn, completedPoll_Btn, numberCompletedPoll_Btn,
             votedPoll_Btn, numberVotedPoll_Btn;
 
-    public ProfileFragment() {
-        // Required empty public constructor
-    }
+    FragmentManager fragmentManager;
+    User user;
 
+    public ProfileFragment(FragmentManager fragmentManager, User user) {
+        this.fragmentManager = fragmentManager;
+        this.user = user;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

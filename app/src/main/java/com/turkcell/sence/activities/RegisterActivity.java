@@ -1,10 +1,9 @@
 package com.turkcell.sence.activities;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.turkcell.sence.R;
+
 
 import java.util.HashMap;
 
@@ -90,11 +90,12 @@ public class RegisterActivity extends AppCompatActivity {
                     hashMap.put("id", userID);
                     hashMap.put("username", username.toLowerCase());
                     hashMap.put("fullname", fullname);
-                    hashMap.put("imageurl", "https://firebasestorage.googleapis.com/v0/b/sence-af3aa.appspot.com/o/person.png?alt=media&token=d9664199-66e3-4324-8a84-22f134a7ba50");
+                    hashMap.put("imageUrl", "");
+                    hashMap.put("isOpen", true);
                     reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 dialog.dismiss();
                                 Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

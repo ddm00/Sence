@@ -1,17 +1,20 @@
 package com.turkcell.sence.fragments;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,13 +25,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.turkcell.sence.R;
+import com.turkcell.sence.activities.MainActivity;
 import com.turkcell.sence.adapters.UserAdapter;
 import com.turkcell.sence.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-
+@SuppressLint("ValidFragment")
 public class SearchFragment extends Fragment {
 
     private RecyclerView recyclerView;
@@ -36,6 +41,11 @@ public class SearchFragment extends Fragment {
     private List<User> userList;
 
     EditText search_bar;
+    FragmentManager fragmentManager;
+
+    public SearchFragment(FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,8 +58,7 @@ public class SearchFragment extends Fragment {
         search_bar = view.findViewById(R.id.search_bar);
 
         userList = new ArrayList<>();
-        userAdapter = new UserAdapter(getContext(), userList, true);
-        recyclerView.setAdapter(userAdapter);
+        userAdapter = new UserAdapter(getContext(), userList, fragmentManager);
 
         readUsers();
         search_bar.addTextChangedListener(new TextWatcher() {
@@ -83,7 +92,12 @@ public class SearchFragment extends Fragment {
                 userList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     User user = snapshot.getValue(User.class);
-                    userList.add(user);
+
+                    if(!user.getId().equals(MainActivity.CurrentUser.getId())){
+                        Map<String,Object> map=(Map<String, Object>) snapshot.getValue();
+                        user.setOpen((boolean)map.get("isOpen"));
+                        userList.add(user);
+                    }
                 }
 
                 userAdapter.notifyDataSetChanged();
@@ -98,7 +112,6 @@ public class SearchFragment extends Fragment {
 
     private void readUsers() {
 
-        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -108,7 +121,14 @@ public class SearchFragment extends Fragment {
                     userList.clear();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         User user = snapshot.getValue(User.class);
-                        userList.add(user);
+
+                       if (MainActivity.CurrentUser!=null&& MainActivity.CurrentUser.getId()!=null){
+                           if (!user.getId().equals(MainActivity.CurrentUser.getId())) {
+                               Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
+                               user.setOpen((boolean) map.get("isOpen"));
+                               userList.add(user);
+                           }
+                       }
                     }
 
                     userAdapter.notifyDataSetChanged();
