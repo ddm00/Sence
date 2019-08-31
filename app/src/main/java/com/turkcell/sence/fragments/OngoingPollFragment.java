@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.turkcell.sence.R;
+import com.turkcell.sence.adapters.OngoingPollAdapter;
 import com.turkcell.sence.models.Ongoing;
 
 import java.util.ArrayList;
@@ -20,10 +21,10 @@ import java.util.List;
  */
 public class OngoingPollFragment extends Fragment {
 
-    ListView ongoing_Lv;
-    List<Ongoing> ongoingList=new ArrayList<>();
     View view;
-    OngoingPollFragment ongoingAdapter;
+    ListView listView;
+    OngoingPollAdapter ongoingPollAdapter;
+    List<Ongoing>ongoingList=new ArrayList<>();
 
     public OngoingPollFragment() {
         // Required empty public constructor
@@ -34,7 +35,21 @@ public class OngoingPollFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ongoing_poll, container, false);
+
+        view= inflater.inflate(R.layout.fragment_ongoing_poll, container, false);
+        listView= view.findViewById(R.id.ongoing_Lv);
+        fillList();
+
+        ongoingPollAdapter= new OngoingPollAdapter(getContext(),ongoingList);
+        listView.setAdapter(ongoingPollAdapter);
+        return view;
+
+    }
+    void fillList ()
+    {
+        ongoingList.add(new Ongoing(R.drawable.black1,R.drawable.black2,"Sence Hangisi?","05:00","20"));
+        ongoingList.add(new Ongoing(R.drawable.red1,R.drawable.red2,"Sence Hangisi?","05:00","20"));
+
     }
 
 }
