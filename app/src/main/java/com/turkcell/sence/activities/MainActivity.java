@@ -2,27 +2,100 @@ package com.turkcell.sence.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
-
-import com.turkcell.sence.R;
-import com.turkcell.sence.fragments.HomeFragment;
-import com.turkcell.sence.fragments.ProfileFragment;
-import com.turkcell.sence.fragments.SearchFragment;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.turkcell.sence.R;
+import com.turkcell.sence.database.Dao;
+import com.turkcell.sence.fragments.HomeFragment;
+import com.turkcell.sence.fragments.SearchFragment;
+import com.turkcell.sence.fragments.SurveyFragment;
+import com.turkcell.sence.fragments.UserProfileFragment;
+import com.turkcell.sence.models.User;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
 
 
+    public static User CurrentUser;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        getUserLogin();
+
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+    }
+
+    private void getUserLogin() {
+        if (Dao.getInstance().getmAuth().getCurrentUser() != null) {
+            Dao.getInstance().getFirebaseDatabase().getReference("Users").child(Dao.getInstance().getmAuth().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    MainActivity.CurrentUser = dataSnapshot.getValue(User.class);
+                    HashMap<String, Object> hashMap = (HashMap<String, Object>) dataSnapshot.getValue();
+                    if (hashMap != null) {
+                        MainActivity.CurrentUser.setOpen((boolean) hashMap.get("isOpen"));
+                        getToken();
+                        Fragment selectedFragment = new HomeFragment();
+                        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
+                        fragTrans.replace(R.id.fragmentContainer, selectedFragment).commit();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        }
+    }
+
+    private void getToken() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (task.isSuccessful()) {
+                            String token = task.getResult().getToken();
+
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("token", token);
+
+                            if (CurrentUser != null && CurrentUser.getId() != null) {
+                                Dao.getInstance().getFirebaseDatabase().getReference("Users").child(MainActivity.CurrentUser.getId()).updateChildren(map);
+
+                            }
+
+                        }
+
+                    }
+                });
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -32,14 +105,13 @@ public class MainActivity extends AppCompatActivity {
             Fragment selectedFragment = null;
             switch (item.getItemId()) {
                 case R.id.navigation_profile:
-                    selectedFragment = new UserProfileFragment();
+                    selectedFragment = new UserProfileFragment(getSupportFragmentManager());
                     break;
                 case R.id.navigation_add:
-                    selectedFragment =null;
-                    startActivity(new Intent(MainActivity.this,SurveyActivity.class));
+                    selectedFragment = new SurveyFragment();
                     break;
                 case R.id.navigation_search:
-                    selectedFragment = new SearchFragment();
+                    selectedFragment = new SearchFragment(getSupportFragmentManager());
                     break;
                 case R.id.navigation_home:
                     selectedFragment = new HomeFragment();
@@ -53,15 +125,22 @@ public class MainActivity extends AppCompatActivity {
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (SurveyFragment.value == 1) {
+                SurveyFragment.firstImageUri = result.getUri();
+                SurveyFragment.value = 0;
+            }
+            if (SurveyFragment.value == 2) {
+                SurveyFragment.secondImageUri = result.getUri();
+                SurveyFragment.value = 0;
+            }
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        Fragment selectedFragment = new HomeFragment();
-        FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
-        fragTrans.replace(R.id.fragmentContainer, selectedFragment).commit();
+        } else {
+            Toast.makeText(this, "Bir şeyler yanlış gitti!", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

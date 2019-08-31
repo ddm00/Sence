@@ -224,7 +224,6 @@ public class SurveyFragment extends Fragment {
                     spCategory.setSelection(0);
                     spTime.setSelection(0);
                     progressDialog.dismiss();
-                    ;
                     firstImageUri = null;
                     secondImageUri = null;
                     Toast.makeText(view.getContext(), "Kayıt başarılı.", Toast.LENGTH_SHORT).show();
