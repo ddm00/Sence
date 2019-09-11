@@ -1,119 +1,143 @@
-package com.turkcell.sence.adapters;
+package com.turkcell.sence.fragments.home;
+
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.turkcell.sence.R;
+import com.turkcell.sence.activities.MainActivity;
+import com.turkcell.sence.database.Dao;
 import com.turkcell.sence.models.Survey;
 import com.turkcell.sence.time.DateRegulative;
 import com.turkcell.sence.time.MyDateFormat;
 
-
 import java.util.Calendar;
-import java.util.List;
 
-public class UserProfileSurveyCustomAdapter extends BaseAdapter {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class HomeChildFragment extends Fragment {
 
-    private LayoutInflater layoutInflater;
-    private Context context;
-    private List<Survey> myList;
+    private View view;
     private Survey survey;
     private Activity activity;
 
-    public UserProfileSurveyCustomAdapter(Activity activity, Context context, List<Survey> myList) {
-        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.myList = myList;
-        this.context = context;
+    public HomeChildFragment(final Survey survey, Activity activity) {
+        this.survey = survey;
         this.activity = activity;
-    }
-
-    public List<Survey> getMyList() {
-        return myList;
-    }
-
-    public void updateResults(List<Survey> myCarsVeriModeli) {
-        this.myList = myCarsVeriModeli;
-        notifyDataSetChanged();
-    }
-
-    @Override
-    public int getCount() {
-        return myList.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return position;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_home_child, container, false);
 
-        final TextView usersurveyUsername, usersurveyQuestion, usersurveyVotes, userSurveyTime;
-        final ImageView usersurveyFirstimage, usersurveySecondimage;
+        final TextView username, question, votes, surveyTime;
+        final ImageView fistImage, secondImage, firstimageLike, secondimageLike;
 
-        View view = layoutInflater.inflate(R.layout.list_view_item_user_survey, null);
+        username = view.findViewById(R.id.homechildUsername_Tv);
+        question = view.findViewById(R.id.homechildQuestion_Tv);
+        votes = view.findViewById(R.id.homechildVotes_Tv);
+        surveyTime = view.findViewById(R.id.homechildSurveyTime_Tv);
 
-        usersurveyUsername = view.findViewById(R.id.usersurveyUsername_Tv);
-        usersurveyQuestion = view.findViewById(R.id.usersurveyQuestion_Tv);
-        usersurveyVotes = view.findViewById(R.id.usersurveyUsers_Tv);
-        userSurveyTime = view.findViewById(R.id.usersurveyTime_Tv);
+        fistImage = view.findViewById(R.id.homechildFistImage_Iv);
+        secondImage = view.findViewById(R.id.homechildSecondImage_Iv);
+        firstimageLike = view.findViewById(R.id.homechildFirstLike_Iv);
+        secondimageLike = view.findViewById(R.id.homechildSecondLike_Iv);
 
-        usersurveyFirstimage = view.findViewById(R.id.usersurveyFirstImage_Iv);
-        usersurveySecondimage = view.findViewById(R.id.usersurveySecondImage_Iv);
+        if (survey.getWhichOne() == null) {
+            firstimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.unlike));
+            secondimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.unlike));
+        } else {
+            if (survey.getWhichOne()) {
+                firstimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.like));
+                secondimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.unlike));
+            } else {
+                firstimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.unlike));
+                secondimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.like));
+            }
+        }
 
-        survey = myList.get(position);
-        usersurveyUsername.setText(survey.getUser().getFullname() + " / " + survey.getUser().getUsername());
+        firstimageLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dao.getInstance().getFirebaseDatabase().getReference("Surveys").child(survey.getSurveyId())
+                        .child("Users").child(MainActivity.CurrentUser.getId()).child("value").setValue(true);
+                firstimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.like));
+                secondimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.unlike));
+                if (survey.getWhichOne() == null) {
+                    survey.setReySize(survey.getReySize() + 1);
+                    votes.setText(survey.getReySize() + " oylama yapıldı.");
+                    survey.setWhichOne(true);
+                }
+            }
+        });
+
+        secondimageLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dao.getInstance().getFirebaseDatabase().getReference("Surveys").child(survey.getSurveyId())
+                        .child("Users").child(MainActivity.CurrentUser.getId()).child("value").setValue(false);
+                firstimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.unlike));
+                secondimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.like));
+                if (survey.getWhichOne() == null) {
+                    survey.setReySize(survey.getReySize() + 1);
+                    votes.setText(survey.getReySize() + " oylama yapıldı.");
+                    survey.setWhichOne(false);
+                }
+            }
+        });
+
+        if (!survey.getSecret() || MainActivity.CurrentUser.getId().equals(survey.getSurveyPublisher())) {
+            username.setText(survey.getUser().getFullname() + " / " + survey.getUser().getUsername());
+        } else {
+            username.setText("Kullanıcı ismini paylaşmak istemiyor.");
+        }
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.mipmap.ic_launcher);
-        Glide.with(context).setDefaultRequestOptions(requestOptions).load(survey.getSurveyFirstImage()).into(usersurveyFirstimage);
-        Glide.with(context).setDefaultRequestOptions(requestOptions).load(survey.getSurveySecondImage()).into(usersurveySecondimage);
+        Glide.with(view.getContext()).setDefaultRequestOptions(requestOptions).load(survey.getSurveyFirstImage()).into(fistImage);
+        Glide.with(view.getContext()).setDefaultRequestOptions(requestOptions).load(survey.getSurveySecondImage()).into(secondImage);
 
-        usersurveyQuestion.setText(survey.getSurveyQuestion());
-        usersurveyVotes.setText("30 oylama yapıldı.");
-        userSurveyTime.setText(survey.getSurveyTime());
-        if (!survey.getSurveyTime().equals("Anketin süresi doldu.")) {
-            Thread thread = new Thread() {
-                public void run() {
+        question.setText(survey.getSurveyCategory() + ": " + survey.getSurveyQuestion());
+        votes.setText(survey.getReySize() + " oylama yapıldı.");
 
-                    while (true) {
-                        try {
-                            activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    userSurveyTime.setText(farkHesap(myList.get(position).getT(), myList.get(position).getSurveyTime()));
-                                }
-                            });
+        Thread thread = new Thread() {
+            public void run() {
 
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                while (true) {
+                    try {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                surveyTime.setText(farkHesap(survey.getT(), survey.getSurveyTime()));
+                            }
+                        });
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
-            };
-            thread.start();
-        } else {
-            userSurveyTime.setText(survey.getSurveyTime());
-        }
+            }
+        };
+
+        thread.start();
+
         return view;
     }
+
     private String farkHesap(long longDate, String sTime) {
 
         String fark = "";
@@ -225,4 +249,5 @@ public class UserProfileSurveyCustomAdapter extends BaseAdapter {
         }
         return fark;
     }
+
 }

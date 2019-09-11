@@ -36,7 +36,7 @@ public class CompletedPollFragment extends Fragment {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_completed_poll, container, false);
         listView= view.findViewById(R.id.completed_Lv);
-        fillList();
+
 
 
 
@@ -46,11 +46,5 @@ public class CompletedPollFragment extends Fragment {
         return  view;
     }
 
-    void fillList ()
-    {
-        complatedList.add(new Complated(R.drawable.kitap1,R.drawable.kitap2,"Sizce ilk Hangisini okumalıyım? İkisi de mükemmel, karar veremiyorum.","01:00","50"));
-        complatedList.add(new Complated(R.drawable.ruj1,R.drawable.ruj2,"Hangi renk akşam yemeği için daha uygun?","01:00","25"));
-
-    }
 
 }

@@ -14,7 +14,7 @@ public class Survey {
     private boolean isSecret;
     private int reySize;
 
-    public Survey(String surveyId, String surveyQuestion, String surveyFirstImage, String surveySecondImage, String surveyTime, String surveyCategory, String surveyPublisher, Long t) {
+    public Survey(String surveyId, String surveyQuestion, String surveyFirstImage, String surveySecondImage, String surveyTime, String surveyCategory, String surveyPublisher, Long t, int reySize) {
         SurveyId = surveyId;
         SurveyQuestion = surveyQuestion;
         SurveyFirstImage = surveyFirstImage;
@@ -23,6 +23,7 @@ public class Survey {
         SurveyCategory = surveyCategory;
         SurveyPublisher = surveyPublisher;
         this.t = t;
+        this.reySize = reySize;
     }
 
     public Survey(String surveyId, String surveyQuestion, String surveyFirstImage, String surveySecondImage, String surveyTime, String surveyCategory, String surveyPublisher, Long t, Boolean isWhichOne, int reySize, boolean isSecret) {

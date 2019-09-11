@@ -17,11 +17,10 @@ import com.turkcell.sence.models.Survey;
 import com.turkcell.sence.time.DateRegulative;
 import com.turkcell.sence.time.MyDateFormat;
 
-
 import java.util.Calendar;
 import java.util.List;
 
-public class UserProfileSurveyCustomAdapter extends BaseAdapter {
+public class UserProfileSurveySenceAdapter extends BaseAdapter {
 
     private LayoutInflater layoutInflater;
     private Context context;
@@ -29,7 +28,7 @@ public class UserProfileSurveyCustomAdapter extends BaseAdapter {
     private Survey survey;
     private Activity activity;
 
-    public UserProfileSurveyCustomAdapter(Activity activity, Context context, List<Survey> myList) {
+    public UserProfileSurveySenceAdapter(Activity activity, Context context, List<Survey> myList) {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.myList = myList;
         this.context = context;
@@ -64,30 +63,71 @@ public class UserProfileSurveyCustomAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-        final TextView usersurveyUsername, usersurveyQuestion, usersurveyVotes, userSurveyTime;
-        final ImageView usersurveyFirstimage, usersurveySecondimage;
+        final TextView username, question, surveyTime, fistimagePercent, secondimagePercent;
+        final ImageView fistImage, secondImage, fistimageWin, secondimageWin;
 
-        View view = layoutInflater.inflate(R.layout.list_view_item_user_survey, null);
+        View view = layoutInflater.inflate(R.layout.list_view_item_sence_survey, null);
 
-        usersurveyUsername = view.findViewById(R.id.usersurveyUsername_Tv);
-        usersurveyQuestion = view.findViewById(R.id.usersurveyQuestion_Tv);
-        usersurveyVotes = view.findViewById(R.id.usersurveyUsers_Tv);
-        userSurveyTime = view.findViewById(R.id.usersurveyTime_Tv);
+        username = view.findViewById(R.id.senceUsername_Tv);
+        question = view.findViewById(R.id.senceQuestion_Tv);
+        surveyTime = view.findViewById(R.id.senceSurveyTime);
+        fistimagePercent = view.findViewById(R.id.senceFirstImagePercent_Tv);
+        secondimagePercent = view.findViewById(R.id.senceSecondImagePercent_Tv);
 
-        usersurveyFirstimage = view.findViewById(R.id.usersurveyFirstImage_Iv);
-        usersurveySecondimage = view.findViewById(R.id.usersurveySecondImage_Iv);
+        fistImage = view.findViewById(R.id.senceFirstImage_Iv);
+        secondImage = view.findViewById(R.id.senceSecondImage_Iv);
+
+        fistimageWin = view.findViewById(R.id.senceFirstImageWin_Iv);
+        secondimageWin = view.findViewById(R.id.senceSecondImageWin_Iv);
 
         survey = myList.get(position);
-        usersurveyUsername.setText(survey.getUser().getFullname() + " / " + survey.getUser().getUsername());
+        username.setText(survey.getUser().getFullname() + " / " + survey.getUser().getUsername());
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.mipmap.ic_launcher);
-        Glide.with(context).setDefaultRequestOptions(requestOptions).load(survey.getSurveyFirstImage()).into(usersurveyFirstimage);
-        Glide.with(context).setDefaultRequestOptions(requestOptions).load(survey.getSurveySecondImage()).into(usersurveySecondimage);
+        Glide.with(context).setDefaultRequestOptions(requestOptions).load(survey.getSurveyFirstImage()).into(fistImage);
+        Glide.with(context).setDefaultRequestOptions(requestOptions).load(survey.getSurveySecondImage()).into(secondImage);
 
-        usersurveyQuestion.setText(survey.getSurveyQuestion());
-        usersurveyVotes.setText("30 oylama yapıldı.");
-        userSurveyTime.setText(survey.getSurveyTime());
+        question.setText(survey.getSurveyCategory() + ": " + survey.getSurveyQuestion());
+        surveyTime.setText(survey.getSurveyTime());
+
+        //burada hali hazırda var olna entity yi bozmamak adına oylama sayılarının geldiği "survey.getReySize()"
+        //üzerinde 1. resmin yüzdesini alıcaz ve diğerini burada hesaplıyacağız. yani gelen veri 1. resmin hesaplanmış yüzdesi olacak
+        //ikinci resminkini biz burada hesaplayacağız.
+
+        int firstImagePercent = myList.get(position).getReySize();
+
+        int secondImagePercent = 100 - firstImagePercent;
+
+        if (firstImagePercent == secondImagePercent) {
+            fistimagePercent.setText("% " + firstImagePercent);
+            fistimagePercent.setTextColor(context.getResources().getColor(R.color.colorYellow));
+            fistimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_equal_background));
+
+            secondimagePercent.setText("% " + secondImagePercent);
+            secondimagePercent.setTextColor(context.getResources().getColor(R.color.colorYellow));
+            secondimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_equal_background));
+
+        } else if (firstImagePercent < secondImagePercent) {
+            fistimagePercent.setText("% " + firstImagePercent);
+            fistimagePercent.setTextColor(context.getResources().getColor(R.color.colorRed));
+            fistimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_lose_background));
+
+            secondimagePercent.setText("% " + secondImagePercent);
+            secondimagePercent.setTextColor(context.getResources().getColor(R.color.colorGreen));
+            secondimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_win_background));
+
+        } else {
+            secondimagePercent.setText("% " + firstImagePercent);
+            secondimagePercent.setTextColor(context.getResources().getColor(R.color.colorRed));
+            secondimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_lose_background));
+
+            fistimagePercent.setText("% " + secondImagePercent);
+            fistimagePercent.setTextColor(context.getResources().getColor(R.color.colorGreen));
+            fistimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_win_background));
+        }
+
+
         if (!survey.getSurveyTime().equals("Anketin süresi doldu.")) {
             Thread thread = new Thread() {
                 public void run() {
@@ -97,7 +137,7 @@ public class UserProfileSurveyCustomAdapter extends BaseAdapter {
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    userSurveyTime.setText(farkHesap(myList.get(position).getT(), myList.get(position).getSurveyTime()));
+                                    surveyTime.setText(farkHesap(myList.get(position).getT(), myList.get(position).getSurveyTime()));
                                 }
                             });
 
@@ -110,10 +150,12 @@ public class UserProfileSurveyCustomAdapter extends BaseAdapter {
             };
             thread.start();
         } else {
-            userSurveyTime.setText(survey.getSurveyTime());
+            surveyTime.setText(survey.getSurveyTime());
         }
+
         return view;
     }
+
     private String farkHesap(long longDate, String sTime) {
 
         String fark = "";

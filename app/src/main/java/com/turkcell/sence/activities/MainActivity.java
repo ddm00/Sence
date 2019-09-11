@@ -26,10 +26,12 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.turkcell.sence.R;
 import com.turkcell.sence.database.Dao;
-import com.turkcell.sence.fragments.HomeFragment;
-import com.turkcell.sence.fragments.SearchFragment;
-import com.turkcell.sence.fragments.SurveyFragment;
 import com.turkcell.sence.fragments.UserProfileFragment;
+import com.turkcell.sence.fragments.home.HomeFragment;
+import com.turkcell.sence.fragments.profile.EditProfileFragment;
+import com.turkcell.sence.fragments.search.SearchFragment;
+import com.turkcell.sence.fragments.survey.SurveyFragment;
+
 import com.turkcell.sence.models.User;
 
 import java.util.HashMap;
@@ -62,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                     if (hashMap != null) {
                         MainActivity.CurrentUser.setOpen((boolean) hashMap.get("isOpen"));
                         getToken();
-                        Fragment selectedFragment = new HomeFragment();
+                        Fragment selectedFragment = new HomeFragment(MainActivity.this);
                         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
                         fragTrans.replace(R.id.fragmentContainer, selectedFragment).commit();
                     }
@@ -86,10 +88,7 @@ public class MainActivity extends AppCompatActivity {
                             Map<String, Object> map = new HashMap<>();
                             map.put("token", token);
 
-                            if (CurrentUser != null && CurrentUser.getId() != null) {
-                                Dao.getInstance().getFirebaseDatabase().getReference("Users").child(MainActivity.CurrentUser.getId()).updateChildren(map);
-
-                            }
+                            Dao.getInstance().getFirebaseDatabase().getReference("Users").child(MainActivity.CurrentUser.getId()).updateChildren(map);
 
                         }
 
@@ -105,16 +104,16 @@ public class MainActivity extends AppCompatActivity {
             Fragment selectedFragment = null;
             switch (item.getItemId()) {
                 case R.id.navigation_profile:
-                    selectedFragment = new UserProfileFragment(getSupportFragmentManager());
+                    selectedFragment = new UserProfileFragment(getSupportFragmentManager(), MainActivity.this);
                     break;
                 case R.id.navigation_add:
                     selectedFragment = new SurveyFragment();
                     break;
                 case R.id.navigation_search:
-                    selectedFragment = new SearchFragment(getSupportFragmentManager());
+                    selectedFragment = new SearchFragment(MainActivity.this, getSupportFragmentManager());
                     break;
                 case R.id.navigation_home:
-                    selectedFragment = new HomeFragment();
+                    selectedFragment = new HomeFragment(MainActivity.this);
                     break;
 
             }
@@ -135,6 +134,10 @@ public class MainActivity extends AppCompatActivity {
             }
             if (SurveyFragment.value == 2) {
                 SurveyFragment.secondImageUri = result.getUri();
+                SurveyFragment.value = 0;
+            }
+            if (SurveyFragment.value == 3) {
+                EditProfileFragment.imageUri = result.getUri();
                 SurveyFragment.value = 0;
             }
 

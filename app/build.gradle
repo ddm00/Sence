@@ -38,6 +38,7 @@ dependencies {
     implementation 'android.arch.work:work-runtime:1.0.1'
     implementation 'com.mcxiaoke.volley:library:1.0.19'
     implementation 'com.firebaseui:firebase-ui-database:4.2.0'
+    implementation 'com.thomashaertel:multispinner:0.1.1'
 
 
     testİmplementation 'junit:junit:4.12'

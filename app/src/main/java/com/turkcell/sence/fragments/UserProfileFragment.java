@@ -1,22 +1,25 @@
 package com.turkcell.sence.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,85 +27,200 @@ import com.google.firebase.database.ValueEventListener;
 import com.turkcell.sence.R;
 import com.turkcell.sence.activities.LoginActivity;
 import com.turkcell.sence.activities.MainActivity;
-import com.turkcell.sence.adapters.UserProfileSurveyCustomAdapter;
 import com.turkcell.sence.database.Dao;
-import com.turkcell.sence.models.Survey;
-import com.turkcell.sence.models.UserProfileSurvey;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static android.view.View.GONE;
-
+import com.turkcell.sence.fragments.profile.EditProfileFragment;
+import com.turkcell.sence.fragments.profile.UserProfileFollowersFragment;
+import com.turkcell.sence.fragments.profile.UserProfileFollowingFragment;
+import com.turkcell.sence.fragments.profile.UserProfileRequestFragment;
+import com.turkcell.sence.fragments.profile.tab.UserProfileBenceFragment;
+import com.turkcell.sence.fragments.profile.tab.UserProfileSenceFragment;
+import com.turkcell.sence.fragments.profile.tab.UserProfileSurveyFragment;
 
 @SuppressLint("ValidFragment")
 public class UserProfileFragment extends Fragment {
 
 
-    View view;
-    FragmentManager supportFragmentManager;
-    FrameLayout progressHomeFrame;
-    ListView surveyListView;
-    ArrayList<Survey> surveyList = new ArrayList<>();
-    UserProfileSurveyCustomAdapter adapter;
-    Button editProfile, sence, bence, logout, takipEttiklerim, takipcilerim;
-    TextView userNameTv;
+    private View view;
+    private FragmentManager supportFragmentManager;
+    private ImageView userImageIv;
+    private Button logoutBtn, editBtn,followingBtn,followerBtn,requestBtn;
+    private TextView usernameTv, followingNumberTv, followerNumberTv, requestNumberTv, surveyTv, senceTv, benceTv;
+    private ViewPager userprofileVp;
+    private Activity activity;
 
-    public UserProfileFragment(FragmentManager supportFragmentManager) {
+    public UserProfileFragment(FragmentManager supportFragmentManager, Activity activity) {
         this.supportFragmentManager = supportFragmentManager;
+        this.activity = activity;
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user_profile, container, false);
-        surveyListView = view.findViewById(R.id.surveysList_Lv);
-        progressHomeFrame = view.findViewById(R.id.progressHomeFrame);
-        userNameTv = view.findViewById(R.id.userprofileUsername_Tv);
-        userNameTv.setText(MainActivity.CurrentUser.getFullname());
-        getMySurvey();
+        usernameTv = view.findViewById(R.id.userprofileUsername_Tv);
+        followingNumberTv = view.findViewById(R.id.userprofileFollowingNumber_Tv);
+        followerNumberTv = view.findViewById(R.id.userprofileFollowerNumber_Tv);
+        requestNumberTv = view.findViewById(R.id.userprofileRequestNumber_Tv);
+        followingBtn = view.findViewById(R.id.userprofileFollowing_Btn);
+        followerBtn = view.findViewById(R.id.userprofileFollower_Btn);
+        requestBtn = view.findViewById(R.id.userprofileRequest_Btn);
+        userImageIv = view.findViewById(R.id.userprofileUserimage_Iv);
 
-        editProfile = view.findViewById(R.id.userProfile_profilDuzenlbtn);
-        editProfile.setOnClickListener(new View.OnClickListener() {
+        surveyTv = view.findViewById(R.id.userprofileSurvey_Tv);
+        senceTv = view.findViewById(R.id.userprofileSence_Tv);
+        benceTv = view.findViewById(R.id.userprofileBence_Tv);
+        userprofileVp = view.findViewById(R.id.userprofileViewPager);
+        usernameTv.setText(MainActivity.CurrentUser.getFullname());
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.ic_account_circle_black_24dp);
+        Glide.with(activity).setDefaultRequestOptions(requestOptions).load(MainActivity.CurrentUser.getImageurl()).into(userImageIv);
+
+        getTakipTakipciIstekToplam();
+
+        //ilk başlangıç
+        userprofileVp.setCurrentItem(0);
+        setTextView(20, 14, 14, getResources().getColor(R.color.colorBlack), getResources().getColor(R.color.colorGray), getResources().getColor(R.color.colorGray));
+
+        surveyTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userprofileVp.setCurrentItem(0);
+                setTextView(20, 14, 14, getResources().getColor(R.color.colorBlack), getResources().getColor(R.color.colorGray), getResources().getColor(R.color.colorGray));
+            }
+        });
+
+        senceTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userprofileVp.setCurrentItem(1);
+                setTextView(14, 20, 14, getResources().getColor(R.color.colorGray), getResources().getColor(R.color.colorBlack), getResources().getColor(R.color.colorGray));
+            }
+        });
+
+        benceTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userprofileVp.setCurrentItem(2);
+                setTextView(14, 14, 20, getResources().getColor(R.color.colorGray), getResources().getColor(R.color.colorGray), getResources().getColor(R.color.colorBlack));
+            }
+        });
+
+        userprofileVp.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                switch (position) {
+                    case 0:
+                        return new UserProfileSurveyFragment(activity, MainActivity.CurrentUser);
+                    case 1:
+                        return new UserProfileSenceFragment(activity, MainActivity.CurrentUser);
+                    case 2:
+                        return new UserProfileBenceFragment(activity, MainActivity.CurrentUser);
+                    default:
+                        return null;
+                }
+            }
+
+            @Override
+            public int getCount() {
+                return 3;
+            }
+        });
+
+        userprofileVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0:
+                        setTextView(20, 14, 14, getResources().getColor(R.color.colorBlack), getResources().getColor(R.color.colorGray), getResources().getColor(R.color.colorGray));
+                        break;
+                    case 1:
+                        setTextView(14, 20, 14, getResources().getColor(R.color.colorGray), getResources().getColor(R.color.colorBlack), getResources().getColor(R.color.colorGray));
+                        break;
+                    case 2:
+                        setTextView(14, 14, 20, getResources().getColor(R.color.colorGray), getResources().getColor(R.color.colorGray), getResources().getColor(R.color.colorBlack));
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        followingNumberTv.setOnClickListener(new View.OnClickListener() { // takip ettiklerim
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-                EditProfileFragment myCarFragment = new EditProfileFragment();
-                transaction.replace(R.id.fragmentContainer, myCarFragment, "EditProfileFragment");
+                UserProfileFollowingFragment myCarFragment = new UserProfileFollowingFragment(supportFragmentManager, activity, MainActivity.CurrentUser);
+                transaction.replace(R.id.fragmentContainer, myCarFragment, "UserProfileFollowingFragment");
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
         });
 
-        takipcilerim = view.findViewById(R.id.btn_follower);
-        takipcilerim.setOnClickListener(new View.OnClickListener() {
+        followerNumberTv.setOnClickListener(new View.OnClickListener() { // takipçilerim
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-                UserProfileFollowersFragment userProfileFollowersFragment = new UserProfileFollowersFragment();
-                transaction.replace(R.id.fragmentContainer, userProfileFollowersFragment, "UserProfileFollowersFragment");
+                UserProfileFollowersFragment myCarFragment = new UserProfileFollowersFragment(supportFragmentManager, activity, MainActivity.CurrentUser);
+                transaction.replace(R.id.fragmentContainer, myCarFragment, "UserProfileFollowersFragment");
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
         });
 
-        takipEttiklerim = view.findViewById(R.id.btn_following);
-        takipEttiklerim.setOnClickListener(new View.OnClickListener() {
+        requestNumberTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-                UserProfileFollowingFragment userProfileFollowingFragment = new UserProfileFollowingFragment();
-                transaction.replace(R.id.fragmentContainer, userProfileFollowingFragment, "UserProfileFollowingFragment");
+                UserProfileRequestFragment myCarFragment = new UserProfileRequestFragment(supportFragmentManager);
+                transaction.replace(R.id.fragmentContainer, myCarFragment, "UserProfileRequestFragment");
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
         });
 
-        logout = view.findViewById(R.id.userProfile_logout_btn);
-        logout.setOnClickListener(new View.OnClickListener() {
+        followingBtn.setOnClickListener(new View.OnClickListener() { // takip ettiklerim
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = supportFragmentManager.beginTransaction();
+                UserProfileFollowingFragment myCarFragment = new UserProfileFollowingFragment(supportFragmentManager, activity, MainActivity.CurrentUser);
+                transaction.replace(R.id.fragmentContainer, myCarFragment, "UserProfileFollowingFragment");
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
+        followerBtn.setOnClickListener(new View.OnClickListener() { // takipçilerim
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = supportFragmentManager.beginTransaction();
+                UserProfileFollowersFragment myCarFragment = new UserProfileFollowersFragment(supportFragmentManager, activity, MainActivity.CurrentUser);
+                transaction.replace(R.id.fragmentContainer, myCarFragment, "UserProfileFollowersFragment");
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
+        requestBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = supportFragmentManager.beginTransaction();
+                UserProfileRequestFragment myCarFragment = new UserProfileRequestFragment(supportFragmentManager);
+                transaction.replace(R.id.fragmentContainer, myCarFragment, "UserProfileRequestFragment");
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
+        logoutBtn = view.findViewById(R.id.userprofileLogout_Btn);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -113,48 +231,51 @@ public class UserProfileFragment extends Fragment {
             }
         });
 
+
+        editBtn = view.findViewById(R.id.userprofileEdit_Btn);
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = supportFragmentManager.beginTransaction();
+                EditProfileFragment myCarFragment = new EditProfileFragment();
+                transaction.replace(R.id.fragmentContainer, myCarFragment, "EditProfileFragment");
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
         return view;
     }
 
-    private void getMySurvey() {
-        progressHomeFrame.setVisibility(View.VISIBLE);
-        surveyListView.setVisibility(GONE);
+    @SuppressLint("SetTextI18n")
+    private void getTakipTakipciIstekToplam() {
 
-        Dao.getInstance().getFirebaseDatabase().getReference("Surveys").addListenerForSingleValueEvent(new ValueEventListener() {
+        Dao.getInstance().getFirebaseDatabase().getReference("Follow").child(MainActivity.CurrentUser.getId()).child("followers").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                followingNumberTv.setText(dataSnapshot.getChildrenCount() + "");
+            }
 
-                if (dataSnapshot.getValue() != null) {
-                    final List<Map<String, Object>> mapList = new ArrayList<>();
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
 
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        HashMap<String, Object> hashMap = (HashMap<String, Object>) snapshot.getValue();
-                        mapList.add(hashMap);
-                    }
+        Dao.getInstance().getFirebaseDatabase().getReference("Follow").child(MainActivity.CurrentUser.getId()).child("following").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                followerNumberTv.setText(dataSnapshot.getChildrenCount() + "");
+            }
 
-                    surveyList.clear();
-                    String publisher, surveyId, surveyQuestion, surveyCategory, surveyTime, surveyFirstImage, surveySecondImage;
-                    Long time;
-                    for (int i = 0; i < mapList.size(); i++) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
 
-                        publisher = (String) mapList.get(i).get("publisher");
-                        surveyId = (String) mapList.get(i).get("surveyId");
-                        surveyQuestion = (String) mapList.get(i).get("question");
-                        surveyCategory = (String) mapList.get(i).get("category");
-                        surveyFirstImage = (String) mapList.get(i).get("surveyFirstImage");
-                        surveySecondImage = (String) mapList.get(i).get("surveySecondImage");
-                        surveyTime = (String) mapList.get(i).get("time");
-                        time = (Long) mapList.get(i).get("t");
-
-                        Log.e("hata", publisher);
-                        if (publisher.equals(MainActivity.CurrentUser.getId())) {
-                            final Survey survey = new Survey(surveyId, surveyQuestion, surveyFirstImage, surveySecondImage, surveyTime, surveyCategory, publisher, time);
-                            survey.setUser(MainActivity.CurrentUser);
-                            surveyList.add(survey);
-                        }
-                        addAdapter(i, mapList);
-                    }
-                }
+        Dao.getInstance().getFirebaseDatabase().getReference("Follow").child(MainActivity.CurrentUser.getId()).child("requestGet").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                requestNumberTv.setText(dataSnapshot.getChildrenCount() + "");
             }
 
             @Override
@@ -163,13 +284,15 @@ public class UserProfileFragment extends Fragment {
         });
     }
 
-    private void addAdapter(int finalI, List<Map<String, Object>> mapList) {
-        if ((finalI + 1) == mapList.size()) {
-            UserProfileSurveyCustomAdapter surveyAdapter = new UserProfileSurveyCustomAdapter(view.getContext(), surveyList);
-            surveyListView.setAdapter(surveyAdapter);
-            progressHomeFrame.setVisibility(GONE);
-            surveyListView.setVisibility(View.VISIBLE);
-        }
+    private void setTextView(int i1, int i2, int i3, int color1, int color2, int color3) {
+
+        surveyTv.setTextColor(color1);
+        senceTv.setTextColor(color2);
+        benceTv.setTextColor(color3);
+
+        surveyTv.setTextSize(i1);
+        senceTv.setTextSize(i2);
+        benceTv.setTextSize(i3);
 
     }
 

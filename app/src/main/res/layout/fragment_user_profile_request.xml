@@ -3,10 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.profile.tab.UserProfileSenceFragment">
+    tools:context=".fragments.profile.UserProfileRequestFragment">
+
+    <TextView
+        android:id="@+id/userprofilerequestWarning_Tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="16sp"
+        android:textStyle="italic" />
 
     <FrameLayout
-        android:id="@+id/userprofilesenceFrame_Fl"
+        android:id="@+id/userprofilerequestFrame_Fl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -30,23 +41,11 @@
 
     </FrameLayout>
 
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/userprofilesenceWarning_Tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="55dp"
-        android:gravity="center"
-        android:text="Kullanıcı hesabı gizli ve siz\nonu takip etmiyorsunuz."
-        android:textColor="@color/colorBlue"
-        android:textSize="16sp"
-        android:textStyle="italic" />
-
     <ListView
-        android:id="@+id/userprofilesenceSurveys_Lv"
+        android:id="@+id/userprofilerequestUsers_Lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:divider="@android:color/transparent"
         android:dividerHeight="8dp"
         android:scrollbars="vertical" />

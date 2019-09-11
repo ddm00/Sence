@@ -1,5 +1,6 @@
 package com.turkcell.sence.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -33,7 +34,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.turkcell.sence.R;
 import com.turkcell.sence.activities.MainActivity;
-import com.turkcell.sence.fragments.ProfileFragment;
+import com.turkcell.sence.fragments.profile.NewProfileFragment;
+import com.turkcell.sence.fragments.profile.OldProfileFragment;
 import com.turkcell.sence.models.User;
 
 
@@ -48,24 +50,22 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolder> {
 
-    private Context mContext;
+    private Activity activity;
     private List<User> mUsers;
     private FragmentManager supportFragmentManager;
 
-    private FirebaseUser currentUser;
 
-    public UserAdapter(Context context, List<User> users, FragmentManager supportFragmentManager) {
-        mContext = context;
+    public UserAdapter(Activity activity, List<User> users, FragmentManager supportFragmentManager) {
+        this.activity = activity;
         mUsers = users;
         this.supportFragmentManager = supportFragmentManager;
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     }
 
     @NonNull
     @Override
     public UserAdapter.ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.user_item, parent, false);
+        View view = LayoutInflater.from(activity).inflate(R.layout.user_item, parent, false);
         return new UserAdapter.ImageViewHolder(view);
     }
 
@@ -79,43 +79,52 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
 
         holder.username.setText(user.getUsername());
         holder.fullname.setText(user.getFullname());
-        Glide.with(mContext).load(user.getImageurl()).into(holder.image_profile);
+        Glide.with(activity).load(user.getImageurl()).into(holder.image_profile);
 
-        if (user != null && user.getId() != null && user.getId().equals(currentUser.getUid())) {
+        if (user != null && user.getId() != null && user.getId().equals(MainActivity.CurrentUser.getId())) {
             holder.btn_follow.setVisibility(View.GONE);
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /**
+                 *  Bu bölümü eğer Search kısmındaki profil bölümünün alternatif görünümünü değiştirmek istersek.
+                 *
+                 FragmentTransaction transaction = supportFragmentManager.beginTransaction();
+                 NewProfileFragment ProfileFragment = new NewProfileFragment(supportFragmentManager, user, activity);
+                 transaction.replace(R.id.fragmentContainer, ProfileFragment, "OldProfileFragment");
+                 transaction.addToBackStack(null);
+                 transaction.commit();*/
                 FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-                ProfileFragment profileFragment = new ProfileFragment(supportFragmentManager, user);
-                transaction.replace(R.id.fragmentContainer, profileFragment, "ProfileFragment");
+                OldProfileFragment ProfileFragment = new OldProfileFragment(supportFragmentManager, user, activity);
+                transaction.replace(R.id.fragmentContainer, ProfileFragment, "OldProfileFragment");
                 transaction.addToBackStack(null);
                 transaction.commit();
+
             }
         });
 
         holder.btn_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (currentUser != null && user != null) {
+                if (MainActivity.CurrentUser.getId() != null && user != null) {
                     if (holder.btn_follow.getText().toString().equals("follow")) {
                         if (user.isOpen()) {
-                            FirebaseDatabase.getInstance().getReference().child("Follow").child(currentUser.getUid())
+                            FirebaseDatabase.getInstance().getReference().child("Follow").child(MainActivity.CurrentUser.getId())
                                     .child("following").child(user.getId()).setValue(true);
                             FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId())
-                                    .child("followers").child(currentUser.getUid()).setValue(true);
+                                    .child("followers").child(MainActivity.CurrentUser.getId()).setValue(true);
 
                             if (user.getToken() != null && !user.getToken().equals("")) {
                                 sendFCMPush(user.getToken(), "Sence", MainActivity.CurrentUser.getFullname() + " takip etti");
                             }
 
                         } else {
-                            FirebaseDatabase.getInstance().getReference().child("Follow").child(currentUser.getUid())
+                            FirebaseDatabase.getInstance().getReference().child("Follow").child(MainActivity.CurrentUser.getId())
                                     .child("requestPust").child(user.getId()).setValue(true);
                             FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId())
-                                    .child("requestGet").child(currentUser.getUid()).setValue(true);
+                                    .child("requestGet").child(MainActivity.CurrentUser.getId()).setValue(true);
 
                             if (user.getToken() != null && !user.getToken().equals("")) {
                                 sendFCMPush(user.getToken(), "Sence", MainActivity.CurrentUser.getFullname() + " bir arkadaşlık isteği gönderdi.");
@@ -125,17 +134,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
 
                     } else if (holder.btn_follow.getText().toString().equals("following")) {
 
-                        FirebaseDatabase.getInstance().getReference().child("Follow").child(currentUser.getUid())
+                        FirebaseDatabase.getInstance().getReference().child("Follow").child(MainActivity.CurrentUser.getId())
                                 .child("following").child(user.getId()).removeValue();
                         FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId())
-                                .child("followers").child(currentUser.getUid()).removeValue();
+                                .child("followers").child(MainActivity.CurrentUser.getId()).removeValue();
 
                     } else if (holder.btn_follow.getText().toString().equals("request")) {
 
-                        FirebaseDatabase.getInstance().getReference().child("Follow").child(currentUser.getUid())
+                        FirebaseDatabase.getInstance().getReference().child("Follow").child(MainActivity.CurrentUser.getId())
                                 .child("requestPust").child(user.getId()).removeValue();
                         FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId())
-                                .child("requestGet").child(currentUser.getUid()).removeValue();
+                                .child("requestGet").child(MainActivity.CurrentUser.getId()).removeValue();
                     }
                 }
 
@@ -170,7 +179,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
 
         if (user.isOpen()) {
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
-                    .child("Follow").child(currentUser.getUid()).child("following");
+                    .child("Follow").child(MainActivity.CurrentUser.getId()).child("following");
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -188,7 +197,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
             });
         } else {
             DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference()
-                    .child("Follow").child(currentUser.getUid()).child("requestPust");
+                    .child("Follow").child(MainActivity.CurrentUser.getId()).child("requestPust");
             reference1.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -196,7 +205,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
                         button.setText("request");
                     } else {
                         DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
-                                .child("Follow").child(currentUser.getUid()).child("following");
+                                .child("Follow").child(MainActivity.CurrentUser.getId()).child("following");
                         reference.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -277,7 +286,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
                 return params;
             }
         };
-        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        RequestQueue requestQueue = Volley.newRequestQueue(activity);
         int socketTimeout = 1000 * 60;// 60 seconds
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         jsObjRequest.setRetryPolicy(policy);

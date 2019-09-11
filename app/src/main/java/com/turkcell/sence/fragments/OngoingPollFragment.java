@@ -38,17 +38,10 @@ public class OngoingPollFragment extends Fragment {
 
         view= inflater.inflate(R.layout.fragment_ongoing_poll, container, false);
         listView= view.findViewById(R.id.ongoing_Lv);
-        fillList();
 
         ongoingPollAdapter= new OngoingPollAdapter(getContext(),ongoingList);
         listView.setAdapter(ongoingPollAdapter);
         return view;
-
-    }
-    void fillList ()
-    {
-        ongoingList.add(new Ongoing(R.drawable.black1,R.drawable.black2,"Sence Hangisi?","05:00","20"));
-        ongoingList.add(new Ongoing(R.drawable.red1,R.drawable.red2,"Sence Hangisi?","05:00","20"));
 
     }
 

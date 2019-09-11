@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.profile.tab.UserProfileSenceFragment">
+    tools:context=".fragments.profile.tab.UserProfileSurveyFragment">
 
     <FrameLayout
-        android:id="@+id/userprofilesenceFrame_Fl"
+        android:id="@+id/userprofilesurveyFrame_Fl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -32,7 +32,7 @@
 
     <TextView
         android:visibility="gone"
-        android:id="@+id/userprofilesenceWarning_Tv"
+        android:id="@+id/userprofilesurveyWarning_Tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -44,7 +44,7 @@
         android:textStyle="italic" />
 
     <ListView
-        android:id="@+id/userprofilesenceSurveys_Lv"
+        android:id="@+id/userprofilesurveySurveys_Lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@android:color/transparent"
