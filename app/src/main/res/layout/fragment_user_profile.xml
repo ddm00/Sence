@@ -44,7 +44,7 @@
                     android:layout_marginEnd="5dp"
                     android:background="@drawable/ic_edit" />
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/userprofileUserimage_Iv"
                     android:layout_width="100dp"
                     android:layout_height="100dp"

@@ -26,7 +26,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/share_Tv"
+                        android:id="@+id/surveyShare_Tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -46,7 +46,7 @@
             android:padding="8dp">
 
             <EditText
-                android:id="@+id/surveyQuestion_Et"
+                android:id="@+id/addQuestion_Et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -59,7 +59,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/firstImage_Iv"
+                    android:id="@+id/addFirstImage_Iv"
                     android:layout_width="wrap_content"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
@@ -69,7 +69,7 @@
                     android:src="@mipmap/ic_launcher" />
 
                 <ImageView
-                    android:id="@+id/secondImage_Iv"
+                    android:id="@+id/addSecondImage_Iv"
                     android:layout_width="wrap_content"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
@@ -80,7 +80,7 @@
             </LinearLayout>
 
             <Switch
-                android:id="@+id/isSecret_Sw"
+                android:id="@+id/addIsSecret_Sw"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:padding="10dp"
@@ -93,13 +93,13 @@
                 android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/surveyCategory_Tv"
+                    android:id="@+id/addCategory_Tv"
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     android:text="@string/surveyCategory" />
 
                 <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/category_Sp"
+                    android:id="@+id/addCategory_Sp"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
                     android:entries="@array/surveyCategories"
@@ -115,14 +115,14 @@
                 android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/surveyTime_Tv"
+                    android:id="@+id/addSurveyTime_Tv"
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     android:text="@string/surveyTime" />
 
 
                 <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/time_Sp"
+                    android:id="@+id/addTime_Sp"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
                     android:entries="@array/surveyTimes"

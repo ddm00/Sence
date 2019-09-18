@@ -253,7 +253,7 @@ public class UserProfileFragment extends Fragment {
         Dao.getInstance().getFirebaseDatabase().getReference("Follow").child(MainActivity.CurrentUser.getId()).child("followers").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                followingNumberTv.setText(dataSnapshot.getChildrenCount() + "");
+                followerNumberTv.setText(dataSnapshot.getChildrenCount() + "");
             }
 
             @Override
@@ -264,7 +264,7 @@ public class UserProfileFragment extends Fragment {
         Dao.getInstance().getFirebaseDatabase().getReference("Follow").child(MainActivity.CurrentUser.getId()).child("following").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                followerNumberTv.setText(dataSnapshot.getChildrenCount() + "");
+                followingNumberTv.setText(dataSnapshot.getChildrenCount() + "");
             }
 
             @Override

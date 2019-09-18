@@ -73,15 +73,15 @@ public class SurveyFragment extends Fragment {
     }
 
     public void init() {
-        surveyFirstimage = view.findViewById(R.id.firstImage_Iv);
-        surveySecondimage = view.findViewById(R.id.secondImage_Iv);
-        surveyShare = view.findViewById(R.id.share_Tv);
-        surveyQuestion = view.findViewById(R.id.surveyQuestion_Et);
-        spCategory = view.findViewById(R.id.category_Sp);
-        spTime = view.findViewById(R.id.time_Sp);
-        surveyCategory = view.findViewById(R.id.surveyCategory_Tv);
-        surveyTime = view.findViewById(R.id.surveyTime_Tv);
-        isSecret = view.findViewById(R.id.isSecret_Sw);
+        surveyFirstimage = view.findViewById(R.id.addFirstImage_Iv);
+        surveySecondimage = view.findViewById(R.id.addSecondImage_Iv);
+        surveyShare = view.findViewById(R.id.surveyShare_Tv);
+        surveyQuestion = view.findViewById(R.id.addQuestion_Et);
+        spCategory = view.findViewById(R.id.addCategory_Sp);
+        spTime = view.findViewById(R.id.addTime_Sp);
+        surveyCategory = view.findViewById(R.id.addCategory_Tv);
+        surveyTime = view.findViewById(R.id.addSurveyTime_Tv);
+        isSecret = view.findViewById(R.id.addIsSecret_Sw);
         surveyShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

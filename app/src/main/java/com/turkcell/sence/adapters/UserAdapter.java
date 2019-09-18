@@ -1,7 +1,6 @@
 package com.turkcell.sence.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
@@ -25,8 +24,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,7 +31,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.turkcell.sence.R;
 import com.turkcell.sence.activities.MainActivity;
-import com.turkcell.sence.fragments.profile.NewProfileFragment;
 import com.turkcell.sence.fragments.profile.OldProfileFragment;
 import com.turkcell.sence.models.User;
 
@@ -109,7 +105,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
             @Override
             public void onClick(View view) {
                 if (MainActivity.CurrentUser.getId() != null && user != null) {
-                    if (holder.btn_follow.getText().toString().equals("follow")) {
+                    if (holder.btn_follow.getText().toString().equals("takip et")) {
                         if (user.isOpen()) {
                             FirebaseDatabase.getInstance().getReference().child("Follow").child(MainActivity.CurrentUser.getId())
                                     .child("following").child(user.getId()).setValue(true);
@@ -132,14 +128,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
 
                         }
 
-                    } else if (holder.btn_follow.getText().toString().equals("following")) {
+                    } else if (holder.btn_follow.getText().toString().equals("takip etme")) {
 
                         FirebaseDatabase.getInstance().getReference().child("Follow").child(MainActivity.CurrentUser.getId())
                                 .child("following").child(user.getId()).removeValue();
                         FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId())
                                 .child("followers").child(MainActivity.CurrentUser.getId()).removeValue();
 
-                    } else if (holder.btn_follow.getText().toString().equals("request")) {
+                    } else if (holder.btn_follow.getText().toString().equals("istek")) {
 
                         FirebaseDatabase.getInstance().getReference().child("Follow").child(MainActivity.CurrentUser.getId())
                                 .child("requestPust").child(user.getId()).removeValue();
@@ -184,9 +180,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (user.getId() != null && !user.getId().isEmpty() && dataSnapshot.child(user.getId()).exists()) {
-                        button.setText("following");
+                        button.setText("takip etme");
                     } else {
-                        button.setText("follow");
+                        button.setText("takip et");
                     }
                 }
 
@@ -202,7 +198,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (user.getId() != null && !user.getId().isEmpty() && dataSnapshot.child(user.getId()).exists()) {
-                        button.setText("request");
+                        button.setText("istek");
                     } else {
                         DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
                                 .child("Follow").child(MainActivity.CurrentUser.getId()).child("following");
@@ -210,15 +206,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (user.getId() != null && !user.getId().isEmpty() && dataSnapshot.child(user.getId()).exists()) {
-                                    button.setText("following");
+                                    button.setText("takip etme");
                                 } else {
-                                    button.setText("follow");
+                                    button.setText("takip et");
                                 }
                             }
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-                                button.setText("follow");
+                                button.setText("takip et");
                             }
                         });
 
@@ -235,7 +231,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
     }
 
     private void sendFCMPush(String token, String title, String msg) {
-        final String SERVER_KEY = "AAAAJfqakF4:APA91bGKfbe3CrNqVngi6NurqQYQwwPlPe1JgwhX9FLob6IcRtoPFPOXRzs37Y-ibEhYkP9ZtAk6pPh7Lm2brffN0UYPtkEUMZe46tEbXOTiNxWO0BnMPVt6uGlMtiHz1r6tWXt8lroV";
+        final String SERVER_KEY = "AAAAf88Hcr8:APA91bEzHQIJna7TyTIdIA9G7QYbkDx-2Wvblseslr8xgsjtgeXnxy_SdsBSBnbCWuIvlKZx1ELDdbhNOJw4RQ13Q0UVWXDrpZB4fOdtjL1rcN5bgoBLk96CepDJKnhePEQOVZQDGYqL";
 
         JSONObject obj = null;
         JSONObject objData = null;
