@@ -29,6 +29,8 @@ import com.turkcell.sence.adapters.ViewPagerFragmentAdapter;
 import com.turkcell.sence.database.Dao;
 import com.turkcell.sence.models.Survey;
 import com.turkcell.sence.models.User;
+import com.turkcell.sence.time.DateRegulative;
+import com.turkcell.sence.time.MyDateFormat;
 
 
 import java.text.SimpleDateFormat;
@@ -133,10 +135,10 @@ public class HomeFragment extends Fragment {
                                         if (map1 != null) {
                                             isWhichOne = (Boolean) map1.get("value");
                                         }
-                                        reySize = map.size(); // Oy sayısı
+                                        reySize = map.size();
 
                                     }
-                                    //String surveyId, String surveyQuestion, String surveyFirstImage, String surveySecondImage, String surveyTime, String surveyCategory, String surveyPublisher, Long t
+
                                     final Survey survey = new Survey(surveyId, question, surveyFirstImage, surveySecondImage, time, category, publisher, t, isWhichOne, reySize, isSecret);
 
                                     Dao.getInstance().getFirebaseDatabase().getReference("Users").child(survey.getSurveyPublisher())
@@ -154,7 +156,6 @@ public class HomeFragment extends Fragment {
 
                                                     } else {
                                                         if (!user.getId().equals(MainActivity.CurrentUser.getId())) {
-
                                                             FirebaseDatabase.getInstance().getReference().child("Follow").child(MainActivity.CurrentUser.getId())
                                                                     .child("following").child(user.getId()).addValueEventListener(new ValueEventListener() {
                                                                 @Override
@@ -263,62 +264,44 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private String farkHesap(long longDate, String time) {
+    private String farkHesap(long longDate, String sTime) {
 
-        Date bugun = new Date();
-        Date fark;
-        long bugun_trh = bugun.getTime();
-        String day, hour, minute, second, sDate, fark_gun = "";
+        String fark = "";
+        MyDateFormat myDateFormat = DateRegulative.getInstance().getDifference(longDate);
 
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd / HH:mm:ss");
-        String[] sureList = {"30 dk", "1 saat", "1 gün", "3 gün", "5 gün", "7 gün"};
-
-        fark = new Date(longDate - bugun_trh);
-        sDate = formatter.format(fark);
-        day = sDate.substring(0, 2);
-        hour = sDate.substring(5, 7);
-        minute = sDate.substring(8, 10);
-        second = sDate.substring(11, 13);
-
-        Log.e("date", sDate + " " + day + " " + hour + " " + minute + " " + second);
-
-        for (int i = 0; i < sureList.length; i++) {
-            if (sureList[i].equals(time)) {
-                switch (i) {
-                    case 0:
-                        if (Integer.valueOf(minute) != 0 && Integer.valueOf(second) != 0) {
-                            fark_gun = "Kalan süre: " + minute + ":" + second;
-                        }
-                        break;
-                    case 1:
-                        if (Integer.valueOf(minute) != 0 && Integer.valueOf(second) != 0) {
-                            fark_gun = "Kalan süre: " + minute + ":" + second;
-                        }
-                        break;
-                    case 2:
-                        if (Integer.valueOf(hour) != 0 && Integer.valueOf(minute) != 0 && Integer.valueOf(second) != 0) {
-                            fark_gun = "Kalan süre: " + hour + ":" + minute + ":" + second;
-                        }
-                        break;
-                    case 3:
-                        if (Integer.valueOf(day) != 1 && Integer.valueOf(hour) != 0 && Integer.valueOf(minute) != 0 && Integer.valueOf(second) != 0) {
-                            fark_gun = "Kalan süre: " + day + " gün " + hour + ":" + minute + ":" + second;
-                        }
-                        break;
-                    case 4:
-                        if (Integer.valueOf(day) != 1 && Integer.valueOf(hour) != 0 && Integer.valueOf(minute) != 0 && Integer.valueOf(second) != 0) {
-                            fark_gun = "Kalan süre: " + day + " gün " + hour + ":" + minute + ":" + second;
-                        }
-                        break;
-                    case 5:
-                        if (Integer.valueOf(day) != 1 && Integer.valueOf(hour) != 0 && Integer.valueOf(minute) != 0 && Integer.valueOf(second) != 0) {
-                            fark_gun = "Kalan süre: " + day + " gün " + hour + ":" + minute + ":" + second;
-                        }
-                        break;
+        switch (sTime) {
+            case "30 dk":
+                if (myDateFormat.getsMinute() < 30 && myDateFormat.getsHour() == 0 && myDateFormat.getsDay() == 0 && myDateFormat.getsMonth() == 0 && myDateFormat.getsYear() == 0) {
+                    fark = DateRegulative.getInstance().getStringFormat(myDateFormat);
                 }
-            }
+                break;
+            case "1 saat":
+                if (myDateFormat.getsMinute() < 60 && myDateFormat.getsHour() == 0 && myDateFormat.getsDay() == 0 && myDateFormat.getsMonth() == 0 && myDateFormat.getsYear() == 0) {
+                    fark = DateRegulative.getInstance().getStringFormat(myDateFormat);
+                }
+                break;
+            case "1 gün":
+                if (myDateFormat.getsHour() < 24 && myDateFormat.getsDay() == 0 && myDateFormat.getsMonth() == 0 && myDateFormat.getsYear() == 0) {
+                    fark = DateRegulative.getInstance().getStringFormat(myDateFormat);
+                }
+                break;
+            case "3 gün":
+                if (myDateFormat.getsHour() < 24 && myDateFormat.getsDay() < 2 && myDateFormat.getsMonth() == 0 && myDateFormat.getsYear() == 0) {
+                    fark = DateRegulative.getInstance().getStringFormat(myDateFormat);
+                }
+                break;
+            case "5 gün":
+                if (myDateFormat.getsHour() < 24 && myDateFormat.getsDay() < 4 && myDateFormat.getsMonth() == 0 && myDateFormat.getsYear() == 0) {
+                    fark = DateRegulative.getInstance().getStringFormat(myDateFormat);
+                }
+                break;
+            case "7 gün":
+                if (myDateFormat.getsHour() < 24 && myDateFormat.getsDay() < 6 && myDateFormat.getsMonth() == 0 && myDateFormat.getsYear() == 0) {
+                    fark = DateRegulative.getInstance().getStringFormat(myDateFormat);
+                }
+                break;
         }
-        return fark_gun;
+        return fark;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.turkcell.sence.fragments;
+package com.turkcell.sence.fragments.profile;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

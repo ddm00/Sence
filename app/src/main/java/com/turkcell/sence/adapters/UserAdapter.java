@@ -24,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,7 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.turkcell.sence.R;
 import com.turkcell.sence.activities.MainActivity;
-import com.turkcell.sence.fragments.profile.OldProfileFragment;
+import com.turkcell.sence.fragments.profile.OtherProfileFragment;
 import com.turkcell.sence.models.User;
 
 
@@ -50,12 +51,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
     private List<User> mUsers;
     private FragmentManager supportFragmentManager;
 
-
     public UserAdapter(Activity activity, List<User> users, FragmentManager supportFragmentManager) {
         this.activity = activity;
         mUsers = users;
         this.supportFragmentManager = supportFragmentManager;
-
     }
 
     @NonNull
@@ -70,42 +69,39 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
 
         final User user = mUsers.get(position);
 
-        holder.btn_follow.setVisibility(View.VISIBLE);
-        isFollowing(user, holder.btn_follow);
+        holder.followBtn.setVisibility(View.VISIBLE);
+        isFollowing(holder.followBtn, position);
 
-        holder.username.setText(user.getUsername());
-        holder.fullname.setText(user.getFullname());
-        Glide.with(activity).load(user.getImageurl()).into(holder.image_profile);
+        holder.userName.setText(user.getUsername());
+        holder.fullName.setText(user.getFullname());
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.ic_account_circle_black_24dp);
+        Glide.with(activity).setDefaultRequestOptions(requestOptions).load(user.getImageurl()).into(holder.imageProfile);
 
         if (user != null && user.getId() != null && user.getId().equals(MainActivity.CurrentUser.getId())) {
-            holder.btn_follow.setVisibility(View.GONE);
+            holder.followBtn.setVisibility(View.GONE);
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /**
-                 *  Bu bölümü eğer Search kısmındaki profil bölümünün alternatif görünümünü değiştirmek istersek.
-                 *
-                 FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-                 NewProfileFragment ProfileFragment = new NewProfileFragment(supportFragmentManager, user, activity);
-                 transaction.replace(R.id.fragmentContainer, ProfileFragment, "OldProfileFragment");
-                 transaction.addToBackStack(null);
-                 transaction.commit();*/
                 FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-                OldProfileFragment ProfileFragment = new OldProfileFragment(supportFragmentManager, user, activity);
-                transaction.replace(R.id.fragmentContainer, ProfileFragment, "OldProfileFragment");
+                OtherProfileFragment ProfileFragment = new OtherProfileFragment(supportFragmentManager, user, activity);
+                transaction.replace(R.id.fragmentContainer, ProfileFragment, "OtherProfileFragment");
                 transaction.addToBackStack(null);
                 transaction.commit();
+
 
             }
         });
 
-        holder.btn_follow.setOnClickListener(new View.OnClickListener() {
+        holder.followBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (MainActivity.CurrentUser.getId() != null && user != null) {
-                    if (holder.btn_follow.getText().toString().equals("takip et")) {
+
+                    if (holder.followBtn.getText().toString().equals("takip et")) {
                         if (user.isOpen()) {
                             FirebaseDatabase.getInstance().getReference().child("Follow").child(MainActivity.CurrentUser.getId())
                                     .child("following").child(user.getId()).setValue(true);
@@ -113,7 +109,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
                                     .child("followers").child(MainActivity.CurrentUser.getId()).setValue(true);
 
                             if (user.getToken() != null && !user.getToken().equals("")) {
-                                sendFCMPush(user.getToken(), "Sence", MainActivity.CurrentUser.getFullname() + " takip etti");
+                                sendFCMPush(user.getToken(), "Sence", MainActivity.CurrentUser.getFullname() + " seni takip etti");
                             }
 
                         } else {
@@ -123,19 +119,19 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
                                     .child("requestGet").child(MainActivity.CurrentUser.getId()).setValue(true);
 
                             if (user.getToken() != null && !user.getToken().equals("")) {
-                                sendFCMPush(user.getToken(), "Sence", MainActivity.CurrentUser.getFullname() + " bir arkadaşlık isteği gönderdi.");
+                                sendFCMPush(user.getToken(), "Sence", MainActivity.CurrentUser.getFullname() + " sana bir arkadaşlık isteği gönderdi.");
                             }
 
                         }
 
-                    } else if (holder.btn_follow.getText().toString().equals("takip etme")) {
+                    } else if (holder.followBtn.getText().toString().equals("takip etme")) {
 
                         FirebaseDatabase.getInstance().getReference().child("Follow").child(MainActivity.CurrentUser.getId())
                                 .child("following").child(user.getId()).removeValue();
                         FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId())
                                 .child("followers").child(MainActivity.CurrentUser.getId()).removeValue();
 
-                    } else if (holder.btn_follow.getText().toString().equals("istek")) {
+                    } else if (holder.followBtn.getText().toString().equals("istek")) {
 
                         FirebaseDatabase.getInstance().getReference().child("Follow").child(MainActivity.CurrentUser.getId())
                                 .child("requestPust").child(user.getId()).removeValue();
@@ -143,7 +139,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
                                 .child("requestGet").child(MainActivity.CurrentUser.getId()).removeValue();
                     }
                 }
-
             }
 
         });
@@ -156,30 +151,30 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
 
     class ImageViewHolder extends RecyclerView.ViewHolder {
 
-        TextView username;
-        TextView fullname;
-        CircleImageView image_profile;
-        Button btn_follow;
+        TextView userName;
+        TextView fullName;
+        CircleImageView imageProfile;
+        Button followBtn;
 
         ImageViewHolder(View itemView) {
             super(itemView);
 
-            username = itemView.findViewById(R.id.userName_Tv);
-            fullname = itemView.findViewById(R.id.fullName_Tv);
-            image_profile = itemView.findViewById(R.id.imageProfile_Iv);
-            btn_follow = itemView.findViewById(R.id.follow_Btn);
+            userName = itemView.findViewById(R.id.useradapterUsername_Tv);
+            fullName = itemView.findViewById(R.id.useradapterFullname_Tv);
+            imageProfile = itemView.findViewById(R.id.useradapterImageprofile_Iv);
+            followBtn = itemView.findViewById(R.id.useradapterFollow_Btn);
         }
     }
 
-    private void isFollowing(final User user, final Button button) {
+    private void isFollowing(final Button button, final int position) {
 
-        if (user.isOpen()) {
+        if (mUsers.get(position).isOpen()) {
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
                     .child("Follow").child(MainActivity.CurrentUser.getId()).child("following");
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (user.getId() != null && !user.getId().isEmpty() && dataSnapshot.child(user.getId()).exists()) {
+                    if (mUsers.get(position).getId() != null && !mUsers.get(position).getId().isEmpty() && dataSnapshot.child(mUsers.get(position).getId()).exists()) {
                         button.setText("takip etme");
                     } else {
                         button.setText("takip et");
@@ -197,15 +192,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
             reference1.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (user.getId() != null && !user.getId().isEmpty() && dataSnapshot.child(user.getId()).exists()) {
+                    if (mUsers.get(position).getId() != null && !mUsers.get(position).getId().isEmpty() && dataSnapshot.child(mUsers.get(position).getId()).exists()) {
                         button.setText("istek");
                     } else {
                         DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
                                 .child("Follow").child(MainActivity.CurrentUser.getId()).child("following");
-                        reference.addValueEventListener(new ValueEventListener() {
+                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                if (user.getId() != null && !user.getId().isEmpty() && dataSnapshot.child(user.getId()).exists()) {
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (mUsers.get(position).getId() != null && !mUsers.get(position).getId().isEmpty() && dataSnapshot.child(mUsers.get(position).getId()).exists()) {
                                     button.setText("takip etme");
                                 } else {
                                     button.setText("takip et");
@@ -213,18 +208,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
                             }
 
                             @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                button.setText("takip et");
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
                             }
                         });
-
                     }
-
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                    button.setText("takip et");
                 }
             });
         }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="profileNumber_Btn">#95B0B4</color>
-    <color name="profile_Btn">#609DA7</color>
+    <color name="profileNumber_Btn">#34000000</color>
+    <color name="profile_Btn">#66000000</color>
     <color name="textColor">#0C0505</color>
     <color name="colorPrimary">#3D61E2</color>
     <color name="colorPrimaryDark">#393739</color>

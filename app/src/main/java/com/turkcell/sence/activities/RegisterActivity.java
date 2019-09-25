@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.turkcell.sence.R;
+import com.turkcell.sence.database.Dao;
 
 
 import java.util.HashMap;
@@ -30,8 +31,6 @@ public class RegisterActivity extends AppCompatActivity {
     EditText userNameEt, fullNameEt, eMailEt, passwordEt;
     Button registerBtn;
     TextView loginTv;
-    FirebaseAuth mAuth;
-    DatabaseReference reference;
     ProgressDialog dialog;
 
     String userName, userFullname, userEmail, userPassword;
@@ -50,7 +49,6 @@ public class RegisterActivity extends AppCompatActivity {
         passwordEt = findViewById(R.id.registerPassword_Et);
         registerBtn = findViewById(R.id.registerBtn);
         loginTv = findViewById(R.id.registerLogin_Tv);
-        mAuth = FirebaseAuth.getInstance();
         loginTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,20 +77,19 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void register(final String username, final String fullname, String email, String password) {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        Dao.getInstance().getmAuth().createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                    FirebaseUser firebaseUser = Dao.getInstance().getmAuth().getCurrentUser();
                     String userID = firebaseUser.getUid();
-                    reference = FirebaseDatabase.getInstance().getReference().child("Users").child(userID);
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("id", userID);
                     hashMap.put("username", username.toLowerCase());
                     hashMap.put("fullname", fullname);
                     hashMap.put("imageUrl", "");
                     hashMap.put("isOpen", true);
-                    reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    Dao.getInstance().getFirebaseDatabase().getReference("Users").child(userID).setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {

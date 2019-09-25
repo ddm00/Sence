@@ -40,8 +40,8 @@ public class UserProfileSurveyCustomAdapter extends BaseAdapter {
         return myList;
     }
 
-    public void updateResults(List<Survey> myCarsVeriModeli) {
-        this.myList = myCarsVeriModeli;
+    public void updateResults(List<Survey> surveysList) {
+        this.myList = surveysList;
         notifyDataSetChanged();
     }
 
@@ -64,30 +64,30 @@ public class UserProfileSurveyCustomAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-        final TextView usersurveyUsername, usersurveyQuestion, usersurveyVotes, userSurveyTime;
-        final ImageView usersurveyFirstimage, usersurveySecondimage;
+        final TextView userName, question, votes, time;
+        final ImageView firstImage, secondImage;
 
         View view = layoutInflater.inflate(R.layout.list_view_item_user_survey, null);
 
-        usersurveyUsername = view.findViewById(R.id.usersurveyUsername_Tv);
-        usersurveyQuestion = view.findViewById(R.id.usersurveyQuestion_Tv);
-        usersurveyVotes = view.findViewById(R.id.usersurveyUsers_Tv);
-        userSurveyTime = view.findViewById(R.id.usersurveyTime_Tv);
+        userName = view.findViewById(R.id.usersurveyUsername_Tv);
+        question = view.findViewById(R.id.usersurveyQuestion_Tv);
+        votes = view.findViewById(R.id.usersurveyUsers_Tv);
+        time = view.findViewById(R.id.usersurveyTime_Tv);
 
-        usersurveyFirstimage = view.findViewById(R.id.usersurveyFirstImage_Iv);
-        usersurveySecondimage = view.findViewById(R.id.usersurveySecondImage_Iv);
+        firstImage = view.findViewById(R.id.usersurveyFirstImage_Iv);
+        secondImage = view.findViewById(R.id.usersurveySecondImage_Iv);
 
         survey = myList.get(position);
-        usersurveyUsername.setText(survey.getUser().getFullname() + " / " + survey.getUser().getUsername());
+        userName.setText(survey.getUser().getFullname() + " / " + survey.getUser().getUsername());
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.mipmap.ic_launcher);
-        Glide.with(context).setDefaultRequestOptions(requestOptions).load(survey.getSurveyFirstImage()).into(usersurveyFirstimage);
-        Glide.with(context).setDefaultRequestOptions(requestOptions).load(survey.getSurveySecondImage()).into(usersurveySecondimage);
+        Glide.with(context).setDefaultRequestOptions(requestOptions).load(survey.getSurveyFirstImage()).into(firstImage);
+        Glide.with(context).setDefaultRequestOptions(requestOptions).load(survey.getSurveySecondImage()).into(secondImage);
 
-        usersurveyQuestion.setText(survey.getSurveyQuestion());
-        usersurveyVotes.setText("30 oylama yapıldı.");
-        userSurveyTime.setText(survey.getSurveyTime());
+        question.setText(survey.getSurveyCategory() + ":" + survey.getSurveyQuestion());
+        votes.setText(survey.getReySize()+" oylama yapıldı.");
+        time.setText(survey.getSurveyTime());
         if (!survey.getSurveyTime().equals("Anketin süresi doldu.")) {
             Thread thread = new Thread() {
                 public void run() {
@@ -97,7 +97,7 @@ public class UserProfileSurveyCustomAdapter extends BaseAdapter {
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    userSurveyTime.setText(farkHesap(myList.get(position).getT(), myList.get(position).getSurveyTime()));
+                                    time.setText(farkHesap(myList.get(position).getT(), myList.get(position).getSurveyTime()));
                                 }
                             });
 
@@ -110,10 +110,11 @@ public class UserProfileSurveyCustomAdapter extends BaseAdapter {
             };
             thread.start();
         } else {
-            userSurveyTime.setText(survey.getSurveyTime());
+            time.setText(survey.getSurveyTime());
         }
         return view;
     }
+
     private String farkHesap(long longDate, String sTime) {
 
         String fark = "";

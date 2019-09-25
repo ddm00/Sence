@@ -56,9 +56,6 @@ public class UserProfileSenceFragment extends Fragment {
         this.isFollowing = isFollowing;
     }
 
-    //Sence kısmında da benim oylaması biten anketlerimin sonuçları
-    // görünecek şekilde yine yüzdelerle kazananlar yeşil çerçeveli olsun yine olabilirse.
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -77,7 +74,7 @@ public class UserProfileSenceFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         if (user.getId().equals(snapshot.getKey())) {
-                            getMySurvey();
+                            getSurvey();
                             warningTv.setVisibility(GONE);
                         }
                     }
@@ -92,19 +89,16 @@ public class UserProfileSenceFragment extends Fragment {
         }
 
         if (user.getId().equals(MainActivity.CurrentUser.getId())) {
-            getMySurvey();
+            getSurvey();
             warningTv.setVisibility(GONE);
         }
-
-
         return view;
     }
 
 
-    private void getMySurvey() {
+    private void getSurvey() {
         homeFrameFl.setVisibility(View.VISIBLE);
         surveyListView.setVisibility(GONE);
-
 
         Dao.getInstance().getFirebaseDatabase().getReference("Surveys").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -140,6 +134,8 @@ public class UserProfileSenceFragment extends Fragment {
                             }
                         }
                     }
+                    homeFrameFl.setVisibility(GONE);
+                    surveyListView.setVisibility(View.VISIBLE);
                 }
             }
 

@@ -7,14 +7,14 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/imageProfile_Iv"
+        android:id="@+id/useradapterImageprofile_Iv"
         android:src="@mipmap/ic_launcher"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/imageProfile_Iv"
-        android:layout_toEndOf="@id/imageProfile_Iv"
+        android:layout_toRightOf="@+id/useradapterImageprofile_Iv"
+        android:layout_toEndOf="@+id/useradapterImageprofile_Iv"
         android:layout_marginLeft="5dp"
         android:layout_centerVertical="true"
         android:orientation="vertical"
@@ -24,13 +24,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="username"
-            android:id="@+id/userName_Tv"
+            android:id="@+id/useradapterUsername_Tv"
             android:maxLines="1"
             android:textStyle="bold"
             android:textColor="@color/colorPrimaryDark"/>
 
         <TextView
-            android:id="@+id/fullName_Tv"
+            android:id="@+id/useradapterFullname_Tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
@@ -43,7 +43,7 @@
         android:layout_height="30dp"
         android:background="@drawable/button_background"
         android:visibility="gone"
-        android:id="@+id/follow_Btn"
+        android:id="@+id/useradapterFollow_Btn"
         android:textColor="@color/colorPrimary"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"

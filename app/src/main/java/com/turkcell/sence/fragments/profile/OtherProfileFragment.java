@@ -3,6 +3,7 @@ package com.turkcell.sence.fragments.profile;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import com.turkcell.sence.R;
@@ -30,6 +42,9 @@ import com.turkcell.sence.models.User;
 import com.turkcell.sence.time.DateRegulative;
 import com.turkcell.sence.time.MyDateFormat;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,19 +55,20 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
- */public class OldProfileFragment extends Fragment {
+ */public class OtherProfileFragment extends Fragment {
 
     private View view;
     private FragmentManager supportFragmentManager;
     private CircleImageView profilePhotoIv;
     private TextView profileNameTv;
-    private Button followerBtn, followBtn, ongoingPollBtn, numberOngoingPollBtn, completedPollBtn, numberCompletedPollBtn, votedPollBtn, numberVotedPollBtn;
+    private Button followFollowingBtn,followerBtn, followBtn, ongoingPollBtn, numberOngoingPollBtn, completedPollBtn, numberCompletedPollBtn, votedPollBtn, numberVotedPollBtn;
     private Activity activity;
     private User user;
     private boolean isFollowing = false;
+    private List<User> mUsers;
 
 
-    public OldProfileFragment(FragmentManager supportFragmentManager, User user, Activity activity) {
+    public OtherProfileFragment(FragmentManager supportFragmentManager, User user, Activity activity) {
         this.supportFragmentManager = supportFragmentManager;
         this.user = user;
         this.activity = activity;
@@ -62,19 +78,22 @@ import de.hdodenhof.circleimageview.CircleImageView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_old_profile, container, false);
-        profilePhotoIv = view.findViewById(R.id.oldprofileUserImage_Iv);
-        profileNameTv = view.findViewById(R.id.oldprofileUsername_Tv);
+        view = inflater.inflate(R.layout.fragment_other_profile, container, false);
+        profilePhotoIv = view.findViewById(R.id.otherprofileUserImage_Iv);
+        profileNameTv = view.findViewById(R.id.otherprofileUsername_Tv);
+        followFollowingBtn=view.findViewById(R.id.otherprofileFollow_Btn);
+        followerBtn = view.findViewById(R.id.otherprofileFollower_Btn);
+        followBtn = view.findViewById(R.id.otherprofileFollowing_Btn);
+        ongoingPollBtn = view.findViewById(R.id.otherprofileOngoingSurvey_Btn);
+        completedPollBtn = view.findViewById(R.id.otherprofileCompletedSurvey_Btn);
+        votedPollBtn = view.findViewById(R.id.otherprofileVotedSurvey_Btn);
 
-        followerBtn = view.findViewById(R.id.oldprofileFollower_Btn);
-        followBtn = view.findViewById(R.id.oldprofileFollowing_Btn);
-        ongoingPollBtn = view.findViewById(R.id.oldprofileOngoingSurvey_Btn);
-        completedPollBtn = view.findViewById(R.id.oldprofileCompletedSurvey_Btn);
-        votedPollBtn = view.findViewById(R.id.oldprofileVotedSurvey_Btn);
+        numberOngoingPollBtn = view.findViewById(R.id.otherprofileOngoingNumber_Btn);
+        numberCompletedPollBtn = view.findViewById(R.id.otherprofileCompletedNumber_Btn);
+        numberVotedPollBtn = view.findViewById(R.id.otherprofileVotedNumber_Btn);
 
-        numberOngoingPollBtn = view.findViewById(R.id.oldprofileOngoingNumber_Btn);
-        numberCompletedPollBtn = view.findViewById(R.id.oldprofileCompletedNumber_Btn);
-        numberVotedPollBtn = view.findViewById(R.id.oldprofileVotedNumber_Btn);
+        followFollowingBtn.setVisibility(View.VISIBLE);
+        isFollowing(followFollowingBtn);
 
         followerBtn.setEnabled(false);
         followBtn.setEnabled(false);
@@ -135,6 +154,52 @@ import de.hdodenhof.circleimageview.CircleImageView;
     }
 
     private void init() {
+        followFollowingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (MainActivity.CurrentUser.getId() != null && user != null) {
+
+                    if (followFollowingBtn.getText().toString().equals("takip et")) {
+                        if (user.isOpen()) {
+                            FirebaseDatabase.getInstance().getReference().child("Follow").child(MainActivity.CurrentUser.getId())
+                                    .child("following").child(user.getId()).setValue(true);
+                            FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId())
+                                    .child("followers").child(MainActivity.CurrentUser.getId()).setValue(true);
+
+                            if (user.getToken() != null && !user.getToken().equals("")) {
+                                sendFCMPush(user.getToken(), "Sence", MainActivity.CurrentUser.getFullname() + " seni takip etti");
+                            }
+
+                        } else {
+                            FirebaseDatabase.getInstance().getReference().child("Follow").child(MainActivity.CurrentUser.getId())
+                                    .child("requestPust").child(user.getId()).setValue(true);
+                            FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId())
+                                    .child("requestGet").child(MainActivity.CurrentUser.getId()).setValue(true);
+
+                            if (user.getToken() != null && !user.getToken().equals("")) {
+                                sendFCMPush(user.getToken(), "Sence", MainActivity.CurrentUser.getFullname() + " sana bir arkadaşlık isteği gönderdi.");
+                            }
+
+                        }
+
+                    } else if (followFollowingBtn.getText().toString().equals("takip etme")) {
+
+                        FirebaseDatabase.getInstance().getReference().child("Follow").child(MainActivity.CurrentUser.getId())
+                                .child("following").child(user.getId()).removeValue();
+                        FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId())
+                                .child("followers").child(MainActivity.CurrentUser.getId()).removeValue();
+
+                    } else if (followFollowingBtn.getText().toString().equals("istek")) {
+
+                        FirebaseDatabase.getInstance().getReference().child("Follow").child(MainActivity.CurrentUser.getId())
+                                .child("requestPust").child(user.getId()).removeValue();
+                        FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId())
+                                .child("requestGet").child(MainActivity.CurrentUser.getId()).removeValue();
+                    }
+                }
+            }
+
+        });
 
         followerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,7 +279,122 @@ import de.hdodenhof.circleimageview.CircleImageView;
         });
     }
 
-    //on going counter
+    private void isFollowing(final Button button) {
+
+        if (user.isOpen()) {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
+                    .child("Follow").child(MainActivity.CurrentUser.getId()).child("following");
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (user.getId() != null && !user.getId().isEmpty() && dataSnapshot.child(user.getId()).exists()) {
+                        button.setText("takip etme");
+                    } else {
+                        button.setText("takip et");
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        } else {
+            DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference()
+                    .child("Follow").child(MainActivity.CurrentUser.getId()).child("requestPust");
+            reference1.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (user.getId() != null && !user.getId().isEmpty() && dataSnapshot.child(user.getId()).exists()) {
+                        button.setText("istek");
+                    } else {
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
+                                .child("Follow").child(MainActivity.CurrentUser.getId()).child("following");
+                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (user.getId() != null && !user.getId().isEmpty() && dataSnapshot.child(user.getId()).exists()) {
+                                    button.setText("takip etme");
+                                } else {
+                                    button.setText("takip et");
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    button.setText("takip et");
+                }
+            });
+        }
+    }
+
+    private void sendFCMPush(String token, String title, String msg) {
+        final String SERVER_KEY = "AAAAf88Hcr8:APA91bEzHQIJna7TyTIdIA9G7QYbkDx-2Wvblseslr8xgsjtgeXnxy_SdsBSBnbCWuIvlKZx1ELDdbhNOJw4RQ13Q0UVWXDrpZB4fOdtjL1rcN5bgoBLk96CepDJKnhePEQOVZQDGYqL";
+
+        JSONObject obj = null;
+        JSONObject objData = null;
+        JSONObject dataobjData = null;
+
+        try {
+            obj = new JSONObject();
+            objData = new JSONObject();
+
+            objData.put("body", msg);
+            objData.put("title", title);
+            objData.put("sound", "default");
+            objData.put("icon", "icon_name"); //   icon_name
+            objData.put("tag", token);
+            objData.put("priority", "high");
+
+            dataobjData = new JSONObject();
+            dataobjData.put("text", msg);
+            dataobjData.put("title", title);
+
+            obj.put("to", token);
+
+            obj.put("notification", objData);
+            obj.put("data", dataobjData);
+            Log.e("return here>>", obj.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", obj,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e("True", response + "");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("False", error + "");
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "key=" + SERVER_KEY);
+                params.put("Content-Type", "application/json");
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+        int socketTimeout = 1000 * 60;// 60 seconds
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsObjRequest.setRetryPolicy(policy);
+        requestQueue.add(jsObjRequest);
+    }
+
     private void onGoing() {
 
         Dao.getInstance().getFirebaseDatabase().getReference("Surveys").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -408,5 +588,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
         }
         return fark;
     }
+
 
 }

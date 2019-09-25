@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class SurveyFragment extends Fragment {
+
     ImageView surveyFirstimage, surveySecondimage;
     TextView surveyShare, surveyCategory, surveyTime;
     EditText surveyQuestion;
@@ -42,10 +43,8 @@ public class SurveyFragment extends Fragment {
     String firstImage, secondImage, surveyId;
     DatabaseReference reference;
     Switch isSecret;
-
     public static Uri firstImageUri, secondImageUri;
     public static int value = 0;
-
     View view;
     ProgressDialog progressDialog;
 
@@ -66,13 +65,7 @@ public class SurveyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_survey, container, false);
-        init();
-        return view;
-    }
-
-    public void init() {
         surveyFirstimage = view.findViewById(R.id.addFirstImage_Iv);
         surveySecondimage = view.findViewById(R.id.addSecondImage_Iv);
         surveyShare = view.findViewById(R.id.surveyShare_Tv);
@@ -82,6 +75,11 @@ public class SurveyFragment extends Fragment {
         surveyCategory = view.findViewById(R.id.addCategory_Tv);
         surveyTime = view.findViewById(R.id.addSurveyTime_Tv);
         isSecret = view.findViewById(R.id.addIsSecret_Sw);
+        init();
+        return view;
+    }
+
+    public void init() {
         surveyShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,6 +166,9 @@ public class SurveyFragment extends Fragment {
                 }
             });
 
+        }else {
+            progressDialog.dismiss();
+            Toast.makeText(view.getContext(), "İki resimde seçilmek zorundadır.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -181,38 +182,7 @@ public class SurveyFragment extends Fragment {
         hashMap.put("surveySecondImage", secondImage);
         hashMap.put("time", selectedTime);
         hashMap.put("isSecret", isSecret.isChecked());
-
-        Date date = new Date();
-        String[] timeList = {"30 dk", "1 saat", "1 gün", "3 gün", "5 gün", "7 gün"};
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-
-        for (int i = 0; i < timeList.length; i++) {
-            if (timeList[i].equals(selectedTime)) {
-                switch (i) {
-                    case 0:
-                        calendar.add(Calendar.MINUTE, 30);
-                        break;
-                    case 1:
-                        calendar.add(Calendar.HOUR, 1);
-                        break;
-                    case 2:
-                        calendar.add(Calendar.DATE, 1);
-                    case 3:
-                        calendar.add(Calendar.DATE, 3);
-                        break;
-                    case 4:
-                        calendar.add(Calendar.DATE, 5);
-                        break;
-                    case 5:
-                        calendar.add(Calendar.DATE, 7);
-                        break;
-
-                }
-            }
-        }
-
-        hashMap.put("t", calendar.getTime().getTime());
+        hashMap.put("t", System.currentTimeMillis());
 
         reference.child(surveyId).setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.turkcell.sence.R;
+import com.turkcell.sence.database.Dao;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -31,8 +32,6 @@ public class LoginActivity extends AppCompatActivity {
     Button loginBtn;
     TextView registerTv;
     ProgressDialog dialog;
-    FirebaseAuth mAuth;
-    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         userPasswordEt = findViewById(R.id.loginPassword_Et);
         loginBtn = findViewById(R.id.loginBtn);
         registerTv = findViewById(R.id.loginRegister_Tv);
-        mAuth = FirebaseAuth.getInstance();
 
         registerTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,12 +71,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(String email, String password) {
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        Dao.getInstance().getmAuth().signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    reference= FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
-                    reference.addValueEventListener(new ValueEventListener() {
+                    Dao.getInstance().getFirebaseDatabase().getReference("Users").child(Dao.getInstance().getmAuth().getCurrentUser().getUid())
+                            .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             dialog.dismiss();

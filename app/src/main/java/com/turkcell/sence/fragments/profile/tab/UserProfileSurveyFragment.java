@@ -75,7 +75,7 @@ public class UserProfileSurveyFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         if (user.getId().equals(snapshot.getKey())) {
-                            getMySurvey();
+                            getSurvey();
                             warningTv.setVisibility(GONE);
                         }
                     }
@@ -90,17 +90,16 @@ public class UserProfileSurveyFragment extends Fragment {
         }
 
         if (user.getId().equals(MainActivity.CurrentUser.getId())) {
-            getMySurvey();
+            getSurvey();
             warningTv.setVisibility(GONE);
         }
 
         return view;
     }
 
-    private void getMySurvey() {
+    private void getSurvey() {
         homeFrameFl.setVisibility(View.VISIBLE);
         surveyListView.setVisibility(GONE);
-
 
         Dao.getInstance().getFirebaseDatabase().getReference("Surveys").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -119,13 +118,13 @@ public class UserProfileSurveyFragment extends Fragment {
                     Long t;
                     for (int i = 0; i < mapList.size(); i++) {
 
-                        publisher = (String) mapList.get(i).get("Publisher");
-                        surveyId = (String) mapList.get(i).get("SurveyId");
-                        question = (String) mapList.get(i).get("Question");
-                        category = (String) mapList.get(i).get("Category");
-                        surveyFirstImage = (String) mapList.get(i).get("SurveyFirstImage");
-                        surveySecondImage = (String) mapList.get(i).get("SurveySecondImage");
-                        time = (String) mapList.get(i).get("Time");
+                        publisher = (String) mapList.get(i).get("publisher");
+                        surveyId = (String) mapList.get(i).get("surveyId");
+                        question = (String) mapList.get(i).get("question");
+                        category = (String) mapList.get(i).get("category");
+                        surveyFirstImage = (String) mapList.get(i).get("surveyFirstImage");
+                        surveySecondImage = (String) mapList.get(i).get("surveySecondImage");
+                        time = (String) mapList.get(i).get("time");
                         t = (Long) mapList.get(i).get("t");
 
                         if (t != null && time != null) {
@@ -139,6 +138,8 @@ public class UserProfileSurveyFragment extends Fragment {
                             }
                         }
                     }
+                    homeFrameFl.setVisibility(GONE);
+                    surveyListView.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -210,6 +211,5 @@ public class UserProfileSurveyFragment extends Fragment {
         }
         return fark;
     }
-
 
 }

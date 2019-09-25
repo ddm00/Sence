@@ -1,6 +1,5 @@
 package com.turkcell.sence.fragments.profile;
 
-
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -40,8 +39,8 @@ public class UserProfileOnGoingFragment extends Fragment {
 
     private View view;
     private ListView surveyListView;
-    private TextView tw_warning;
-    private FrameLayout progres_home_frame;
+    private TextView warningTv;
+    private FrameLayout homeFrameFl;
     private ArrayList<Survey> surveyList = new ArrayList<>();
     private UserProfileSurveyCustomAdapter surveyAdapter;
     private Activity activity;
@@ -64,12 +63,12 @@ public class UserProfileOnGoingFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user_profile_survey, container, false);
         surveyListView = view.findViewById(R.id.userprofilesurveySurveys_Lv);
-        tw_warning = view.findViewById(R.id.userprofilesurveyWarning_Tv);
-        progres_home_frame = view.findViewById(R.id.userprofilesurveyFrame_Fl);
+        warningTv = view.findViewById(R.id.userprofilesurveyWarning_Tv);
+        homeFrameFl = view.findViewById(R.id.userprofilesurveyFrame_Fl);
         surveyAdapter = new UserProfileSurveyCustomAdapter(activity, view.getContext(), surveyList);
         surveyListView.setAdapter(surveyAdapter);
 
-        tw_warning.setVisibility(View.VISIBLE);
+        warningTv.setVisibility(View.VISIBLE);
         if (isFollowing || user.isOpen()) {
 
             Dao.getInstance().getFirebaseDatabase().getReference("Follow").child(MainActivity.CurrentUser.getId()).child("following").addValueEventListener(new ValueEventListener() {
@@ -77,8 +76,8 @@ public class UserProfileOnGoingFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         if (user.getId().equals(snapshot.getKey())) {
-                            getMySurvey();
-                            tw_warning.setVisibility(GONE);
+                            getSurvey();
+                            warningTv.setVisibility(GONE);
                         }
                     }
                 }
@@ -92,17 +91,16 @@ public class UserProfileOnGoingFragment extends Fragment {
         }
 
         if (user.getId().equals(MainActivity.CurrentUser.getId())) {
-            getMySurvey();
-            tw_warning.setVisibility(GONE);
+            getSurvey();
+            warningTv.setVisibility(GONE);
         }
 
         return view;
     }
 
-    private void getMySurvey() {
-        progres_home_frame.setVisibility(View.VISIBLE);
+    private void getSurvey() {
+        homeFrameFl.setVisibility(View.VISIBLE);
         surveyListView.setVisibility(GONE);
-
 
         Dao.getInstance().getFirebaseDatabase().getReference("Surveys").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -142,7 +140,7 @@ public class UserProfileOnGoingFragment extends Fragment {
                         }
                     }
 
-                    progres_home_frame.setVisibility(GONE);
+                    homeFrameFl.setVisibility(GONE);
                     surveyListView.setVisibility(View.VISIBLE);
                 }
             }
@@ -173,7 +171,7 @@ public class UserProfileOnGoingFragment extends Fragment {
 
     private void addAdapter() {
         surveyAdapter.notifyDataSetChanged();
-        progres_home_frame.setVisibility(GONE);
+        homeFrameFl.setVisibility(GONE);
         surveyListView.setVisibility(View.VISIBLE);
     }
 

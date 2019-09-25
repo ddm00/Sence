@@ -1,6 +1,5 @@
 package com.turkcell.sence.fragments.home;
 
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;

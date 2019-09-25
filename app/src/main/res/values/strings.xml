@@ -21,7 +21,7 @@
     <string name="title_search">Ara</string>
     <string name="title_home">Anasayfa</string>
 
-    <string name="survey_question">Sorunuz....?</string>
+    <!--Diğer Profiller -->
     <string name="ongoingPoll_Btn">Devam Eden Anketler</string>
     <string name="completedPoll_Btn">Biten Anketler</string>
     <string name="votedPoll_Btn">Oylanan Anketler</string>
@@ -36,7 +36,7 @@
     <string name="userProfile_sence">SENCE</string>
     <string name="userProfile_bence">BENCE</string>
 
-    <string name="title_notifications">Notifications</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -83,10 +83,10 @@
         <item>5 gün</item>
         <item>7 gün</item>
     </string-array>
+
     <string name="setText">Kayıt yapılıyor, Lütfen bekleyin.</string>
-
-
     <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
     <string name="default_notification_channel_id">Sence</string>
     <string name="message">Bir arkadaşlık isteğiniz var.</string>
 

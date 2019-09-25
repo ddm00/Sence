@@ -26,7 +26,7 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.turkcell.sence.R;
 import com.turkcell.sence.database.Dao;
-import com.turkcell.sence.fragments.UserProfileFragment;
+import com.turkcell.sence.fragments.profile.UserProfileFragment;
 import com.turkcell.sence.fragments.home.HomeFragment;
 import com.turkcell.sence.fragments.profile.EditProfileFragment;
 import com.turkcell.sence.fragments.search.SearchFragment;

@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.StorageReference;
@@ -71,12 +73,16 @@ public class EditProfileFragment extends Fragment {
         userName.setText(user.getUsername());
         fullName.setText(user.getFullname());
         isOpen.setChecked(user.isOpen());
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.ic_account_circle_black_24dp);
+        Glide.with(getActivity()).setDefaultRequestOptions(requestOptions).load(user.getImageurl()).into(userImage);
+
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (imageUri != null) {
                     final StorageReference userImage = Dao.getInstance().getStorageReference()
-                            .child("userImage").child(user.getId() + ".jpg");
+                            .child("userProfileImage").child(user.getId() + ".jpg");
 
                     userImage.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -89,7 +95,7 @@ public class EditProfileFragment extends Fragment {
                                     map.put("username", userName.getText().toString());
                                     map.put("fullname", fullName.getText().toString());
                                     map.put("isOpen", isOpen.isChecked());
-                                    map.put("imageurl", sImage);
+                                    map.put("imageUrl", sImage);
                                     userUpdate(map);
                                     imageUri = null;
                                 }
@@ -101,14 +107,13 @@ public class EditProfileFragment extends Fragment {
                     map.put("username", userName.getText().toString());
                     map.put("fullname", fullName.getText().toString());
                     map.put("isOpen", isOpen.isChecked());
-                    map.put("imageurl", "");
+                    map.put("imageUrl", "");
                     userUpdate(map);
                     imageUri = null;
                 }
 
             }
         });
-
         return view;
     }
 

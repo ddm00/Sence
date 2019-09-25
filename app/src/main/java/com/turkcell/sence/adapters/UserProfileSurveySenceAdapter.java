@@ -91,12 +91,7 @@ public class UserProfileSurveySenceAdapter extends BaseAdapter {
         question.setText(survey.getSurveyCategory() + ": " + survey.getSurveyQuestion());
         surveyTime.setText(survey.getSurveyTime());
 
-        //burada hali hazırda var olna entity yi bozmamak adına oylama sayılarının geldiği "survey.getReySize()"
-        //üzerinde 1. resmin yüzdesini alıcaz ve diğerini burada hesaplıyacağız. yani gelen veri 1. resmin hesaplanmış yüzdesi olacak
-        //ikinci resminkini biz burada hesaplayacağız.
-
         int firstImagePercent = myList.get(position).getReySize();
-
         int secondImagePercent = 100 - firstImagePercent;
 
         if (firstImagePercent == secondImagePercent) {

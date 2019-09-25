@@ -76,7 +76,7 @@ public class UserProfileBenceFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         if (user.getId().equals(snapshot.getKey())) {
-                            getMySurvey();
+                            getSurvey();
                             warningTv.setVisibility(GONE);
                         }
                     }
@@ -91,19 +91,16 @@ public class UserProfileBenceFragment extends Fragment {
         }
 
         if (user.getId().equals(MainActivity.CurrentUser.getId())) {
-            getMySurvey();
+            getSurvey();
             warningTv.setVisibility(GONE);
         }
-
-
         return view;
     }
 
 
-    private void getMySurvey() {
+    private void getSurvey() {
         homeFrameFl.setVisibility(View.VISIBLE);
         surveyListView.setVisibility(GONE);
-
 
         Dao.getInstance().getFirebaseDatabase().getReference("Surveys").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -132,7 +129,6 @@ public class UserProfileBenceFragment extends Fragment {
                         t = (Long) mapList.get(i).get("t");
 
                         if (t != null && time != null) {
-
                             String farkDay = farkHesap(t, time);
                             if (!farkDay.equals("")) {
                                 setSurvey(i, publisher, surveyId, question, category, surveyFirstImage, surveySecondImage, time, t, mapList);
@@ -141,6 +137,8 @@ public class UserProfileBenceFragment extends Fragment {
                             }
                         }
                     }
+                    homeFrameFl.setVisibility(GONE);
+                    surveyListView.setVisibility(View.VISIBLE);
                 }
             }
 
