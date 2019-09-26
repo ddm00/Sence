@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.turkcell.sence.R;
+import com.turkcell.sence.activities.MainActivity;
 import com.turkcell.sence.models.Survey;
 import com.turkcell.sence.time.DateRegulative;
 import com.turkcell.sence.time.MyDateFormat;
@@ -39,8 +40,8 @@ public class UserProfileSurveySenceAdapter extends BaseAdapter {
         return myList;
     }
 
-    public void updateResults(List<Survey> myCarsVeriModeli) {
-        this.myList = myCarsVeriModeli;
+    public void updateResults(List<Survey> surveyList) {
+        this.myList = surveyList;
         notifyDataSetChanged();
     }
 
@@ -63,30 +64,36 @@ public class UserProfileSurveySenceAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-        final TextView username, question, surveyTime, fistimagePercent, secondimagePercent;
-        final ImageView fistImage, secondImage, fistimageWin, secondimageWin;
+        final TextView username, question, surveyTime, vote, firstimagePercent, secondimagePercent;
+        final ImageView firstImage, secondImage, firstimageWin, secondimageWin;
 
         View view = layoutInflater.inflate(R.layout.list_view_item_sence_survey, null);
 
         username = view.findViewById(R.id.senceUsername_Tv);
         question = view.findViewById(R.id.senceQuestion_Tv);
         surveyTime = view.findViewById(R.id.senceSurveyTime_Tv);
-        fistimagePercent = view.findViewById(R.id.senceFirstImagePercent_Tv);
+        firstimagePercent = view.findViewById(R.id.senceFirstImagePercent_Tv);
         secondimagePercent = view.findViewById(R.id.senceSecondImagePercent_Tv);
+        vote = view.findViewById(R.id.sencesurveyVote_Tv);
 
-        fistImage = view.findViewById(R.id.senceFirstImage_Iv);
+        firstImage = view.findViewById(R.id.senceFirstImage_Iv);
         secondImage = view.findViewById(R.id.senceSecondImage_Iv);
 
-        fistimageWin = view.findViewById(R.id.senceFirstImageWin_Iv);
+        firstimageWin = view.findViewById(R.id.senceFirstImageWin_Iv);
         secondimageWin = view.findViewById(R.id.senceSecondImageWin_Iv);
 
         survey = myList.get(position);
 
-        username.setText(survey.getUser().getFullname() + " / " + survey.getUser().getUsername());
+        if (!survey.getSecret() || MainActivity.CurrentUser.getId().equals(survey.getSurveyPublisher())) {
+            username.setText(survey.getUser().getFullname() + " / " + survey.getUser().getUsername());
+        } else {
+            username.setText("Kullanıcı ismini paylaşmak istemiyor.");
+        }
+
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.mipmap.ic_launcher);
-        Glide.with(context).setDefaultRequestOptions(requestOptions).load(survey.getSurveyFirstImage()).into(fistImage);
+        Glide.with(context).setDefaultRequestOptions(requestOptions).load(survey.getSurveyFirstImage()).into(firstImage);
         Glide.with(context).setDefaultRequestOptions(requestOptions).load(survey.getSurveySecondImage()).into(secondImage);
 
         question.setText(survey.getSurveyCategory() + ": " + survey.getSurveyQuestion());
@@ -95,19 +102,24 @@ public class UserProfileSurveySenceAdapter extends BaseAdapter {
         int firstImagePercent = myList.get(position).getReySize();
         int secondImagePercent = 100 - firstImagePercent;
 
+        if (position > 0) {
+            vote.setText("");
+        }
+
         if (firstImagePercent == secondImagePercent) {
-            fistimagePercent.setText("% " + firstImagePercent);
-            fistimagePercent.setTextColor(context.getResources().getColor(R.color.colorYellow));
-            fistimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_equal_background));
+            firstimagePercent.setText("% " + firstImagePercent);
+            firstimagePercent.setTextColor(context.getResources().getColor(R.color.colorYellow));
+            firstimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_equal_background));
 
             secondimagePercent.setText("% " + secondImagePercent);
             secondimagePercent.setTextColor(context.getResources().getColor(R.color.colorYellow));
             secondimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_equal_background));
 
+
         } else if (firstImagePercent < secondImagePercent) {
-            fistimagePercent.setText("% " + firstImagePercent);
-            fistimagePercent.setTextColor(context.getResources().getColor(R.color.colorRed));
-            fistimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_lose_background));
+            firstimagePercent.setText("% " + firstImagePercent);
+            firstimagePercent.setTextColor(context.getResources().getColor(R.color.colorRed));
+            firstimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_lose_background));
 
             secondimagePercent.setText("% " + secondImagePercent);
             secondimagePercent.setTextColor(context.getResources().getColor(R.color.colorGreen));
@@ -118,9 +130,10 @@ public class UserProfileSurveySenceAdapter extends BaseAdapter {
             secondimagePercent.setTextColor(context.getResources().getColor(R.color.colorRed));
             secondimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_lose_background));
 
-            fistimagePercent.setText("% " + firstImagePercent);
-            fistimagePercent.setTextColor(context.getResources().getColor(R.color.colorGreen));
-            fistimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_win_background));
+            firstimagePercent.setText("% " + firstImagePercent);
+            firstimagePercent.setTextColor(context.getResources().getColor(R.color.colorGreen));
+            firstimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_win_background));
+            vote.setText("");
         }
 
 

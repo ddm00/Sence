@@ -40,8 +40,8 @@ public class UserProfileSurveyCustomAdapter extends BaseAdapter {
         return myList;
     }
 
-    public void updateResults(List<Survey> surveysList) {
-        this.myList = surveysList;
+    public void updateResults(List<Survey> surveyList) {
+        this.myList = surveyList;
         notifyDataSetChanged();
     }
 
