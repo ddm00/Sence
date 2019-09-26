@@ -70,7 +70,7 @@ public class UserProfileSurveySenceAdapter extends BaseAdapter {
 
         username = view.findViewById(R.id.senceUsername_Tv);
         question = view.findViewById(R.id.senceQuestion_Tv);
-        surveyTime = view.findViewById(R.id.senceSurveyTime);
+        surveyTime = view.findViewById(R.id.senceSurveyTime_Tv);
         fistimagePercent = view.findViewById(R.id.senceFirstImagePercent_Tv);
         secondimagePercent = view.findViewById(R.id.senceSecondImagePercent_Tv);
 
@@ -81,6 +81,7 @@ public class UserProfileSurveySenceAdapter extends BaseAdapter {
         secondimageWin = view.findViewById(R.id.senceSecondImageWin_Iv);
 
         survey = myList.get(position);
+
         username.setText(survey.getUser().getFullname() + " / " + survey.getUser().getUsername());
 
         RequestOptions requestOptions = new RequestOptions();
@@ -113,11 +114,11 @@ public class UserProfileSurveySenceAdapter extends BaseAdapter {
             secondimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_win_background));
 
         } else {
-            secondimagePercent.setText("% " + firstImagePercent);
+            secondimagePercent.setText("% " + secondImagePercent);
             secondimagePercent.setTextColor(context.getResources().getColor(R.color.colorRed));
             secondimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_lose_background));
 
-            fistimagePercent.setText("% " + secondImagePercent);
+            fistimagePercent.setText("% " + firstImagePercent);
             fistimagePercent.setTextColor(context.getResources().getColor(R.color.colorGreen));
             fistimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_win_background));
         }

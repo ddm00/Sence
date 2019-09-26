@@ -41,18 +41,25 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginEnd="20dp">
+
                     <TextView
                         android:id="@+id/otherprofileFollowerNumber"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="16sp" />
 
                     <Button
                         android:id="@+id/otherprofileFollower_Btn"
                         style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_gravity="center|bottom"
                         android:layout_weight="1"
                         android:background="@color/profileNumber_Btn"
                         android:text="@string/followers_Btn"
@@ -65,18 +72,25 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginStart="20dp">
+
                     <TextView
-                        android:id="@+id/otherprofileFollowingNumber"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:id="@+id/otherprofileFollowNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="16sp"/>
 
                     <Button
-                        android:id="@+id/otherprofileFollowing_Btn"
+                        android:id="@+id/otherprofileFollow_Btn"
                         style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_gravity="center|bottom"
                         android:layout_weight="1"
                         android:background="@color/profileNumber_Btn"
                         android:text="@string/followed_Btn"
@@ -89,9 +103,9 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/otherprofileFollow_Btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/otherprofileFollowFollower_Btn"
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@color/profileNumber_Btn"
