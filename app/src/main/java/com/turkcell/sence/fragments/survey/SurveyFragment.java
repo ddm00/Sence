@@ -188,8 +188,8 @@ public class SurveyFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    surveyFirstimage.setImageDrawable(getActivity().getResources().getDrawable(R.mipmap.ic_launcher));
-                    surveySecondimage.setImageDrawable(getActivity().getResources().getDrawable(R.mipmap.ic_launcher));
+                    surveyFirstimage.setImageDrawable(getActivity().getResources().getDrawable(R.mipmap.ic_photo));
+                    surveySecondimage.setImageDrawable(getActivity().getResources().getDrawable(R.mipmap.ic_photo));
                     surveyQuestion.setText("");
                     spCategory.setSelection(0);
                     spTime.setSelection(0);

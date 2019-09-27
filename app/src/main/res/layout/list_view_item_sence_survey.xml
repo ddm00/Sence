@@ -96,7 +96,7 @@
                                     android:layout_height="120dp"
                                     android:layout_gravity="center_horizontal|center"
                                     android:scaleType="centerInside"
-                                    android:src="@mipmap/ic_launcher" />
+                                    android:src="@mipmap/ic_photo" />
 
                                 <TextView
                                     android:id="@+id/senceFirstImagePercent_Tv"
@@ -139,7 +139,7 @@
                                     android:layout_height="120dp"
                                     android:layout_gravity="center_horizontal|center"
                                     android:scaleType="centerInside"
-                                    android:src="@mipmap/ic_launcher" />
+                                    android:src="@mipmap/ic_photo" />
 
                                 <TextView
                                     android:id="@+id/senceSecondImagePercent_Tv"

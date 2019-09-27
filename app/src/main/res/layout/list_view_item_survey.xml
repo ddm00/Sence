@@ -95,7 +95,7 @@
                                     android:layout_height="120dp"
                                     android:layout_gravity="center"
                                     android:scaleType="centerInside"
-                                    android:src="@mipmap/ic_launcher" />
+                                    android:src="@mipmap/ic_photo" />
 
                             </FrameLayout>
 
@@ -128,7 +128,7 @@
                                     android:layout_height="120dp"
                                     android:layout_gravity="center"
                                     android:scaleType="centerInside"
-                                    android:src="@mipmap/ic_launcher" />
+                                    android:src="@mipmap/ic_photo" />
 
                             </FrameLayout>
 
