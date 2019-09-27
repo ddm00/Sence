@@ -52,7 +52,7 @@
     <string name="editEmail">Eposta</string>
     <string name="editPhone">Telefon</string>
     <string name="editButton">GÜNCELLE</string>
-    <string name="editOpen">Hesabınız açık</string>
+    <string name="editOpen">Hesabınız gizlensin mi?</string>
 
     <!-- Ara -->
     <string name="searchHint">Ara</string>
@@ -62,6 +62,7 @@
     <!-- Anket Yap -->
     <string name="surveyTitle">PAYLAŞ</string>
     <string name="surveyQuestion">Sorunuz..?</string>
+    <string name="surveySecret">Adınız gizlensin mi?</string>
     <string name="surveyCategory">Anket Kategorisi: </string>
     <string-array name="surveyCategories">
         <item>Alışveriş</item>

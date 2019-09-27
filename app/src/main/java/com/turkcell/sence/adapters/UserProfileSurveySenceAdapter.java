@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.turkcell.sence.R;
-import com.turkcell.sence.activities.MainActivity;
 import com.turkcell.sence.models.Survey;
 import com.turkcell.sence.time.DateRegulative;
 import com.turkcell.sence.time.MyDateFormat;
@@ -83,12 +82,7 @@ public class UserProfileSurveySenceAdapter extends BaseAdapter {
         secondimageWin = view.findViewById(R.id.senceSecondImageWin_Iv);
 
         survey = myList.get(position);
-
-        if (!survey.getSecret() || MainActivity.CurrentUser.getId().equals(survey.getSurveyPublisher())) {
-            username.setText(survey.getUser().getFullname() + " / " + survey.getUser().getUsername());
-        } else {
-            username.setText("Kullanıcı ismini paylaşmak istemiyor.");
-        }
+        username.setText(survey.getUser().getFullname() + " / " + survey.getUser().getUsername());
 
 
         RequestOptions requestOptions = new RequestOptions();
