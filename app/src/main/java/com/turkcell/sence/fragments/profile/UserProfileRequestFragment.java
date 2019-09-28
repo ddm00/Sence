@@ -65,6 +65,7 @@ public class UserProfileRequestFragment extends Fragment {
         Dao.getInstance().getFirebaseDatabase().getReference("Follow").child(MainActivity.CurrentUser.getId()).child("requestGet").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                userList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String getUserId = snapshot.getKey();
                     if (getUserId != null && !getUserId.equals("")) {
@@ -75,6 +76,7 @@ public class UserProfileRequestFragment extends Fragment {
                                 HashMap<String, Object> hashMap = (HashMap<String, Object>) dataSnapshot.getValue();
                                 if (getUser != null && hashMap != null) {
                                     getUser.setOpen((boolean) hashMap.get("isOpen"));
+                                    getUser.setImageurl(hashMap.get("imageUrl").toString());
                                     userList.add(getUser);
                                     setAdapter();
                                 }
@@ -86,6 +88,7 @@ public class UserProfileRequestFragment extends Fragment {
                         });
                     }
                 }
+
                 setWarning();
             }
 

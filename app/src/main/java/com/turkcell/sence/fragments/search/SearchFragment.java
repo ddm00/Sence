@@ -99,6 +99,7 @@ public class SearchFragment extends Fragment {
                     if (!user.getId().equals(MainActivity.CurrentUser.getId())) {
                         Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
                         user.setOpen((boolean) map.get("isOpen"));
+                        user.setImageurl(map.get("imageUrl").toString());
                         userList.add(user);
                     }
                 }
@@ -127,6 +128,7 @@ public class SearchFragment extends Fragment {
                         if (!user.getId().equals(MainActivity.CurrentUser.getId())) {
                             Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
                             user.setOpen((boolean) map.get("isOpen"));
+                            user.setImageurl(map.get("imageUrl").toString());
                             userList.add(user);
                         }
                     }
