@@ -75,6 +75,8 @@ public class EditProfileFragment extends Fragment {
         isOpen.setChecked(user.isOpen());
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.ic_account_circle_black_24dp);
+
+       // Glide.with(this).load(user.getImageurl()).into(userImage);
         Glide.with(getActivity()).setDefaultRequestOptions(requestOptions).load(user.getImageurl()).into(userImage);
 
         editButton.setOnClickListener(new View.OnClickListener() {

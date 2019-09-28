@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                     HashMap<String, Object> hashMap = (HashMap<String, Object>) dataSnapshot.getValue();
                     if (hashMap != null) {
                         MainActivity.CurrentUser.setOpen((boolean) hashMap.get("isOpen"));
+                        MainActivity.CurrentUser.setImageurl(hashMap.get("imageUrl").toString());
                         getToken();
                         Fragment selectedFragment = new HomeFragment(MainActivity.this);
                         FragmentTransaction fragTrans = getSupportFragmentManager().beginTransaction();
