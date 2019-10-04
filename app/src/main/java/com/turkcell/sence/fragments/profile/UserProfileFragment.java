@@ -43,8 +43,8 @@ public class UserProfileFragment extends Fragment {
     private View view;
     private FragmentManager supportFragmentManager;
     private ImageView userImageIv;
-    private Button logoutBtn, editBtn,followingBtn,followerBtn,requestBtn;
-    private TextView usernameTv, followingNumberTv, followerNumberTv, requestNumberTv, surveyTv, senceTv, benceTv;
+    private Button logoutBtn, editBtn;
+    private TextView usernameTv, followingNumberTv, followerNumberTv, requestNumberTv, surveyTv, senceTv, benceTv, followingBtn, followerBtn, requestBtn;
     private ViewPager userprofileVp;
     private Activity activity;
 
@@ -62,9 +62,9 @@ public class UserProfileFragment extends Fragment {
         followingNumberTv = view.findViewById(R.id.userprofileFollowingNumber_Tv);
         followerNumberTv = view.findViewById(R.id.userprofileFollowerNumber_Tv);
         requestNumberTv = view.findViewById(R.id.userprofileRequestNumber_Tv);
-        followingBtn = view.findViewById(R.id.userprofileFollowing_Btn);
-        followerBtn = view.findViewById(R.id.userprofileFollower_Btn);
-        requestBtn = view.findViewById(R.id.userprofileRequest_Btn);
+        followingBtn = view.findViewById(R.id.userprofileFollowing_Tv);
+        followerBtn = view.findViewById(R.id.userprofileFollowing_Tv);
+        requestBtn = view.findViewById(R.id.userprofileRequest_Tv);
         userImageIv = view.findViewById(R.id.userprofileUserimage_Iv);
 
         surveyTv = view.findViewById(R.id.userprofileSurvey_Tv);

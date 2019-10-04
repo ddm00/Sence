@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.turkcell.sence.R;
+import com.turkcell.sence.activities.MainActivity;
 import com.turkcell.sence.models.Survey;
 import com.turkcell.sence.time.DateRegulative;
 import com.turkcell.sence.time.MyDateFormat;
@@ -20,15 +21,14 @@ import com.turkcell.sence.time.MyDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
-public class UserProfileSurveySenceAdapter extends BaseAdapter {
-
+public class UserProfileSurveyBenceAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private Context context;
     private List<Survey> myList;
     private Survey survey;
     private Activity activity;
 
-    public UserProfileSurveySenceAdapter(Activity activity, Context context, List<Survey> myList) {
+    public UserProfileSurveyBenceAdapter(Activity activity, Context context, List<Survey> myList) {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.myList = myList;
         this.context = context;
@@ -82,7 +82,11 @@ public class UserProfileSurveySenceAdapter extends BaseAdapter {
         secondimageWin = view.findViewById(R.id.senceSecondImageWin_Iv);
 
         survey = myList.get(position);
-        username.setText(survey.getUser().getFullname() + " / " + survey.getUser().getUsername());
+        if (!survey.getSecret() || MainActivity.CurrentUser.getId().equals(survey.getSurveyPublisher())) {
+            username.setText(survey.getUser().getFullname() + " / " + survey.getUser().getUsername());
+        } else {
+            username.setText("Kullanıcı ismini paylaşmak istemiyor.");
+        }
 
 
         RequestOptions requestOptions = new RequestOptions();
@@ -92,7 +96,7 @@ public class UserProfileSurveySenceAdapter extends BaseAdapter {
 
         question.setText(survey.getSurveyCategory() + ": " + survey.getSurveyQuestion());
         surveyTime.setText(survey.getSurveyTime());
-        if (survey.getReySize()>0) {
+        if (survey.getReySize() > 0) {
             vote.setText("");
             int firstImagePercent = myList.get(position).getReySize();
             int secondImagePercent = 100 - firstImagePercent;
@@ -107,15 +111,7 @@ public class UserProfileSurveySenceAdapter extends BaseAdapter {
                 secondimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_equal_background));
 
 
-            } else if (firstImagePercent > secondImagePercent) {
-                secondimagePercent.setText("% " + secondImagePercent);
-                secondimagePercent.setTextColor(context.getResources().getColor(R.color.colorRed));
-                secondimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_lose_background));
-
-                firstimagePercent.setText("% " + firstImagePercent);
-                firstimagePercent.setTextColor(context.getResources().getColor(R.color.colorGreen));
-                firstimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_win_background));
-            } else {
+            } else if (firstImagePercent < secondImagePercent) {
                 firstimagePercent.setText("% " + firstImagePercent);
                 firstimagePercent.setTextColor(context.getResources().getColor(R.color.colorRed));
                 firstimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_lose_background));
@@ -124,8 +120,17 @@ public class UserProfileSurveySenceAdapter extends BaseAdapter {
                 secondimagePercent.setTextColor(context.getResources().getColor(R.color.colorGreen));
                 secondimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_win_background));
 
+            } else {
+                secondimagePercent.setText("% " + secondImagePercent);
+                secondimagePercent.setTextColor(context.getResources().getColor(R.color.colorRed));
+                secondimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_lose_background));
+
+                firstimagePercent.setText("% " + firstImagePercent);
+                firstimagePercent.setTextColor(context.getResources().getColor(R.color.colorGreen));
+                firstimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_win_background));
             }
-        }else {
+
+        } else {
             vote.setText("Oylama yapılmadı");
             firstimagePercent.setText("");
             firstimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_zero_background));

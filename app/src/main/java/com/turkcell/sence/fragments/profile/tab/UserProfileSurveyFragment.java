@@ -133,8 +133,6 @@ public class UserProfileSurveyFragment extends Fragment {
                             if (!farkDay.equals("")) {
                                 setSurvey(i, publisher, surveyId, question, category, surveyFirstImage, surveySecondImage, time, t, mapList);
 
-                            } else {
-                                setSurvey(i, publisher, surveyId, question, category, surveyFirstImage, surveySecondImage, "Anketin süresi doldu.", t, mapList);
                             }
                         }
                     }

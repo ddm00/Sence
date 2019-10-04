@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.turkcell.sence.R;
 import com.turkcell.sence.activities.MainActivity;
+import com.turkcell.sence.adapters.UserProfileSurveyBenceAdapter;
 import com.turkcell.sence.adapters.UserProfileSurveySenceAdapter;
 import com.turkcell.sence.database.Dao;
 import com.turkcell.sence.models.Survey;
@@ -40,7 +41,7 @@ public class UserProfileBenceFragment extends Fragment {
     private TextView warningTv;
     private FrameLayout homeFrameFl;
     private ArrayList<Survey> surveyList = new ArrayList<>();
-    private UserProfileSurveySenceAdapter surveyAdapter;
+    private UserProfileSurveyBenceAdapter surveyAdapter;
     private Activity activity;
     private User user;
     private boolean isFollowing;
@@ -65,7 +66,7 @@ public class UserProfileBenceFragment extends Fragment {
         surveyListView = view.findViewById(R.id.userprofilebenceSurveys_Lv);
         warningTv = view.findViewById(R.id.userprofilebenceWarning_Tv);
         homeFrameFl = view.findViewById(R.id.userprofilebenceFrame_Fl);
-        surveyAdapter = new UserProfileSurveySenceAdapter(activity, view.getContext(), surveyList);
+        surveyAdapter = new UserProfileSurveyBenceAdapter(activity,view.getContext(),surveyList);
         surveyListView.setAdapter(surveyAdapter);
 
         warningTv.setVisibility(View.VISIBLE);

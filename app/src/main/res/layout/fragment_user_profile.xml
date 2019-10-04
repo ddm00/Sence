@@ -1,15 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".fragments.profile.UserProfileFragment">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/windowBackground">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="?android:attr/windowBackground">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/userprofileUsername_Tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="@string/userprofileUsername"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/userprofileLogout_Btn"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/ic_exit" />
+
+            </RelativeLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/bar"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -21,154 +61,117 @@
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp">
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/userprofileLogout_Btn"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="end"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/ic_exit_to_app_black_24dp" />
-
-                <Button
-                    android:id="@+id/userprofileEdit_Btn"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="45dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/ic_edit" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/userprofileUserimage_Iv"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:src="@drawable/ic_account_circle_black_24dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_marginStart="110dp"
-                    android:layout_marginTop="5dp"
-                    android:orientation="vertical">
+                    android:layout_height="80dp"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="4dp">
 
-                    <TextView
-                        android:id="@+id/userprofileUsername_Tv"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:text="Kullanıcı Ad Soyad"
-                        android:textColor="@android:color/black" />
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/userprofileFollowingNumber_Tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:text="0"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/userprofileFollowing_Tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/userprofileFollow" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="35dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/userprofileFollowerNumber_Tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="0"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/userprofileFollower_Tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/userprofileFollower" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="35dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/userprofileRequestNumber_Tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="0"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/userprofileRequest_Tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/userprofileRequest" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/userprofileEdit_Btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/button_background"
+                        android:text="@string/userprofileEditProfile" />
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginStart="110dp"
-                    android:layout_marginBottom="5dp"
-                    android:orientation="horizontal">
-
-                    <FrameLayout
-                        android:layout_width="70dp"
-                        android:layout_height="70dp">
-
-                        <TextView
-                            android:id="@+id/userprofileFollowingNumber_Tv"
-
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="10dp"
-                            android:gravity="center"
-                            android:text="0"
-                            android:textColor="@color/colorBlue"
-                            android:textSize="16sp" />
-
-                        <Button
-                            android:id="@+id/userprofileFollowing_Btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center|bottom"
-                            android:layout_marginTop="35dp"
-                            android:gravity="center"
-                            android:text="Takip"
-                            android:textAllCaps="false"
-                            android:textColor="@android:color/black"
-                            android:textSize="12sp" />
-
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="70dp"
-                        android:layout_height="70dp">
-
-                        <TextView
-                            android:id="@+id/userprofileFollowerNumber_Tv"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="10dp"
-                            android:gravity="center"
-                            android:text="0"
-                            android:textColor="@color/colorBlue"
-                            android:textSize="16sp" />
-
-                        <Button
-                            android:id="@+id/userprofileFollower_Btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center|bottom"
-                            android:layout_marginTop="35dp"
-                            android:gravity="center"
-                            android:text="Takipçi"
-                            android:textAllCaps="false"
-                            android:textColor="@android:color/black"
-                            android:textSize="12sp" />
-
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="70dp"
-                        android:layout_height="70dp">
-
-                        <TextView
-                            android:id="@+id/userprofileRequestNumber_Tv"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="10dp"
-                            android:gravity="center"
-                            android:text="0"
-                            android:textColor="@color/colorBlue"
-                            android:textSize="16sp" />
-
-                        <Button
-                            android:id="@+id/userprofileRequest_Btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center|bottom"
-                            android:layout_marginTop="35dp"
-                            android:gravity="center"
-                            android:text="İstek"
-                            android:textAllCaps="false"
-                            android:textColor="@android:color/black"
-                            android:textSize="12sp" />
-
-                    </FrameLayout>
+            </LinearLayout>
 
 
-                </LinearLayout>
-
-
-            </FrameLayout>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -197,7 +200,7 @@
                         android:layout_margin="5dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/userProfile_anketlerim_tv"
+                        android:text="@string/userprofileAnketlerim"
                         android:textColor="@color/colorGray" />
 
                     <TextView
@@ -207,7 +210,7 @@
                         android:layout_margin="5dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/userProfile_sence"
+                        android:text="@string/userprofileSence"
                         android:textColor="@color/colorGray" />
 
                     <TextView
@@ -217,7 +220,7 @@
                         android:layout_margin="5dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/userProfile_bence"
+                        android:text="@string/userprofileBence"
                         android:textColor="@color/colorGray" />
 
                 </LinearLayout>
@@ -242,4 +245,4 @@
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

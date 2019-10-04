@@ -71,7 +71,7 @@
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="200dp"
                             android:layout_margin="2dp"
                             android:layout_weight="@integer/google_play_services_version"
                             app:cardBackgroundColor="@android:color/white"
@@ -80,13 +80,13 @@
 
                             <FrameLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="match_parent">
 
                                 <ImageView
                                     android:id="@+id/usersurveyFirstImage_Iv"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="200dp"
-                                    android:layout_gravity="center"
+                                    android:layout_width="120dp"
+                                    android:layout_height="120dp"
+                                    android:layout_gravity="center_horizontal|center"
                                     android:scaleType="centerInside"
                                     android:src="@mipmap/ic_photo" />
 
@@ -96,7 +96,7 @@
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="200dp"
                             android:layout_margin="2dp"
                             android:layout_weight="@integer/google_play_services_version"
                             app:cardBackgroundColor="@android:color/white"
@@ -106,13 +106,13 @@
 
                             <FrameLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="match_parent">
 
                                 <ImageView
                                     android:id="@+id/usersurveySecondImage_Iv"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="200dp"
-                                    android:layout_gravity="center"
+                                    android:layout_width="120dp"
+                                    android:layout_height="120dp"
+                                    android:layout_gravity="center_horizontal|center"
                                     android:scaleType="centerInside"
                                     android:src="@mipmap/ic_photo" />
 

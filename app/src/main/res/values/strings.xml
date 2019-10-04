@@ -9,12 +9,14 @@
     <string name="registerPassword">Şifre</string>
     <string name="registerBtn">Kayıt Ol</string>
     <string name="registerLogin">Hesabın var mı? Giriş yap</string>
+
     <!-- Giriş Yap -->
     <string name="title_activity_login">LoginActivity</string>
     <string name="loginEmail">E-posta</string>
     <string name="loginPassword">Şifre</string>
     <string name="loginBtn">Giriş Yap</string>
     <string name="loginRegister">Hesabın yok mu? Kayıt ol</string>
+
     <!-- BottomNavigationView Başlıkları -->
     <string name="title_profile">Profil</string>
     <string name="title_add">Ekle</string>
@@ -29,12 +31,17 @@
     <string name="followed_Btn">Takip Edilenler</string>
 
     <!-- Kullanıcı Profili -->
-    <string name="userProfile_profilDuzenle">Profil Düzenle</string>
-    <string name="userProfile_anketlerim_tv">ANKETLERİM</string>
-    <string name="userProfile_takipci">Takipçilerim</string>
-    <string name="userProfile_takipEttiklerim">Takip Ettiklerim</string>
-    <string name="userProfile_sence">SENCE</string>
-    <string name="userProfile_bence">BENCE</string>
+    <string name="userprofileEditProfile">Profil Düzenle</string>
+    <string name="userprofileAnketlerim">ANKETLERİM</string>
+    <string name="userprofileSence">SENCE</string>
+    <string name="userprofileBence">BENCE</string>
+    <string name="userprofileFollower">Takipçi</string>
+    <string name="userprofileFollow">Takip</string>
+    <string name="userprofileRequest">İstek</string>
+    <string name="userprofileUsername">Kullanıcı adı</string>
+    <string name="userprofileFullname">Kullanıcı Adı Soyadı</string>
+    <string name="userprofileExit">ÇIKIŞ</string>
+
 
 
 
