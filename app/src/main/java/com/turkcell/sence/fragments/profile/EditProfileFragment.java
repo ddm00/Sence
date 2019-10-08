@@ -43,7 +43,7 @@ public class EditProfileFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (imageUri!=null){
+        if (imageUri != null) {
             userImage.setImageURI(imageUri);
         }
     }
@@ -58,13 +58,13 @@ public class EditProfileFragment extends Fragment {
         fullName = view.findViewById(R.id.editFullName_Et);
         editButton = view.findViewById(R.id.editProfile_Btn);
         isOpen = view.findViewById(R.id.editIsOpen_Sw);
-        userImage=view.findViewById(R.id.editUserImage_Iv);
+        userImage = view.findViewById(R.id.editUserImage_Iv);
 
         userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SurveyFragment.value=3;
-                CropImage.activity().setAspectRatio(1,1).start(getActivity());
+                SurveyFragment.value = 3;
+                CropImage.activity().setAspectRatio(1, 1).start(getActivity());
             }
         });
 
@@ -75,7 +75,7 @@ public class EditProfileFragment extends Fragment {
         isOpen.setChecked(user.isOpen());
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.ic_account_circle_black_24dp);
-       // Glide.with(this).load(user.getImageurl()).into(userImage);
+        // Glide.with(this).load(user.getImageurl()).into(userImage);
         Glide.with(getActivity()).setDefaultRequestOptions(requestOptions).load(user.getImageurl()).into(userImage);
 
         editButton.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +127,10 @@ public class EditProfileFragment extends Fragment {
                 MainActivity.CurrentUser.setUsername(userName.getText().toString());
                 MainActivity.CurrentUser.setFullname(fullName.getText().toString());
                 MainActivity.CurrentUser.setOpen(isOpen.isChecked());
-                getActivity().onBackPressed();
+                if (getActivity() != null) {
+                    getActivity().onBackPressed();
+                }
+
             }
         });
     }

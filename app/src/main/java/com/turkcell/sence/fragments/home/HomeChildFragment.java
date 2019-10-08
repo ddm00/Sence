@@ -72,14 +72,25 @@ public class HomeChildFragment extends Fragment {
         firstimageLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dao.getInstance().getFirebaseDatabase().getReference("Surveys").child(survey.getSurveyId())
-                        .child("Users").child(MainActivity.CurrentUser.getId()).child("value").setValue(true);
-                firstimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.like));
-                secondimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.unlike));
-                if (survey.getWhichOne() == null) {
-                    survey.setReySize(survey.getReySize() + 1);
-                    votes.setText(survey.getReySize() + " oylama yapıldı.");
-                    survey.setWhichOne(true);
+                if (firstimageLike.getDrawable().getConstantState() == view.getContext().getResources().getDrawable(R.drawable.like).getConstantState()) {
+                    Dao.getInstance().getFirebaseDatabase().getReference("Surveys").child(survey.getSurveyId())
+                            .child("Users").child(MainActivity.CurrentUser.getId()).child("value").setValue(true);
+                    firstimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.unlike));
+                    if (survey.getWhichOne() != null) {
+                        survey.setReySize(survey.getReySize() - 1);
+                        votes.setText(survey.getReySize() + " oylama yapıldı.");
+                        survey.setWhichOne(null);
+                    }
+                } else {
+                    Dao.getInstance().getFirebaseDatabase().getReference("Surveys").child(survey.getSurveyId())
+                            .child("Users").child(MainActivity.CurrentUser.getId()).child("value").setValue(true);
+                    firstimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.like));
+                    secondimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.unlike));
+                    if (survey.getWhichOne() == null) {
+                        survey.setReySize(survey.getReySize() + 1);
+                        votes.setText(survey.getReySize() + " oylama yapıldı.");
+                        survey.setWhichOne(true);
+                    }
                 }
             }
         });
@@ -87,14 +98,25 @@ public class HomeChildFragment extends Fragment {
         secondimageLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dao.getInstance().getFirebaseDatabase().getReference("Surveys").child(survey.getSurveyId())
-                        .child("Users").child(MainActivity.CurrentUser.getId()).child("value").setValue(false);
-                firstimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.unlike));
-                secondimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.like));
-                if (survey.getWhichOne() == null) {
-                    survey.setReySize(survey.getReySize() + 1);
-                    votes.setText(survey.getReySize() + " oylama yapıldı.");
-                    survey.setWhichOne(false);
+                if (secondimageLike.getDrawable().getConstantState() == view.getContext().getResources().getDrawable(R.drawable.like).getConstantState()) {
+                    Dao.getInstance().getFirebaseDatabase().getReference("Surveys").child(survey.getSurveyId())
+                            .child("Users").child(MainActivity.CurrentUser.getId()).child("value").setValue(true);
+                    secondimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.unlike));
+                    if (survey.getWhichOne() != null) {
+                        survey.setReySize(survey.getReySize() - 1);
+                        votes.setText(survey.getReySize() + " oylama yapıldı.");
+                        survey.setWhichOne(null);
+                    }
+                } else {
+                    Dao.getInstance().getFirebaseDatabase().getReference("Surveys").child(survey.getSurveyId())
+                            .child("Users").child(MainActivity.CurrentUser.getId()).child("value").setValue(true);
+                    firstimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.unlike));
+                    secondimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.like));
+                    if (survey.getWhichOne() == null) {
+                        survey.setReySize(survey.getReySize() + 1);
+                        votes.setText(survey.getReySize() + " oylama yapıldı.");
+                        survey.setWhichOne(false);
+                    }
                 }
             }
         });

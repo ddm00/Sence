@@ -64,6 +64,7 @@ public class HomeFragment extends Fragment {
         this.activity = activity;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

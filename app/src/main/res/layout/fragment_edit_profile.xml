@@ -14,8 +14,9 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/editUserImage_Iv"
-            android:layout_width="match_parent"
-            android:layout_height="186dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
             android:src="@drawable/ic_account_circle_black_24dp" />
@@ -42,14 +43,16 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_width="match_parent"
-            android:layout_height="40dp"/>
+            android:layout_height="40dp"
+            android:theme="@style/ColorSwitchStyle"/>
 
         <Button
             android:id="@+id/editProfile_Btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/profile_Btn"
-            android:text="@string/editButton" />
+            android:background="@drawable/button_background"
+            android:text="@string/editButton"
+            android:textColor="@color/colorPrimary" />
 
     </LinearLayout>
 </FrameLayout>

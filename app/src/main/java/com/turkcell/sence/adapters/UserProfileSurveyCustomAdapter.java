@@ -2,17 +2,27 @@ package com.turkcell.sence.adapters;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.turkcell.sence.R;
+import com.turkcell.sence.database.Dao;
 import com.turkcell.sence.models.Survey;
 import com.turkcell.sence.time.DateRegulative;
 import com.turkcell.sence.time.MyDateFormat;
@@ -73,6 +83,46 @@ public class UserProfileSurveyCustomAdapter extends BaseAdapter {
         question = view.findViewById(R.id.usersurveyQuestion_Tv);
         votes = view.findViewById(R.id.usersurveyUsers_Tv);
         time = view.findViewById(R.id.usersurveyTime_Tv);
+        LinearLayout delete = view.findViewById(R.id.usersurveyDelete_Ll);
+
+        delete.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Sence");
+                builder.setMessage("Silmek istediğinizden emin misiniz ?");
+                builder.setIcon(context.getResources().getDrawable(R.mipmap.ic_launcher));
+
+                builder.setPositiveButton("Evet", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DatabaseReference databaseReference = Dao.getInstance().getFirebaseDatabase().getReference("Surveys").child(myList.get(position).getSurveyId());
+
+                        databaseReference.removeValue(new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                                myList.remove(position);
+                                updateResults(myList);
+                                Toast.makeText(context, "İşleminiz başarı ile gerçeklertirildi.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                });
+
+                builder.setNegativeButton("Hayır", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                builder.show();
+
+
+                return false;
+            }
+        });
 
         firstImage = view.findViewById(R.id.usersurveyFirstImage_Iv);
         secondImage = view.findViewById(R.id.usersurveySecondImage_Iv);
@@ -86,7 +136,7 @@ public class UserProfileSurveyCustomAdapter extends BaseAdapter {
         Glide.with(context).setDefaultRequestOptions(requestOptions).load(survey.getSurveySecondImage()).into(secondImage);
 
         question.setText(survey.getSurveyCategory() + ":" + survey.getSurveyQuestion());
-        votes.setText(survey.getReySize()+" oylama yapıldı.");
+        votes.setText(survey.getReySize() + " oylama yapıldı.");
         time.setText(survey.getSurveyTime());
         if (!survey.getSurveyTime().equals("Anketin süresi doldu.")) {
             Thread thread = new Thread() {
@@ -97,7 +147,9 @@ public class UserProfileSurveyCustomAdapter extends BaseAdapter {
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    time.setText(farkHesap(myList.get(position).getT(), myList.get(position).getSurveyTime()));
+                                    if (myList != null && myList.size() >= 1) {
+                                        time.setText(farkHesap(myList.get(position).getT(), myList.get(position).getSurveyTime()));
+                                    }
                                 }
                             });
 

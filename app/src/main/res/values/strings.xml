@@ -59,7 +59,7 @@
     <string name="editEmail">Eposta</string>
     <string name="editPhone">Telefon</string>
     <string name="editButton">GÜNCELLE</string>
-    <string name="editOpen">Hesabınız gizlensin mi?</string>
+    <string name="editOpen">Hesabınız açık olsun mu?</string>
 
     <!-- Ara -->
     <string name="searchHint">Ara</string>

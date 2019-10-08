@@ -17,8 +17,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/otherprofileUserImage_Iv"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="12dp"
                 android:adjustViewBounds="false"
@@ -41,8 +41,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginEnd="20dp">
+                    android:layout_marginEnd="20dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/otherprofileFollowerNumber"
@@ -52,19 +52,17 @@
                         android:gravity="center"
                         android:text="0"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-                    <Button
-                        android:id="@+id/otherprofileFollower_Btn"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                    <TextView
+                        android:id="@+id/otherprofileFollower_Tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|bottom"
                         android:layout_weight="1"
-                        android:background="@color/profileNumber_Btn"
                         android:text="@string/followers_Btn"
                         android:textAllCaps="false"
-                        android:textColor="@android:color/black"
                         android:textSize="14sp" />
 
                 </LinearLayout>
@@ -72,8 +70,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="20dp">
+                    android:layout_marginStart="20dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/otherprofileFollowNumber"
@@ -83,19 +81,17 @@
                         android:gravity="center"
                         android:text="0"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-                    <Button
-                        android:id="@+id/otherprofileFollow_Btn"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                    <TextView
+                        android:id="@+id/otherprofileFollow_Tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|bottom"
                         android:layout_weight="1"
-                        android:background="@color/profileNumber_Btn"
                         android:text="@string/followed_Btn"
                         android:textAllCaps="false"
-                        android:textColor="@android:color/black"
                         android:textSize="14sp" />
 
                 </LinearLayout>
@@ -105,11 +101,12 @@
             <Button
                 android:id="@+id/otherprofileFollowFollower_Btn"
                 android:layout_width="300dp"
-                android:layout_height="match_parent"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
+                android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_background"
-                android:textColor="@color/colorBlack" />
+                android:textColor="@color/colorPrimary" />
         </LinearLayout>
 
         <LinearLayout

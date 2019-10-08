@@ -165,7 +165,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:background="@drawable/button_background"
-                        android:text="@string/userprofileEditProfile" />
+                        android:text="@string/userprofileEditProfile"
+                        android:textColor="@color/colorPrimary" />
 
                 </LinearLayout>
 
@@ -177,7 +178,6 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
             app:cardBackgroundColor="@android:color/white"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp">

@@ -432,7 +432,7 @@ public class DateRegulative {
             gun = "00";
         }
 
-        return gun + " gün " + formatter.format(date) + " saniye kaldı.";
+        return gun + " gün " + formatter.format(date) + " kaldı.";
 
     }
 }

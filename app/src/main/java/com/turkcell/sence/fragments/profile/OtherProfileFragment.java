@@ -55,13 +55,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
- */public class OtherProfileFragment extends Fragment {
+ */
+public class OtherProfileFragment extends Fragment {
 
     private View view;
     private FragmentManager supportFragmentManager;
     private CircleImageView profilePhotoIv;
-    private TextView profileNameTv;
-    private Button followFollowingBtn,followerBtn, followBtn, ongoingPollBtn, numberOngoingPollBtn, completedPollBtn, numberCompletedPollBtn, votedPollBtn, numberVotedPollBtn;
+    private TextView profileNameTv, followerNumberTv, followingNumberTv, followerTv, followingTv;
+    private Button followFollowingBtn, ongoingPollBtn, numberOngoingPollBtn, completedPollBtn, numberCompletedPollBtn, votedPollBtn, numberVotedPollBtn;
     private Activity activity;
     private User user;
     private boolean isFollowing = false;
@@ -81,9 +82,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
         view = inflater.inflate(R.layout.fragment_other_profile, container, false);
         profilePhotoIv = view.findViewById(R.id.otherprofileUserImage_Iv);
         profileNameTv = view.findViewById(R.id.otherprofileUsername_Tv);
-        followFollowingBtn=view.findViewById(R.id.otherprofileFollowFollower_Btn);
-        followerBtn = view.findViewById(R.id.otherprofileFollower_Btn);
-        followBtn = view.findViewById(R.id.otherprofileFollow_Btn);
+        followFollowingBtn = view.findViewById(R.id.otherprofileFollowFollower_Btn);
+        followerTv = view.findViewById(R.id.otherprofileFollower_Tv);
+        followerNumberTv = view.findViewById(R.id.otherprofileFollowerNumber);
+        followingTv = view.findViewById(R.id.otherprofileFollow_Tv);
+        followingNumberTv = view.findViewById(R.id.otherprofileFollowNumber);
         ongoingPollBtn = view.findViewById(R.id.otherprofileOngoingSurvey_Btn);
         completedPollBtn = view.findViewById(R.id.otherprofileCompletedSurvey_Btn);
         votedPollBtn = view.findViewById(R.id.otherprofileVotedSurvey_Btn);
@@ -95,8 +98,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
         followFollowingBtn.setVisibility(View.VISIBLE);
         isFollowing(followFollowingBtn);
 
-        followerBtn.setEnabled(false);
-        followBtn.setEnabled(false);
+        followerTv.setEnabled(false);
+        followingTv.setEnabled(false);
+        followerNumberTv.setEnabled(false);
+        followingNumberTv.setEnabled(false);
         ongoingPollBtn.setEnabled(false);
         completedPollBtn.setEnabled(false);
         votedPollBtn.setEnabled(false);
@@ -112,11 +117,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
         requestOptions.placeholder(R.drawable.ic_account_circle_black_24dp);
         Glide.with(view.getContext()).setDefaultRequestOptions(requestOptions).load(user.getImageurl()).into(profilePhotoIv);
         profileNameTv.setText(user.getFullname());
+        getTakipTakipciIstekToplam();
 
         if (user.isOpen()) {
             isFollowing = true;
-            followerBtn.setEnabled(true);
-            followBtn.setEnabled(true);
+            followerTv.setEnabled(true);
+            followingTv.setEnabled(true);
+            followerNumberTv.setEnabled(true);
+            followingNumberTv.setEnabled(true);
             ongoingPollBtn.setEnabled(true);
             completedPollBtn.setEnabled(true);
             votedPollBtn.setEnabled(true);
@@ -132,8 +140,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
                     if (user.getId().equals(snapshot.getKey())) {
                         isFollowing = true;
-                        followerBtn.setEnabled(true);
-                        followBtn.setEnabled(true);
+                        followerTv.setEnabled(true);
+                        followingTv.setEnabled(true);
+                        followerNumberTv.setEnabled(true);
+                        followingNumberTv.setEnabled(true);
                         ongoingPollBtn.setEnabled(true);
                         completedPollBtn.setEnabled(true);
                         votedPollBtn.setEnabled(true);
@@ -200,8 +210,22 @@ import de.hdodenhof.circleimageview.CircleImageView;
             }
 
         });
+        followingNumberTv.setOnClickListener(new View.OnClickListener() { // takip ettiklerim
+            @Override
+            public void onClick(View v) {
+                if (isFollowing || user.isOpen()) {
+                    FragmentTransaction transaction = supportFragmentManager.beginTransaction();
+                    UserProfileFollowingFragment userProfileFollowingFragment = new UserProfileFollowingFragment(supportFragmentManager, activity, user);
+                    transaction.replace(R.id.fragmentContainer, userProfileFollowingFragment, "UserProfileFollowingFragment");
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                } else {
+                    Toast.makeText(view.getContext(), "Kullanıcı hesabı gizli veya siz onu takip etmiyorsunuz.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
-        followerBtn.setOnClickListener(new View.OnClickListener() {
+        followerNumberTv.setOnClickListener(new View.OnClickListener() { // takipçilerim
             @Override
             public void onClick(View v) {
                 if (isFollowing || user.isOpen()) {
@@ -216,7 +240,22 @@ import de.hdodenhof.circleimageview.CircleImageView;
             }
         });
 
-        followBtn.setOnClickListener(new View.OnClickListener() {
+        followerTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isFollowing || user.isOpen()) {
+                    FragmentTransaction transaction = supportFragmentManager.beginTransaction();
+                    UserProfileFollowersFragment userProfileFollowersFragment = new UserProfileFollowersFragment(supportFragmentManager, activity, user);
+                    transaction.replace(R.id.fragmentContainer, userProfileFollowersFragment, "UserProfileFollowersFragment");
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                } else {
+                    Toast.makeText(view.getContext(), "Kullanıcı hesabı gizli veya siz onu takip etmiyorsunuz.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        followingTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isFollowing || user.isOpen()) {
@@ -269,7 +308,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
                 if (isFollowing || user.isOpen()) {
                     FragmentTransaction transaction = supportFragmentManager.beginTransaction();
                     UserProfileBenceFragment benceFragment = new UserProfileBenceFragment(activity, user, true);
-                    transaction.replace(R.id.fragmentContainer, benceFragment, "UserProfileSenceFragment");
+                    transaction.replace(R.id.fragmentContainer, benceFragment, "UserProfileBenceFragment");
                     transaction.addToBackStack(null);
                     transaction.commit();
                 } else {
@@ -334,6 +373,33 @@ import de.hdodenhof.circleimageview.CircleImageView;
                 }
             });
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void getTakipTakipciIstekToplam() {
+
+        Dao.getInstance().getFirebaseDatabase().getReference("Follow").child(MainActivity.CurrentUser.getId()).child("followers").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                followerNumberTv.setText(dataSnapshot.getChildrenCount() + "");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+        Dao.getInstance().getFirebaseDatabase().getReference("Follow").child(MainActivity.CurrentUser.getId()).child("following").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                followingNumberTv.setText(dataSnapshot.getChildrenCount() + "");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
     }
 
     private void sendFCMPush(String token, String title, String msg) {

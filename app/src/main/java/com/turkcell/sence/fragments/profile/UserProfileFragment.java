@@ -44,7 +44,7 @@ public class UserProfileFragment extends Fragment {
     private FragmentManager supportFragmentManager;
     private ImageView userImageIv;
     private Button logoutBtn, editBtn;
-    private TextView usernameTv, followingNumberTv, followerNumberTv, requestNumberTv, surveyTv, senceTv, benceTv, followingBtn, followerBtn, requestBtn;
+    private TextView usernameTv, followingNumberTv, followerNumberTv, requestNumberTv, surveyTv, senceTv, benceTv, followTv, followerTv, requestBtn;
     private ViewPager userprofileVp;
     private Activity activity;
 
@@ -62,8 +62,8 @@ public class UserProfileFragment extends Fragment {
         followingNumberTv = view.findViewById(R.id.userprofileFollowingNumber_Tv);
         followerNumberTv = view.findViewById(R.id.userprofileFollowerNumber_Tv);
         requestNumberTv = view.findViewById(R.id.userprofileRequestNumber_Tv);
-        followingBtn = view.findViewById(R.id.userprofileFollowing_Tv);
-        followerBtn = view.findViewById(R.id.userprofileFollowing_Tv);
+        followTv = view.findViewById(R.id.userprofileFollowing_Tv);
+        followerTv = view.findViewById(R.id.userprofileFollower_Tv);
         requestBtn = view.findViewById(R.id.userprofileRequest_Tv);
         userImageIv = view.findViewById(R.id.userprofileUserimage_Iv);
 
@@ -157,8 +157,8 @@ public class UserProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-                UserProfileFollowingFragment myCarFragment = new UserProfileFollowingFragment(supportFragmentManager, activity, MainActivity.CurrentUser);
-                transaction.replace(R.id.fragmentContainer, myCarFragment, "UserProfileFollowingFragment");
+                UserProfileFollowingFragment followingFragment = new UserProfileFollowingFragment(supportFragmentManager, activity, MainActivity.CurrentUser);
+                transaction.replace(R.id.fragmentContainer, followingFragment, "UserProfileFollowingFragment");
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -168,8 +168,8 @@ public class UserProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-                UserProfileFollowersFragment myCarFragment = new UserProfileFollowersFragment(supportFragmentManager, activity, MainActivity.CurrentUser);
-                transaction.replace(R.id.fragmentContainer, myCarFragment, "UserProfileFollowersFragment");
+                UserProfileFollowersFragment followersFragment = new UserProfileFollowersFragment(supportFragmentManager, activity, MainActivity.CurrentUser);
+                transaction.replace(R.id.fragmentContainer, followersFragment, "UserProfileFollowersFragment");
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -179,30 +179,30 @@ public class UserProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-                UserProfileRequestFragment myCarFragment = new UserProfileRequestFragment(supportFragmentManager);
-                transaction.replace(R.id.fragmentContainer, myCarFragment, "UserProfileRequestFragment");
+                UserProfileRequestFragment requestFragment = new UserProfileRequestFragment(supportFragmentManager);
+                transaction.replace(R.id.fragmentContainer, requestFragment, "UserProfileRequestFragment");
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
         });
 
-        followingBtn.setOnClickListener(new View.OnClickListener() { // takip ettiklerim
+        followTv.setOnClickListener(new View.OnClickListener() { // takip ettiklerim
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-                UserProfileFollowingFragment myCarFragment = new UserProfileFollowingFragment(supportFragmentManager, activity, MainActivity.CurrentUser);
-                transaction.replace(R.id.fragmentContainer, myCarFragment, "UserProfileFollowingFragment");
+                UserProfileFollowingFragment followingFragment = new UserProfileFollowingFragment(supportFragmentManager, activity, MainActivity.CurrentUser);
+                transaction.replace(R.id.fragmentContainer, followingFragment, "UserProfileFollowingFragment");
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
         });
 
-        followerBtn.setOnClickListener(new View.OnClickListener() { // takipçilerim
+        followerTv.setOnClickListener(new View.OnClickListener() { // takipçilerim
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-                UserProfileFollowersFragment myCarFragment = new UserProfileFollowersFragment(supportFragmentManager, activity, MainActivity.CurrentUser);
-                transaction.replace(R.id.fragmentContainer, myCarFragment, "UserProfileFollowersFragment");
+                UserProfileFollowersFragment followersFragment = new UserProfileFollowersFragment(supportFragmentManager, activity, MainActivity.CurrentUser);
+                transaction.replace(R.id.fragmentContainer, followersFragment, "UserProfileFollowersFragment");
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -212,8 +212,8 @@ public class UserProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-                UserProfileRequestFragment myCarFragment = new UserProfileRequestFragment(supportFragmentManager);
-                transaction.replace(R.id.fragmentContainer, myCarFragment, "UserProfileRequestFragment");
+                UserProfileRequestFragment requestFragment = new UserProfileRequestFragment(supportFragmentManager);
+                transaction.replace(R.id.fragmentContainer, requestFragment, "UserProfileRequestFragment");
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -237,8 +237,8 @@ public class UserProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-                EditProfileFragment myCarFragment = new EditProfileFragment();
-                transaction.replace(R.id.fragmentContainer, myCarFragment, "EditProfileFragment");
+                EditProfileFragment editProfileFragment = new EditProfileFragment();
+                transaction.replace(R.id.fragmentContainer, editProfileFragment, "EditProfileFragment");
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
