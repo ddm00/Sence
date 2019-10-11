@@ -378,7 +378,7 @@ public class OtherProfileFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     private void getTakipTakipciIstekToplam() {
 
-        Dao.getInstance().getFirebaseDatabase().getReference("Follow").child(MainActivity.CurrentUser.getId()).child("followers").addValueEventListener(new ValueEventListener() {
+        Dao.getInstance().getFirebaseDatabase().getReference("Follow").child(user.getId()).child("followers").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 followerNumberTv.setText(dataSnapshot.getChildrenCount() + "");
@@ -389,7 +389,7 @@ public class OtherProfileFragment extends Fragment {
             }
         });
 
-        Dao.getInstance().getFirebaseDatabase().getReference("Follow").child(MainActivity.CurrentUser.getId()).child("following").addValueEventListener(new ValueEventListener() {
+        Dao.getInstance().getFirebaseDatabase().getReference("Follow").child(user.getId()).child("following").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 followingNumberTv.setText(dataSnapshot.getChildrenCount() + "");
