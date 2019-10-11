@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment {
     private ViewPagerFragmentAdapter viewPagerFragmentAdapter;
     private boolean[] isMultiSelected;
 
-    String[] catogories = {"Alışveriş", "Elektronik", "Ev-Yaşam", "Anne-Bebek", "Spor", "Kitap-Müzik-Film-Oyun", "Tatil", "Eğlence", "Otomobil-Motorsiklet", "Diğer"};
+    String[] catogories = {"Alışveriş", "Elektronik", "Ev-Yaşam", "Anne-Bebek", "Spor", "Kitap-Müzik-Film-Oyun", "Tatil-Eğlence", "Otomobil-Motorsiklet", "Diğer"};
 
     public HomeFragment(Activity activity) {
         this.activity = activity;
