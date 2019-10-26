@@ -98,8 +98,6 @@ public class UserProfileSurveyBenceAdapter extends BaseAdapter {
         surveyTime.setText(survey.getSurveyTime());
 
 
-        if (survey.getReySize()>0) {
-            vote.setText("");
             int firstImagePercent = myList.get(position).getReySize();
             int secondImagePercent = 100 - firstImagePercent;
 
@@ -131,13 +129,6 @@ public class UserProfileSurveyBenceAdapter extends BaseAdapter {
                 firstimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_win_background));
 
             }
-        }else {
-            vote.setText("Oylama yapılmadı");
-            firstimagePercent.setText("");
-            firstimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_zero_background));
-            secondimagePercent.setText("");
-            firstimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_zero_background));
-        }
 
 
         if (!survey.getSurveyTime().equals("Anketin süresi doldu.")) {
