@@ -202,6 +202,7 @@ public class HomeFragment extends Fragment {
     private void hasSurvey() {
         if (surveyList.size() == 0) {
             warningTv.setVisibility(View.VISIBLE);
+            warningTv.setText("Seçtiğiniz kategori veya kategorilerde anket bulunamadı.");
             homeFrame.setVisibility(GONE);
             viewPager.setVisibility(View.GONE);
         } else {

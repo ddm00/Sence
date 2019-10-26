@@ -74,7 +74,7 @@ public class HomeChildFragment extends Fragment {
             public void onClick(View v) {
                 if (firstimageLike.getDrawable().getConstantState() == view.getContext().getResources().getDrawable(R.drawable.like).getConstantState()) {
                     Dao.getInstance().getFirebaseDatabase().getReference("Surveys").child(survey.getSurveyId())
-                            .child("Users").child(MainActivity.CurrentUser.getId()).child("value").setValue(true);
+                            .child("Users").child(MainActivity.CurrentUser.getId()).child("value").removeValue();
                     firstimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.unlike));
                     if (survey.getWhichOne() != null) {
                         survey.setReySize(survey.getReySize() - 1);
@@ -100,7 +100,7 @@ public class HomeChildFragment extends Fragment {
             public void onClick(View v) {
                 if (secondimageLike.getDrawable().getConstantState() == view.getContext().getResources().getDrawable(R.drawable.like).getConstantState()) {
                     Dao.getInstance().getFirebaseDatabase().getReference("Surveys").child(survey.getSurveyId())
-                            .child("Users").child(MainActivity.CurrentUser.getId()).child("value").setValue(true);
+                            .child("Users").child(MainActivity.CurrentUser.getId()).child("value").removeValue();
                     secondimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.unlike));
                     if (survey.getWhichOne() != null) {
                         survey.setReySize(survey.getReySize() - 1);
@@ -109,7 +109,7 @@ public class HomeChildFragment extends Fragment {
                     }
                 } else {
                     Dao.getInstance().getFirebaseDatabase().getReference("Surveys").child(survey.getSurveyId())
-                            .child("Users").child(MainActivity.CurrentUser.getId()).child("value").setValue(true);
+                            .child("Users").child(MainActivity.CurrentUser.getId()).child("value").setValue(false);
                     firstimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.unlike));
                     secondimageLike.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.like));
                     if (survey.getWhichOne() == null) {

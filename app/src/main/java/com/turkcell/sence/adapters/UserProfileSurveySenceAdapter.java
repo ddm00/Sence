@@ -107,15 +107,7 @@ public class UserProfileSurveySenceAdapter extends BaseAdapter {
                 secondimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_equal_background));
 
 
-            } else if (firstImagePercent > secondImagePercent) {
-                secondimagePercent.setText("% " + secondImagePercent);
-                secondimagePercent.setTextColor(context.getResources().getColor(R.color.colorRed));
-                secondimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_lose_background));
-
-                firstimagePercent.setText("% " + firstImagePercent);
-                firstimagePercent.setTextColor(context.getResources().getColor(R.color.colorGreen));
-                firstimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_win_background));
-            } else {
+            } else if (firstImagePercent < secondImagePercent) {
                 firstimagePercent.setText("% " + firstImagePercent);
                 firstimagePercent.setTextColor(context.getResources().getColor(R.color.colorRed));
                 firstimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_lose_background));
@@ -123,6 +115,14 @@ public class UserProfileSurveySenceAdapter extends BaseAdapter {
                 secondimagePercent.setText("% " + secondImagePercent);
                 secondimagePercent.setTextColor(context.getResources().getColor(R.color.colorGreen));
                 secondimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_win_background));
+            } else {
+                secondimagePercent.setText("% " + secondImagePercent);
+                secondimagePercent.setTextColor(context.getResources().getColor(R.color.colorRed));
+                secondimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_lose_background));
+
+                firstimagePercent.setText("% " + firstImagePercent);
+                firstimagePercent.setTextColor(context.getResources().getColor(R.color.colorGreen));
+                firstimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_win_background));
 
             }
         }else {

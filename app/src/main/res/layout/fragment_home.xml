@@ -37,7 +37,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="55dp"
         android:gravity="center"
-        android:text="Seçtiğiniz kategoride\nanket bulunamadı."
         android:textColor="@color/colorPrimary"
         android:textSize="16sp"
         android:textStyle="italic"

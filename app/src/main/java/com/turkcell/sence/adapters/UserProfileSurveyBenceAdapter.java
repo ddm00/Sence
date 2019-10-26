@@ -96,7 +96,9 @@ public class UserProfileSurveyBenceAdapter extends BaseAdapter {
 
         question.setText(survey.getSurveyCategory() + ": " + survey.getSurveyQuestion());
         surveyTime.setText(survey.getSurveyTime());
-        if (survey.getReySize() > 0) {
+
+
+        if (survey.getReySize()>0) {
             vote.setText("");
             int firstImagePercent = myList.get(position).getReySize();
             int secondImagePercent = 100 - firstImagePercent;
@@ -119,7 +121,6 @@ public class UserProfileSurveyBenceAdapter extends BaseAdapter {
                 secondimagePercent.setText("% " + secondImagePercent);
                 secondimagePercent.setTextColor(context.getResources().getColor(R.color.colorGreen));
                 secondimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_win_background));
-
             } else {
                 secondimagePercent.setText("% " + secondImagePercent);
                 secondimagePercent.setTextColor(context.getResources().getColor(R.color.colorRed));
@@ -128,9 +129,9 @@ public class UserProfileSurveyBenceAdapter extends BaseAdapter {
                 firstimagePercent.setText("% " + firstImagePercent);
                 firstimagePercent.setTextColor(context.getResources().getColor(R.color.colorGreen));
                 firstimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_win_background));
-            }
 
-        } else {
+            }
+        }else {
             vote.setText("Oylama yapılmadı");
             firstimagePercent.setText("");
             firstimageWin.setImageDrawable(context.getResources().getDrawable(R.drawable.image_zero_background));

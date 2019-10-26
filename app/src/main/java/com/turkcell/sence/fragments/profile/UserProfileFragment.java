@@ -28,10 +28,6 @@ import com.turkcell.sence.R;
 import com.turkcell.sence.activities.LoginActivity;
 import com.turkcell.sence.activities.MainActivity;
 import com.turkcell.sence.database.Dao;
-import com.turkcell.sence.fragments.profile.EditProfileFragment;
-import com.turkcell.sence.fragments.profile.UserProfileFollowersFragment;
-import com.turkcell.sence.fragments.profile.UserProfileFollowingFragment;
-import com.turkcell.sence.fragments.profile.UserProfileRequestFragment;
 import com.turkcell.sence.fragments.profile.tab.UserProfileBenceFragment;
 import com.turkcell.sence.fragments.profile.tab.UserProfileSenceFragment;
 import com.turkcell.sence.fragments.profile.tab.UserProfileSurveyFragment;
@@ -225,9 +221,7 @@ public class UserProfileFragment extends Fragment {
             public void onClick(View v) {
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
                 mAuth.signOut();
-                Intent intent = new Intent(view.getContext(), LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                startActivity(new Intent(view.getContext(), LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
         });
 
@@ -237,8 +231,8 @@ public class UserProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-                EditProfileFragment editProfileFragment = new EditProfileFragment();
-                transaction.replace(R.id.fragmentContainer, editProfileFragment, "EditProfileFragment");
+                EditProfileFragment myCarFragment = new EditProfileFragment();
+                transaction.replace(R.id.fragmentContainer, myCarFragment, "EditProfileFragment");
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

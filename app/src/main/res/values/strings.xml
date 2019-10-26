@@ -43,8 +43,6 @@
     <string name="userprofileExit">ÇIKIŞ</string>
 
 
-
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_profile">ProfileActivity</string>
@@ -54,12 +52,11 @@
 
     <!-- Profil Düzenleme -->
     <string name="editUsername">Kullanıcı Adı</string>
-    <string name="editName">İsim</string>
-    <string name="editSurname">Soyisim</string>
-    <string name="editEmail">Eposta</string>
-    <string name="editPhone">Telefon</string>
-    <string name="editButton">GÜNCELLE</string>
-    <string name="editOpen">Hesabınız açık olsun mu?</string>
+    <string name="editFullname">İsim-Soyisim</string>
+    <string name="editChange">Profil Resmini Değiştir</string>
+    <string name="editSave">KAYDET</string>
+    <string name="editOpen">Hesabınız açık</string>
+    <string name="editProfile">Profil Düzenle</string>
 
     <!-- Ara -->
     <string name="searchHint">Ara</string>
@@ -97,6 +94,7 @@
     <string name="title_notifications">Notifications</string>
     <string name="default_notification_channel_id">Sence</string>
     <string name="message">Bir arkadaşlık isteğiniz var.</string>
+    <string name="title_activity_edit_profile">EditProfileActivity</string>
 
 
 </resources>

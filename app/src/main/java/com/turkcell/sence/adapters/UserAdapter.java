@@ -174,11 +174,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (mUsers.get(position).getId() != null && !mUsers.get(position).getId().isEmpty() && dataSnapshot.child(mUsers.get(position).getId()).exists()) {
-                        button.setText("takip etme");
-                    } else {
-                        button.setText("takip et");
+                    if(position < mUsers.size()){
+                        if (mUsers.get(position).getId() != null && !mUsers.get(position).getId().isEmpty() && dataSnapshot.child(mUsers.get(position).getId()).exists()) {
+                            button.setText("takip etme");
+                        } else {
+                            button.setText("takip et");
+                        }
                     }
+
                 }
 
                 @Override
@@ -192,27 +195,33 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
             reference1.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (mUsers.get(position).getId() != null && !mUsers.get(position).getId().isEmpty() && dataSnapshot.child(mUsers.get(position).getId()).exists()) {
-                        button.setText("istek");
-                    } else {
-                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
-                                .child("Follow").child(MainActivity.CurrentUser.getId()).child("following");
-                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (mUsers.get(position).getId() != null && !mUsers.get(position).getId().isEmpty() && dataSnapshot.child(mUsers.get(position).getId()).exists()) {
-                                    button.setText("takip etme");
-                                } else {
-                                    button.setText("takip et");
+                    if(position < mUsers.size()){
+                        if (mUsers.get(position).getId() != null && !mUsers.get(position).getId().isEmpty() && dataSnapshot.child(mUsers.get(position).getId()).exists()) {
+                            button.setText("istek");
+                        } else {
+                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
+                                    .child("Follow").child(MainActivity.CurrentUser.getId()).child("following");
+                            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if(position < mUsers.size()){
+                                        if (mUsers.get(position).getId() != null && !mUsers.get(position).getId().isEmpty() && dataSnapshot.child(mUsers.get(position).getId()).exists()) {
+                                            button.setText("takip etme");
+                                        } else {
+                                            button.setText("takip et");
+                                        }
+                                    }
+
                                 }
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            }
-                        });
+                                }
+                            });
+                        }
                     }
+
                 }
 
                 @Override

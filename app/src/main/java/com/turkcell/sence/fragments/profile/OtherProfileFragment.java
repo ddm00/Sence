@@ -112,7 +112,6 @@ public class OtherProfileFragment extends Fragment {
         onGoing();
         onComplete();
         onVolley();
-
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.ic_account_circle_black_24dp);
         Glide.with(view.getContext()).setDefaultRequestOptions(requestOptions).load(user.getImageurl()).into(profilePhotoIv);

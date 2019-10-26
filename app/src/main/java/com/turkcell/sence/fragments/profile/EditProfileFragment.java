@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -20,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 import com.turkcell.sence.R;
 import com.turkcell.sence.activities.MainActivity;
 import com.turkcell.sence.database.Dao;
@@ -64,7 +66,9 @@ public class EditProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 SurveyFragment.value = 3;
-                CropImage.activity().setAspectRatio(1, 1).start(getActivity());
+                CropImage.activity().setAspectRatio(1, 1)
+                        .setCropShape(CropImageView.CropShape.OVAL)
+                        .start(getActivity());
             }
         });
 
@@ -77,6 +81,16 @@ public class EditProfileFragment extends Fragment {
         requestOptions.placeholder(R.drawable.ic_account_circle_black_24dp);
         // Glide.with(this).load(user.getImageurl()).into(userImage);
         Glide.with(getActivity()).setDefaultRequestOptions(requestOptions).load(user.getImageurl()).into(userImage);
+        isOpen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    buttonView.setText("Hesabınız açık");
+                }else{
+                    buttonView.setText("Hesabınız gizli");
+                }
+            }
+        });
 
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
