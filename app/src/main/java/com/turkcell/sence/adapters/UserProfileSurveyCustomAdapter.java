@@ -119,7 +119,6 @@ public class UserProfileSurveyCustomAdapter extends BaseAdapter {
 
                 builder.show();
 
-
                 return false;
             }
         });

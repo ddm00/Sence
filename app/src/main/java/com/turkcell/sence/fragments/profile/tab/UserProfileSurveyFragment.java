@@ -66,6 +66,7 @@ public class UserProfileSurveyFragment extends Fragment {
         homeFrameFl = view.findViewById(R.id.userprofilesurveyFrame_Fl);
         surveyAdapter = new UserProfileSurveyCustomAdapter(activity, view.getContext(), surveyList);
         surveyListView.setAdapter(surveyAdapter);
+        surveyListView.setLongClickable(true);
 
         warningTv.setVisibility(View.VISIBLE);
         if (isFollowing || user.isOpen()) {
